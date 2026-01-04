@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f81f41145b798478f22ba4b61fc50d, type: 3}
+  m_Name: EchoData
+  m_EditorClassIdentifier: 
+  characterName: Echo
+  characterDescription: A Murderer Who Longs For 80s Anime
+  characterSpeciality: {fileID: 11400000, guid: b031b777168d8c447b3e2ffbeb9d2a39, type: 2}
+  characterUltimate: {fileID: 11400000, guid: b748732a76762724db6d12b5d452982f, type: 2}
+  characterPrefab: {fileID: 0}
+  characterIcon: {fileID: 0}

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f936fc3f1caa6d64c876080cdf4d05a8, type: 3}
+  m_Name: katana2Data
+  m_EditorClassIdentifier: 
+  weaponType: 1
+  availableFireModes: 01000000
+  weaponName: KATANA Gen 2
+  weaponDescription: A Simple And Fast Bullet Particle Accelerator SMG.
+  magSize: 36
+  maxRPM: 1100
+  bulletDamage: 12
+  effectiveRange: 45
+  usingBullet: 1
+  firingBullets: 1
+  removeWhenExtract: 0
+  hasAcceleration: 0
+  burstBullets: 0
+  minAccelerate: 0
+  maxAccelerate: 0
+  accelerateSpeed: 0
+  weaponPrefab: {fileID: 0}
+  weaponIcon: {fileID: 0}
+  tacticalReloadTime: 0.5
+  emptyReloadTime: 0.7
+  tacticalReloadAnimTrigger: TacticalReload
+  emptyReloadAnimTrigger: EmptyReload

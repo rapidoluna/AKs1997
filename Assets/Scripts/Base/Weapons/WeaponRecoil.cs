@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class WeaponRecoil : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private WeaponController controller;
+
+    private void Start()
     {
-        
+        controller = GetComponent<WeaponController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ApplyRecoil()
     {
-        
+        WeaponData data = controller.GetWeaponData();
     }
 }

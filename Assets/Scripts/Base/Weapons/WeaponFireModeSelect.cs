@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class WeaponReloading : MonoBehaviour
+public class WeaponFireModeSelect : MonoBehaviour
 {
     private WeaponController controller;
+    private int currentModeIndex;
 
     private void Start()
     {
         controller = GetComponent<WeaponController>();
     }
 
-    public void StartReload()
+    public void ChangeFireMode()
     {
         WeaponData data = controller.GetWeaponData();
-        controller.Effects.PlayReloadSound();
-        controller.Ammo.Refill(data.magSize);
+        currentModeIndex = (currentModeIndex + 1) % data.AvailableFireModes.Length;
     }
 }

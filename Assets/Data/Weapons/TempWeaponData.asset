@@ -10,27 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f936fc3f1caa6d64c876080cdf4d05a8, type: 3}
-  m_Name: katana2Data
+  m_Name: TempWeaponData
   m_EditorClassIdentifier: 
-  weaponType: 1
-  availableFireModes: 01000000
-  weaponName: KATANA Gen 2
-  weaponDescription: A Simple And Fast Bullet Particle Accelerator SMG.
-  magSize: 36
-  maxRPM: 1100
-  bulletDamage: 12
+  weaponType: 0
+  availableFireModes: 
+  weaponName: temp
+  weaponDescription: temp
+  magSize: 40
+  bulletDamage: 10
   effectiveRange: 45
   usingBullet: 1
   firingBullets: 1
+  bulletSpeed: 10
+  impactForce: 5
+  verticalRecoil: 5
+  horizontalRecoil: 5
+  recoilRecovery: 3
+  baseSpread: 2
+  maxSpread: 3
+  adsSpeed: 0
+  adsZoomFOV: 0
+  movementWeight: 5
   removeWhenExtract: 0
-  hasAcceleration: 0
-  burstBullets: 0
-  minAccelerate: 0
-  maxAccelerate: 0
-  accelerateSpeed: 0
   weaponPrefab: {fileID: 0}
   weaponIcon: {fileID: 0}
-  tacticalReloadTime: 0.5
-  emptyReloadTime: 0.7
+  fireSound: {fileID: 0}
+  emptySound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  tacticalReloadTime: 0.4
+  emptyReloadTime: 0.6
   tacticalReloadAnimTrigger: TacticalReload
   emptyReloadAnimTrigger: EmptyReload

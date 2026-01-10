@@ -5,15 +5,14 @@ public class FirstPersonCamera : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 100f;
     [SerializeField] private Transform playerBody;
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private float normalFOV = 60f;
-    [SerializeField] private float adsFOV = 50f;
-    [SerializeField] private float adsSpeed = 5f;
 
+    private WeaponRecoilCamera _recoilSystem;
     private float xRotation = 0f;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        _recoilSystem = mainCamera.GetComponent<WeaponRecoilCamera>();
     }
 
     void Update()
@@ -24,17 +23,9 @@ public class FirstPersonCamera : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        Vector3 recoil = _recoilSystem != null ? _recoilSystem.CurrentRecoilRotation : Vector3.zero;
 
+        mainCamera.transform.localRotation = Quaternion.Euler(xRotation + recoil.x, recoil.y, recoil.z);
         playerBody.Rotate(Vector3.up * mouseX);
-
-        if (Input.GetMouseButton(1))
-        {
-            mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, adsFOV, adsSpeed * Time.deltaTime);
-        }
-        else
-        {
-            mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, normalFOV, adsSpeed * Time.deltaTime);
-        }
     }
 }

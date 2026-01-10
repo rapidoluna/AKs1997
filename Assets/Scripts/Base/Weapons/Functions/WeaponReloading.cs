@@ -45,6 +45,5 @@ public class WeaponReloading : MonoBehaviour
         _ammo.Refill();
         _isReloading = false;
         OnReloadComplete?.Invoke();
-        Debug.Log($"[Shooting] {_data.WeaponName} 재장전 성공. 현재 잔탄: {_ammo.CurrentAmmo}");
     }
 }

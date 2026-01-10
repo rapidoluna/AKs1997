@@ -17,6 +17,7 @@ MonoBehaviour:
   weaponName: Temp Rifle
   weaponDescription: A Start Was a Rifle.
   weaponPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
   weaponIcon: {fileID: 21300000, guid: 677d659e4abfcef479f5ad1b49ab5caf, type: 3}
   magSize: 40
   weaponDamage: 15

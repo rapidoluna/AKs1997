@@ -5,11 +5,11 @@ public class PlayerSliding : MonoBehaviour
     private CharacterController controller;
     private PlayerWalking walking;
 
-    [SerializeField] private float slideSpeedMultiplier = 2.2f;
-    [SerializeField] private float slideDuration = 0.5f;
-    [SerializeField] private float slideHeight = 1.5f;
+    [SerializeField] private float slideSpeedMultiplier = 3f;
+    [SerializeField] private float slideDuration = 0.7f;
+    [SerializeField] private float slideHeight = 1.3f;
     [SerializeField] private float normalHeight = 2f;
-    [SerializeField] private float lerpSpeed = 15f;
+    [SerializeField] private float lerpSpeed = 17f;
 
     private bool isSliding;
     private float slideTimer;

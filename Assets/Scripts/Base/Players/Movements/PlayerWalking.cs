@@ -8,8 +8,15 @@ public class PlayerWalking : MonoBehaviour
     [SerializeField] private float baseSpeed = 5f;
     [SerializeField] private float gravity = -19.62f;
 
+    [Header("Movement Multipliers")]
+    [SerializeField] private float adsSpeedMultiplier = 0.5f;
+    [SerializeField] private float shootingSpeedMultiplier = 0.5f;
+
     private float currentSpeed;
     private Vector3 velocity;
+
+    private WeaponAiming _weaponAiming;
+    private WeaponShooting _weaponShooting;
 
     public float MoveSpeed
     {
@@ -33,6 +40,21 @@ public class PlayerWalking : MonoBehaviour
 
     void Update()
     {
+        UpdateReferences();
+        HandleMovement();
+    }
+
+    private void UpdateReferences()
+    {
+        if (_weaponAiming == null || _weaponShooting == null)
+        {
+            _weaponAiming = GetComponentInChildren<WeaponAiming>();
+            _weaponShooting = GetComponentInChildren<WeaponShooting>();
+        }
+    }
+
+    private void HandleMovement()
+    {
         if (controller.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
@@ -40,6 +62,19 @@ public class PlayerWalking : MonoBehaviour
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+
+        float targetSpeed = baseSpeed;
+
+        if (_weaponAiming != null && _weaponAiming.IsAiming)
+        {
+            targetSpeed *= adsSpeedMultiplier;
+        }
+        else if (_weaponShooting != null && _weaponShooting.IsShooting)
+        {
+            targetSpeed *= shootingSpeedMultiplier;
+        }
+
+        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 10f);
 
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * currentSpeed * Time.deltaTime);

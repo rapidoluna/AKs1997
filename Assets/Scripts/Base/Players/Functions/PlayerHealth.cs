@@ -1,43 +1,36 @@
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IDamageable
 {
-    private PlayerWalking walking;
+    [SerializeField] private CharacterData characterData;
     private float currentHealth;
-    private float maxHealth;
 
     public float CurrentHealth => currentHealth;
-    public float MaxHealth => maxHealth;
+    public float MaxHealth => characterData != null ? characterData.MaxHealth : 100f;
 
     void Awake()
     {
-        walking = GetComponent<PlayerWalking>();
-    }
-
-    void Start()
-    {
-        if (walking != null && walking.characterData != null)
+        if (characterData != null)
         {
-            maxHealth = walking.characterData.MaxHealth;
-            currentHealth = maxHealth;
+            currentHealth = characterData.MaxHealth;
+        }
+        else
+        {
+            currentHealth = 100f;
         }
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(int damage)
     {
-        currentHealth -= amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        if (currentHealth <= 0) return;
+
+        currentHealth -= damage;
 
         if (currentHealth <= 0)
         {
+            currentHealth = 0;
             Die();
         }
-    }
-
-    public void Heal(float amount)
-    {
-        currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
     }
 
     private void Die()

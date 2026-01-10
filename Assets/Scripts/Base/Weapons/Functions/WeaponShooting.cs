@@ -67,10 +67,7 @@ public class WeaponShooting : MonoBehaviour
             float speed = _data.bulletSpeed / 60f;
             float spread = baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f);
 
-            for (int i = 0; i < _data.firingBullet; i++)
-            {
-                GenerateProjectile(speed, spread);
-            }
+            GenerateProjectile(speed, spread);
         }
     }
 
@@ -87,7 +84,7 @@ public class WeaponShooting : MonoBehaviour
             if (_ammo.ConsumeAmmo(_data.usingBullet))
             {
                 if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
-                for (int j = 0; j < _data.firingBullet; j++) GenerateProjectile(speed, spread);
+                GenerateProjectile(speed, spread);
             }
             yield return new WaitForSeconds(_data.burstInterval);
         }
@@ -95,10 +92,13 @@ public class WeaponShooting : MonoBehaviour
 
     private void GenerateProjectile(float speed, float spreadRange)
     {
-        if (_data.bulletPrefab == null || firePoint == null) return;
-        Quaternion spread = Quaternion.Euler(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange), 0);
-        GameObject bullet = Instantiate(_data.bulletPrefab, firePoint.position, firePoint.rotation * spread);
+        if (BulletPool.Instance == null) return;
+        GameObject bullet = BulletPool.Instance.GetBullet();
+
+        bullet.transform.position = firePoint.position;
+        bullet.transform.rotation = firePoint.rotation * Quaternion.Euler(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange), 0);
+
         Projectile projectile = bullet.GetComponent<Projectile>();
-        if (projectile != null) projectile.Init(speed, _data.weaponDamage, _data.effectiveRange);
+        if (projectile != null) projectile.Init(speed, _data.weaponDamage, _data.effectiveRange, transform.root.gameObject);
     }
 }

@@ -13,6 +13,7 @@ public class WeaponAmmo : MonoBehaviour
         get => _currentAmmo;
         private set
         {
+            if (_data == null) return;
             _currentAmmo = Mathf.Clamp(value, 0, _data.magSize);
             OnAmmoChanged?.Invoke(_currentAmmo, _data.magSize);
         }
@@ -21,8 +22,18 @@ public class WeaponAmmo : MonoBehaviour
     public bool IsEmpty => _currentAmmo <= 0;
     public bool IsFull => _data != null && _currentAmmo >= _data.magSize;
 
+    private void Start()
+    {
+        if (_data == null)
+        {
+            WeaponShooting shooting = GetComponent<WeaponShooting>();
+            if (shooting != null) Init(shooting.GetWeaponData());
+        }
+    }
+
     public void Init(WeaponData data)
     {
+        if (data == null) return;
         _data = data;
         CurrentAmmo = _data.magSize;
     }

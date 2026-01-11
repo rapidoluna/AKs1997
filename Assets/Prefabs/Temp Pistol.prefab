@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1618241961813643771}
   - component: {fileID: 1279549128036332397}
   m_Layer: 0
-  m_Name: Temp Rifle
+  m_Name: Temp Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,10 +61,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f89c2f9801916041b6dc9facd6a4475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data: {fileID: 11400000, guid: 9e1f42f3c5a32cb42a10bc934d19c77f, type: 2}
+  _data: {fileID: 11400000, guid: 07a15d628b752a64c99dfb849c9cee41, type: 2}
   recoilCamera: {fileID: 0}
   firePoint: {fileID: 4488936992387853751}
-  baseSpread: 2
+  baseSpread: 1
 --- !u!114 &1618241961813643771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,12 +89,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b11456ef6b5ee4fb1271ccd6e7208a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adsFov: 40
-  adsSpeed: 10
+  adsFov: 50
+  adsSpeed: 20
   adsRecoilMultiplier: 0.5
   adsSpreadMultiplier: 0.2
   hipOffset: {x: 0.5, y: -0.4, z: 1}
-  adsOffset: {x: 0, y: -0.2, z: 1.2}
+  adsOffset: {x: 0, y: -0.1, z: 1.2}
 --- !u!1 &4262973834766537542
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 4488936992387853751}
   - component: {fileID: 2927654279815453662}
   m_Layer: 0
-  m_Name: firePointRifle
+  m_Name: firePointPistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

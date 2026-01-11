@@ -20,6 +20,20 @@ public class WeaponReloading : MonoBehaviour
         _shooting = GetComponent<WeaponShooting>();
     }
 
+    private void Start()
+    {
+        if (_data == null && _shooting != null)
+        {
+            _data = _shooting.GetWeaponData();
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        _isReloading = false;
+    }
+
     public void Init(WeaponData data)
     {
         _data = data;

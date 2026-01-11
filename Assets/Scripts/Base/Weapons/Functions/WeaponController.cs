@@ -2,42 +2,53 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private WeaponData weaponData;
+    [Header("Weapon Slots")]
+    [SerializeField] private GameObject[] weaponSlots = new GameObject[2];
+    private int _currentWeaponIndex = 0;
 
-    private WeaponAmmo _ammo;
-    private WeaponShooting _shooting;
-    private WeaponReloading _reloading;
-
-    private void Awake()
-    {
-        _ammo = GetComponent<WeaponAmmo>();
-        _shooting = GetComponent<WeaponShooting>();
-        _reloading = GetComponent<WeaponReloading>();
-    }
+    public GameObject[] Slots => weaponSlots;
+    public int CurrentIndex => _currentWeaponIndex;
 
     private void Start()
     {
-        if (weaponData != null)
+        InitializeWeapons();
+    }
+
+    private void InitializeWeapons()
+    {
+        for (int i = 0; i < weaponSlots.Length; i++)
         {
-            InitializeModules(weaponData);
+            if (weaponSlots[i] != null)
+                weaponSlots[i].SetActive(false);
+        }
+
+        if (weaponSlots[0] != null)
+        {
+            _currentWeaponIndex = 0;
+            weaponSlots[0].SetActive(true);
         }
     }
 
-    public void InitializeModules(WeaponData newData)
+    private void Update()
     {
-        weaponData = newData;
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchToSlot(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchToSlot(1);
 
-        _ammo.Init(weaponData);
-        _shooting.Init(weaponData);
-        _reloading.Init(weaponData);
-
-        // 무기 정보 수신 확인 로그
-        Debug.Log($"<color=cyan>[Weapon System]</color> 데이터 수신 완료: {weaponData.WeaponName}");
-        Debug.Log($"[정보] 공격력: {weaponData.weaponDamage} | 장탄수: {weaponData.magSize} | 연사속도(분당): {weaponData.fireRate} | 탄속(분당) : {weaponData.bulletSpeed}");
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scroll) > 0.1f)
+        {
+            int nextSlot = (_currentWeaponIndex == 0) ? 1 : 0;
+            SwitchToSlot(nextSlot);
+        }
     }
 
-    public WeaponData GetWeaponData()
+    public void SwitchToSlot(int index)
     {
-        return weaponData;
+        if (index < 0 || index >= weaponSlots.Length || index == _currentWeaponIndex) return;
+        if (weaponSlots[index] == null) return;
+
+        weaponSlots[_currentWeaponIndex].SetActive(false);
+        _currentWeaponIndex = index;
+        weaponSlots[_currentWeaponIndex].SetActive(true);
     }
 }

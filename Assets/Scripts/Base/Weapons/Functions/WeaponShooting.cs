@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WeaponShooting : MonoBehaviour
 {
-    private WeaponData _data;
+    [SerializeField] private WeaponData _data;
     private WeaponAmmo _ammo;
     private WeaponReloading _reloading;
     private WeaponAiming _aiming;
@@ -24,25 +24,22 @@ public class WeaponShooting : MonoBehaviour
 
     private void OnEnable()
     {
-        // Awake에서 참조를 가져오지만, 실행 순서에 따라 null일 수 있으므로 재확인
         if (_reloading == null) _reloading = GetComponent<WeaponReloading>();
-
         if (_reloading != null)
             _reloading.OnReloadComplete += SetPostReloadDelay;
     }
 
-    private void SetPostReloadDelay(float delay)
-    {
-        // 재장전 직후 사격 방지 로직
-        _lastFireTime = Time.time + delay;
-    }
-
     private void OnDisable()
     {
+        IsShooting = false;
         if (_reloading != null)
             _reloading.OnReloadComplete -= SetPostReloadDelay;
     }
 
+    private void SetPostReloadDelay(float delay)
+    {
+        _lastFireTime = Time.time + delay;
+    }
 
     public void Init(WeaponData data)
     {
@@ -57,40 +54,25 @@ public class WeaponShooting : MonoBehaviour
     private void Update()
     {
         if (_data == null || _reloading.IsReloading) return;
-
         bool isFullAuto = _data.Firing[0] == FiringType.Full;
         IsShooting = isFullAuto ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
-
         HandleFiringInput();
     }
 
     private void HandleFiringInput()
     {
         if (!IsShooting || Time.time < _lastFireTime || _ammo.IsEmpty) return;
-
         float fireInterval = 60f / _data.fireRate;
         _lastFireTime = Time.time + fireInterval;
-
-        if (_data.Firing[0] == FiringType.Burst)
-        {
-            StartCoroutine(BurstRoutine());
-        }
-        else
-        {
-            if (_ammo.ConsumeAmmo(_data.usingBullet))
-            {
-                Fire();
-            }
-        }
+        if (_data.Firing[0] == FiringType.Burst) StartCoroutine(BurstRoutine());
+        else if (_ammo.ConsumeAmmo(_data.usingBullet)) Fire();
     }
 
     private void Fire()
     {
         float speed = _data.bulletSpeed / 60f;
         float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
-
         if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
-
         for (int i = 0; i < _data.firingBullet; i++)
         {
             float spread = baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f);
@@ -104,7 +86,6 @@ public class WeaponShooting : MonoBehaviour
         float speed = _data.bulletSpeed / 60f;
         float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
         float spread = baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f);
-
         for (int i = 0; i < _data.burstBullet; i++)
         {
             if (_ammo.IsEmpty) break;
@@ -121,14 +102,17 @@ public class WeaponShooting : MonoBehaviour
     {
         if (BulletPool.Instance == null) return;
         GameObject bullet = BulletPool.Instance.GetBullet();
-
         bullet.transform.position = firePoint.position;
         bullet.transform.rotation = firePoint.rotation * Quaternion.Euler(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange), 0);
-
         Projectile projectile = bullet.GetComponent<Projectile>();
         if (projectile != null)
         {
             projectile.Init(speed, _data.weaponDamage, _data.effectiveRange, transform.root.gameObject);
         }
+    }
+
+    public WeaponData GetWeaponData()
+    {
+        return _data;
     }
 }

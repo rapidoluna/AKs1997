@@ -5,15 +5,23 @@ using UnityEngine;
 public class STSNGStation : MonoBehaviour
 {
     private bool _isProcessing = false;
-    [SerializeField] private float maxTime = 60f;
-    private float _timer;
+    [SerializeField] private float _timer = 60f;
     private int _storedCash = 0;
+    private int _currentDepositCount = 0;
+    [SerializeField] private int maxCapacity = 3;
+
+    public bool CanAcceptItems(int count)
+    {
+        return !_isProcessing && count <= maxCapacity;
+    }
 
     public void DepositItems(List<ItemData> items)
     {
-        if (_isProcessing) return;
+        if (_isProcessing || items.Count > maxCapacity) return;
 
         int totalValue = 0;
+        _currentDepositCount = items.Count;
+
         foreach (var item in items)
         {
             totalValue += item.cashValue;
@@ -26,12 +34,12 @@ public class STSNGStation : MonoBehaviour
     private IEnumerator CashRushRoutine()
     {
         _isProcessing = true;
-        _timer = maxTime;
+        _timer = 60f;
 
         if (CashRushHUD.Instance != null)
         {
-            CashRushHUD.Instance.ShowNotification("캐시러시 시작");
-            CashRushHUD.Instance.SetTimerActive(true);
+            CashRushHUD.Instance.ShowNotification($"캐시러시 시작, {_currentDepositCount}개 물자 전송 중");
+            CashRushHUD.Instance.SetTimerActive(true, _storedCash);
         }
 
         while (_timer > 0)
@@ -57,5 +65,8 @@ public class STSNGStation : MonoBehaviour
             CashRushHUD.Instance.SetTimerActive(false);
         }
         _storedCash = 0;
+        _currentDepositCount = 0;
     }
+    //프로퍼티
+    public bool IsProcessing => _isProcessing;
 }

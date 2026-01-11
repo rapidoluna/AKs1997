@@ -6,13 +6,14 @@ public class CashRushHUD : MonoBehaviour
 {
     public static CashRushHUD Instance;
 
-    [SerializeField] private Text scoreText;
-    [SerializeField] private Text timerText;
-    [SerializeField] private Text notifyText;
-    [SerializeField] private GameObject notifyPanel;
-    [SerializeField] private GameObject timerPanel;
+    [SerializeField] private Text scoreText;//플레이어 점수
+    [SerializeField] private Text timerText;//캐시러시 완료까지 남은 시간
+    [SerializeField] private Text payoutText;//캐시러시를 통해 추가될 점수
+    [SerializeField] private Text notifyText;//알림
+    [SerializeField] private GameObject notifyPanel;//알림 패널
+    [SerializeField] private GameObject timerPanel;//캐시러시 동안 표시될 패널
 
-    private int _totalScore = 0;
+    private int _totalScore = 0;//플레이어 총 점수
 
     private void Awake()
     {
@@ -22,9 +23,14 @@ public class CashRushHUD : MonoBehaviour
         UpdateScoreUI();
     }
 
-    public void SetTimerActive(bool active)
+    public void SetTimerActive(bool active, int potentialAmount = 0)
     {
         if (timerPanel != null) timerPanel.SetActive(active);
+
+        if (active && payoutText != null)
+        {
+            payoutText.text = $"+ {potentialAmount:N0} 캐시";
+        }
     }
 
     public void UpdateTimer(float time)
@@ -42,7 +48,7 @@ public class CashRushHUD : MonoBehaviour
     private void UpdateScoreUI()
     {
         if (scoreText != null)
-            scoreText.text = $"현재 점수 : {_totalScore:N0}";
+            scoreText.text = $"현재 캐시 : {_totalScore:N0}";
     }
 
     public void ShowNotification(string message)

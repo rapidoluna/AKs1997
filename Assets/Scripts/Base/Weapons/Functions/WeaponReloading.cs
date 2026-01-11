@@ -6,16 +6,18 @@ public class WeaponReloading : MonoBehaviour
 {
     private WeaponData _data;
     private WeaponAmmo _ammo;
+    private WeaponShooting _shooting;
     private bool _isReloading;
 
     public event Action OnReloadStart;
-    public event Action OnReloadComplete;
+    public event Action<float> OnReloadComplete;
 
     public bool IsReloading => _isReloading;
 
     private void Awake()
     {
         _ammo = GetComponent<WeaponAmmo>();
+        _shooting = GetComponent<WeaponShooting>();
     }
 
     public void Init(WeaponData data)
@@ -26,7 +28,7 @@ public class WeaponReloading : MonoBehaviour
 
     private void Update()
     {
-        if (_data == null || _isReloading) return;
+        if (_data == null || _isReloading || (_shooting != null && _shooting.IsShooting)) return;
 
         if (Input.GetKeyDown(KeyCode.R) && !_ammo.IsFull)
         {
@@ -44,6 +46,7 @@ public class WeaponReloading : MonoBehaviour
 
         _ammo.Refill();
         _isReloading = false;
-        OnReloadComplete?.Invoke();
+
+        OnReloadComplete?.Invoke(0.5f);
     }
 }

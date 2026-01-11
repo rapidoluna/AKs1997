@@ -5,25 +5,44 @@ public class WeaponUI : MonoBehaviour
 {
     [SerializeField] private Image weaponIconImage;
     [SerializeField] private Text ammoText;
+    [SerializeField] private GameObject reloadPromptPanel;
+    [SerializeField] private int promptThreshold = 2;
 
     private WeaponController _controller;
     private WeaponAmmo _ammo;
+    private WeaponReloading _reloading;
     private WeaponData _data;
 
     private void Awake()
     {
         _controller = GetComponentInParent<WeaponController>();
         _ammo = GetComponentInParent<WeaponAmmo>();
+        _reloading = GetComponentInParent<WeaponReloading>();
     }
 
     private void OnEnable()
     {
-        _ammo.OnAmmoChanged += UpdateAmmoUI;
+        if (_ammo != null) _ammo.OnAmmoChanged += UpdateAmmoUI;
+        if (_reloading != null)
+        {
+            _reloading.OnReloadStart += HideReloadPrompt;
+            _reloading.OnReloadComplete += HandleReloadComplete;
+        }
     }
 
     private void OnDisable()
     {
-        _ammo.OnAmmoChanged -= UpdateAmmoUI;
+        if (_ammo != null) _ammo.OnAmmoChanged -= UpdateAmmoUI;
+        if (_reloading != null)
+        {
+            _reloading.OnReloadStart -= HideReloadPrompt;
+            _reloading.OnReloadComplete -= HandleReloadComplete;
+        }
+    }
+
+    private void HandleReloadComplete(float delay)
+    {
+        CheckReloadPrompt();
     }
 
     private void Start()
@@ -44,6 +63,39 @@ public class WeaponUI : MonoBehaviour
 
     private void UpdateAmmoUI(int current, int max)
     {
-        ammoText.text = current.ToString() + " / " + max.ToString();
+        ammoText.text = $"{current} / {max}";
+        CheckReloadPrompt(current, max);
+    }
+
+    private void CheckReloadPrompt(int current, int max)
+    {
+        if (_reloading != null && _reloading.IsReloading)
+        {
+            HideReloadPrompt();
+            return;
+        }
+
+        bool shouldShow = current <= promptThreshold && current < max;
+
+        if (reloadPromptPanel != null)
+        {
+            reloadPromptPanel.SetActive(shouldShow);
+        }
+    }
+
+    private void CheckReloadPrompt()
+    {
+        if (_ammo != null && _data != null)
+        {
+            CheckReloadPrompt(_ammo.CurrentAmmo, _data.magSize);
+        }
+    }
+
+    private void HideReloadPrompt()
+    {
+        if (reloadPromptPanel != null)
+        {
+            reloadPromptPanel.SetActive(false);
+        }
     }
 }

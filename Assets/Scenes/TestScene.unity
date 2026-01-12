@@ -3766,6 +3766,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: STSNG
       objectReference: {fileID: 0}
+    - target: {fileID: 7354782816756257485, guid: 288b114b608c0e44886785e208504c5d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a5ea2c86e3ae1ee4f997f2055b4d8a36, type: 2}
     - target: {fileID: 8727159523695679128, guid: 288b114b608c0e44886785e208504c5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

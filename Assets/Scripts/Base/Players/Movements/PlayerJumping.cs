@@ -5,7 +5,7 @@ public class PlayerJumping : MonoBehaviour
     private CharacterController controller;
     private PlayerWalking walking;
 
-    [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float jumpHeight = 1.2f;
     [SerializeField] private float gravityForCalculation = -19.62f;
 
     void Awake()

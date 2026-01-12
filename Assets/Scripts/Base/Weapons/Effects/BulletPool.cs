@@ -25,10 +25,15 @@ public class BulletPool : MonoBehaviour
     {
         foreach (GameObject obj in _pool)
         {
-            if (!obj.activeInHierarchy) return obj;
+            if (!obj.activeInHierarchy)
+            {
+                obj.SetActive(true);
+                return obj;
+            }
         }
+
         GameObject newObj = Instantiate(bulletPrefab);
-        newObj.SetActive(false);
+        newObj.SetActive(true);
         _pool.Add(newObj);
         return newObj;
     }

@@ -57,6 +57,7 @@ public class WeaponData : ScriptableObject
     [Header("Burst Weapon Options")]
     //점사식 무기 관련
     //점사 탄환 수, 점사 간격
+    //작성 시 소모 탄환 수와 실제 발사되는 탄환 수는 1로 설정해야함.
     public int burstBullet;
     public float burstInterval;
 

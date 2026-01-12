@@ -2,12 +2,11 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private float _speed;
     private int _damage;
+    private float _speed;
     private float _range;
-    private Vector3 _startPos;
-    private Rigidbody _rb;
     private GameObject _owner;
+    private Vector3 _startPosition;
 
     public void Init(float speed, int damage, float range, GameObject owner)
     {
@@ -15,44 +14,31 @@ public class Projectile : MonoBehaviour
         _damage = damage;
         _range = range;
         _owner = owner;
-        _startPos = transform.position;
-        _rb = GetComponent<Rigidbody>();
-
-        gameObject.SetActive(true);
-        if (_rb != null)
-        {
-            _rb.linearVelocity = transform.forward * _speed;
-        }
+        _startPosition = transform.position;
     }
 
     private void Update()
     {
-        if (Vector3.Distance(_startPos, transform.position) >= _range)
+        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+
+        if (Vector3.Distance(_startPosition, transform.position) >= _range)
         {
-            Deactivate();
+            gameObject.SetActive(false);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject == _owner) return;
+        if (other.gameObject == _owner) return;
 
-        IDamageable target = collision.gameObject.GetComponentInParent<IDamageable>();
-        if (target != null)
+        if (other.isTrigger) return;
+
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null)
         {
-            target.TakeDamage(_damage);
+            damageable.TakeDamage(_damage);
         }
 
-        Deactivate();
-    }
-
-    private void Deactivate()
-    {
-        if (_rb != null)
-        {
-            _rb.linearVelocity = Vector3.zero;
-            _rb.angularVelocity = Vector3.zero;
-        }
         gameObject.SetActive(false);
     }
 }

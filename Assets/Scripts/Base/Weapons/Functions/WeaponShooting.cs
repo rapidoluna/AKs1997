@@ -8,6 +8,7 @@ public class WeaponShooting : MonoBehaviour
     private WeaponReloading _reloading;
     private WeaponAiming _aiming;
     private float _lastFireTime;
+    private Camera _mainCamera;
 
     [SerializeField] private WeaponRecoilCamera recoilCamera;
     [SerializeField] private Transform firePoint;
@@ -20,6 +21,7 @@ public class WeaponShooting : MonoBehaviour
         _ammo = GetComponent<WeaponAmmo>();
         _reloading = GetComponent<WeaponReloading>();
         _aiming = GetComponent<WeaponAiming>();
+        _mainCamera = Camera.main;
     }
 
     private void OnEnable()
@@ -44,10 +46,15 @@ public class WeaponShooting : MonoBehaviour
     public void Init(WeaponData data)
     {
         _data = data;
+
         if (firePoint == null)
         {
-            FirePointSettings settings = Object.FindFirstObjectByType<FirePointSettings>();
-            if (settings != null) firePoint = settings.transform;
+            firePoint = transform.Find("FirePoint");
+        }
+
+        if (firePoint == null)
+        {
+            Debug.LogError($"{gameObject.name}에 'FirePoint' 자식 오브젝트가 없거나 할당되지 않았습니다!");
         }
     }
 
@@ -102,8 +109,33 @@ public class WeaponShooting : MonoBehaviour
     {
         if (BulletPool.Instance == null) return;
         GameObject bullet = BulletPool.Instance.GetBullet();
+
+        // 1. 카메라 중앙으로부터 레이를 쏴서 목표 지점(Target Point) 계산
+        Ray ray = _mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Vector3 targetPoint;
+
+        // 레이가 무언가에 닿으면 그 지점을, 아니면 아주 먼 허공을 목표로 잡음
+        if (Physics.Raycast(ray, out RaycastHit hit, _data.effectiveRange))
+        {
+            targetPoint = hit.point;
+        }
+        else
+        {
+            targetPoint = ray.GetPoint(_data.effectiveRange);
+        }
+
+        // 2. 탄환의 위치는 총구(firePoint)로 설정
         bullet.transform.position = firePoint.position;
-        bullet.transform.rotation = firePoint.rotation * Quaternion.Euler(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange), 0);
+
+        // 3. 방향 설정: 총구에서 목표 지점을 바라보도록 회전값 계산
+        Vector3 direction = (targetPoint - firePoint.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        // 4. 탄퍼짐(Spread) 적용
+        float spreadX = Random.Range(-spreadRange, spreadRange);
+        float spreadY = Random.Range(-spreadRange, spreadRange);
+        bullet.transform.rotation = targetRotation * Quaternion.Euler(spreadX, spreadY, 0);
+
         Projectile projectile = bullet.GetComponent<Projectile>();
         if (projectile != null)
         {

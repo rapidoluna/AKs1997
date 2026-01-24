@@ -24,4 +24,8 @@ public class EnemyData : ScriptableObject
     //적이 총을 쏘는 경우 설정
     public GameObject bulletPrefab;
     public float bulletSpeed = 1500f;
+
+    //적 관련 비주얼 요소
+    public GameObject enemyPrefab;
+    public Sprite enemyIcon;
 }

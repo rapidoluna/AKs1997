@@ -17,10 +17,12 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 6.5
   detectRange: 20
-  attackRange: 15
+  attackRange: 8
   attackDamage: 15
   attackCooldown: 1.6
   dropItemPrefab: {fileID: 7211311765366701037, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
   dropRate: 100
   bulletPrefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
   bulletSpeed: 1500
+  enemyPrefab: {fileID: 0}
+  enemyIcon: {fileID: 0}

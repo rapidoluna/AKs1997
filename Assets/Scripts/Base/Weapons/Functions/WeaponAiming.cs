@@ -29,6 +29,13 @@ public class WeaponAiming : MonoBehaviour
 
     private void Update()
     {
+        if (PlayerHealth.IsDead)
+        {
+            IsAiming = false;
+            ResetAimingVisuals();
+            return;
+        }
+
         IsAiming = Input.GetMouseButton(1);
 
         if (_mainCamera != null)
@@ -39,5 +46,14 @@ public class WeaponAiming : MonoBehaviour
 
         Vector3 targetOffset = IsAiming ? adsOffset : hipOffset;
         transform.localPosition = Vector3.Lerp(transform.localPosition, targetOffset, Time.deltaTime * adsSpeed);
+    }
+
+    private void ResetAimingVisuals()
+    {
+        if (_mainCamera != null)
+        {
+            _mainCamera.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, _defaultFov, Time.deltaTime * adsSpeed);
+        }
+        transform.localPosition = Vector3.Lerp(transform.localPosition, hipOffset, Time.deltaTime * adsSpeed);
     }
 }

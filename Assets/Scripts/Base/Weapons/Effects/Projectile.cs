@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private int _damage;
     private float _speed;
+    private int _damage;
     private float _range;
     private GameObject _owner;
     private Vector3 _startPosition;
@@ -29,16 +29,20 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == _owner) return;
+        if (_owner == null) return;
 
-        if (other.isTrigger) return;
+        if (other.gameObject == _owner || other.transform.IsChildOf(_owner.transform)) return;
 
-        IDamageable damageable = other.GetComponent<IDamageable>();
-        if (damageable != null)
+        if (other.CompareTag(_owner.tag)) return;
+
+        if (other.TryGetComponent<IDamageable>(out var damageable))
         {
             damageable.TakeDamage(_damage);
+            gameObject.SetActive(false);
         }
-
-        gameObject.SetActive(false);
+        else if (!other.isTrigger)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

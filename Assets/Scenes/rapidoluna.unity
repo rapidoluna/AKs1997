@@ -131,10 +131,6 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1522249744}
-    - target: {fileID: 1434804007409654869, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: m_Spacing
-      value: -10
-      objectReference: {fileID: 0}
     - target: {fileID: 1776034971471777321, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: controller
       value: 
@@ -142,10 +138,6 @@ PrefabInstance:
     - target: {fileID: 3299043165269126630, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Name
       value: HUD
-      objectReference: {fileID: 0}
-    - target: {fileID: 3512613246508541405, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -875
       objectReference: {fileID: 0}
     - target: {fileID: 6022451921185764736, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Pivot.x
@@ -362,6 +354,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bullet Pool
       objectReference: {fileID: 0}
+    - target: {fileID: 6612932236854553051, guid: 2ac765452c057474096efc78bd5ead87, type: 3}
+      propertyPath: poolSize
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 8925136709926610807, guid: 2ac765452c057474096efc78bd5ead87, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.9765985
@@ -415,6 +411,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5842246085799575771, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: characterData
+      value: 
+      objectReference: {fileID: 11400000, guid: ebb8bdb1d574cda46850c49b03ff48d9, type: 2}
     - target: {fileID: 6736942281001848004, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -455,6 +455,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8590870940800165938, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: characterData
+      value: 
+      objectReference: {fileID: 11400000, guid: ebb8bdb1d574cda46850c49b03ff48d9, type: 2}
+    - target: {fileID: 8720879077362830896, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: glitchOverlay
+      value: 
+      objectReference: {fileID: 1007266651}
     - target: {fileID: 8913491952459388385, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: m_Name
       value: Player
@@ -473,6 +481,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2cc899c8b9f8ae4eb45b18d2f48d5c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1007266651 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5011221889691735000, guid: 6a26230778dc67142be8fdae76125072, type: 3}
+  m_PrefabInstance: {fileID: 146810574}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1496057475 stripped
@@ -558,9 +577,17 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1496057475}
+    - target: {fileID: 6240631843897596811, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
+      propertyPath: m_Name
+      value: FirePoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 7408452729598354251, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8013486371882193595, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 8013486371882193595, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
       propertyPath: m_LocalPosition.y
@@ -599,7 +626,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6240631843897596811, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}

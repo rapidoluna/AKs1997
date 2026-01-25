@@ -15,7 +15,12 @@ public class EnemyDetect : MonoBehaviour
 
     private void Update()
     {
-        if (_controller.player == null) return;
+        if (_controller.player == null || PlayerHealth.IsDead)
+        {
+            _running.enabled = false;
+            _walking.enabled = true;
+            return;
+        }
 
         float distance = Vector3.Distance(transform.position, _controller.player.position);
 

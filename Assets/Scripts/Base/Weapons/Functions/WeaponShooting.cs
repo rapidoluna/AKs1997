@@ -3,21 +3,24 @@ using UnityEngine;
 
 public class WeaponShooting : MonoBehaviour
 {
-    [SerializeField] private WeaponData _data;
-    private WeaponAmmo _ammo;
-    private WeaponReloading _reloading;
-    private WeaponAiming _aiming;
-    private float _lastFireTime;
-    private Camera _mainCamera;
+    //무기를 사용하기 위한 스크립트, 무기 프리팹에 부착.
 
-    [SerializeField] private WeaponRecoilCamera recoilCamera;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private float baseSpread = 2.0f;
+    [SerializeField] private WeaponData _data;//무기 데이터
+    private WeaponAmmo _ammo;//WeaponAmmo 스크립트
+    private WeaponReloading _reloading;//WeaponReloading 스크립트
+    private WeaponAiming _aiming;//WeaponAiming 스크립트
+    private float _lastFireTime;//마지막으로 쏜 시간
+    private Camera _mainCamera;//카메라
 
-    public bool IsShooting { get; private set; }
+    [SerializeField] private WeaponRecoilCamera recoilCamera;//반동을 줄 카메라
+    [SerializeField] private Transform firePoint;//발사 지점
+    [SerializeField] private float baseSpread = 2.0f;//기본 탄퍼짐
+
+    public bool IsShooting { get; private set; }//쏘는 상태인지 아닌지
 
     private void Awake()
     {
+        //위에서 언급한 스크립트들과 메인 카메라를 가져옴
         _ammo = GetComponent<WeaponAmmo>();
         _reloading = GetComponent<WeaponReloading>();
         _aiming = GetComponent<WeaponAiming>();
@@ -28,19 +31,19 @@ public class WeaponShooting : MonoBehaviour
     {
         if (_reloading == null) _reloading = GetComponent<WeaponReloading>();
         if (_reloading != null)
-            _reloading.OnReloadComplete += SetPostReloadDelay;
+            _reloading.OnReloadComplete += SetPostReloadDelay;//재장전 완료 후 딜레이 시간만큼 더함
     }
 
     private void OnDisable()
     {
         IsShooting = false;
         if (_reloading != null)
-            _reloading.OnReloadComplete -= SetPostReloadDelay;
+            _reloading.OnReloadComplete -= SetPostReloadDelay;//재장전 완료 후 딜레이 시간만큼 뺌
     }
 
     private void SetPostReloadDelay(float delay)
     {
-        _lastFireTime = Time.time + delay;
+        _lastFireTime = Time.time + delay;//재장전 후 딜레이 시간 계산
     }
 
     public void Init(WeaponData data)
@@ -49,12 +52,12 @@ public class WeaponShooting : MonoBehaviour
 
         if (firePoint == null)
         {
-            firePoint = transform.Find("FirePoint");
+            firePoint = transform.Find("FirePoint");//발사 지점 누락 시 발사 지점 오브젝트 검색
         }
 
         if (firePoint == null)
         {
-            Debug.LogError($"{gameObject.name} Error!");
+            Debug.LogError($"{gameObject.name} Error!");//검색 후에도 발사 지점 누락 시 에러
         }
     }
 
@@ -62,7 +65,7 @@ public class WeaponShooting : MonoBehaviour
     {
         if (PlayerHealth.IsDead)
         {
-            IsShooting = false;
+            IsShooting = false;//플레이어 사망 시 총기 발사 멈춤
             return;
         }
 

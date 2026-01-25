@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1522249744}
+    - target: {fileID: 1434804007409654869, guid: 6a26230778dc67142be8fdae76125072, type: 3}
+      propertyPath: m_Spacing
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 1776034971471777321, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: controller
       value: 
@@ -138,6 +142,10 @@ PrefabInstance:
     - target: {fileID: 3299043165269126630, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Name
       value: HUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 3512613246508541405, guid: 6a26230778dc67142be8fdae76125072, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -875
       objectReference: {fileID: 0}
     - target: {fileID: 6022451921185764736, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Pivot.x

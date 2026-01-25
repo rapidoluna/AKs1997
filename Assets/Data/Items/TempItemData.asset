@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Temp Item
   cashValue: 10000
-  icon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 417c3dd429ce3074a9637a51e112a10b, type: 3}
   modelPrefab: {fileID: 7211311765366701037, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}

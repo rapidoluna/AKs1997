@@ -36,9 +36,12 @@ public class STSNGStation : MonoBehaviour
         _isProcessing = true;
         _timer = 60f;
 
+        if (ItemInventoryUI.Instance != null)
+            ItemInventoryUI.Instance.ClearIcons();
+
         if (CashRushHUD.Instance != null)
         {
-            CashRushHUD.Instance.ShowNotification($"캐시러시 시작, {_currentDepositCount}개 물자 전송 중");
+            CashRushHUD.Instance.ShowNotification($"캐시러시 시작");
             CashRushHUD.Instance.SetTimerActive(true, _storedCash);
         }
 

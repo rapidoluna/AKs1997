@@ -1,5 +1,7 @@
+using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -25,25 +27,24 @@ public class PlayerInteract : MonoBehaviour
         {
             GameObject currentHit = hit.collider.gameObject;
 
-            // 1. 아이템 체크
             CashItem item = currentHit.GetComponent<CashItem>();
             if (item != null)
             {
                 _lastTarget = currentHit;
                 if (_inventory.Count < maxInventorySize)
+                {
                     InteractHUD.Instance.ShowPrompt($"[F] {item.Data.itemName} 획득");
+                }
                 else
                     InteractHUD.Instance.ShowPrompt("인벤토리 가득 참");
                 return;
             }
 
-            // 2. STS//NG 장치 체크
             STSNGStation station = currentHit.GetComponent<STSNGStation>();
             if (station != null)
             {
                 _lastTarget = currentHit;
 
-                // 장치가 가동 중이 아닐 때만 메시지 표시
                 if (!station.IsProcessing)
                 {
                     if (_inventory.Count > 0)
@@ -53,14 +54,12 @@ public class PlayerInteract : MonoBehaviour
                 }
                 else
                 {
-                    // 장치가 이미 가동 중이면 프롬프트를 숨김
                     InteractHUD.Instance.HidePrompt();
                 }
                 return;
             }
         }
 
-        // 아무것도 바라보지 않을 때
         _lastTarget = null;
         InteractHUD.Instance.HidePrompt();
     }
@@ -74,8 +73,13 @@ public class PlayerInteract : MonoBehaviour
             if (itemScript != null && _inventory.Count < maxInventorySize)
             {
                 _inventory.Add(itemScript.Data);
+
+                if (ItemInventoryUI.Instance != null)
+                    ItemInventoryUI.Instance.AddItemIcon(itemScript.Data.itemIcon);
+
                 if (CashRushHUD.Instance != null)
                     CashRushHUD.Instance.ShowNotification($"{itemScript.Data.itemName} 획득");
+
                 itemScript.Collect();
                 return;
             }

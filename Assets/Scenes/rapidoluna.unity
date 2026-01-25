@@ -236,10 +236,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: STSNG
       objectReference: {fileID: 0}
-    - target: {fileID: 7354782816756257485, guid: 288b114b608c0e44886785e208504c5d, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: a5ea2c86e3ae1ee4f997f2055b4d8a36, type: 2}
     - target: {fileID: 8727159523695679128, guid: 288b114b608c0e44886785e208504c5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.41612983
@@ -455,10 +451,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8590870940800165938, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: characterData
-      value: 
-      objectReference: {fileID: 11400000, guid: ebb8bdb1d574cda46850c49b03ff48d9, type: 2}
     - target: {fileID: 8720879077362830896, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: glitchOverlay
       value: 
@@ -577,14 +569,6 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1496057475}
-    - target: {fileID: 6240631843897596811, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
-      propertyPath: m_Name
-      value: FirePoint
-      objectReference: {fileID: 0}
-    - target: {fileID: 7408452729598354251, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8013486371882193595, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12
@@ -626,8 +610,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 6240631843897596811, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}

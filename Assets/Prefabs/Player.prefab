@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e367c1a82ad1db14285a6be6827aa85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 0}
+  characterData: {fileID: 11400000, guid: ebb8bdb1d574cda46850c49b03ff48d9, type: 2}
   weaponHoldPoint: {fileID: 2815454732221533248}
 --- !u!1001 &1596463455975961740
 PrefabInstance:

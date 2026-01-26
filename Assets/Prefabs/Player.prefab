@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glitchOverlay: {fileID: 0}
-  fadeSpeed: 1
+  fadeSpeed: 0.5
   cameraTransform: {fileID: 8612817926721763514}
   shakeDuration: 0.1
   shakeAmount: 0.05
@@ -257,9 +257,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10b50b9ad2cabd44f8bcf0cfdeac2786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallDuration: 1.5
-  targetHeight: 0.2
-  fallRotation: {x: 5, y: -10, z: 10}
+  fallDuration: 1.25
+  targetHeight: 0.1
+  fallRotation: {x: 0, y: -10, z: 10}
+  targetFOV: 75
+  fovCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  resultSceneName: ResultScene
+  delayAfterFall: 1
 --- !u!1 &8913491952459388385
 GameObject:
   m_ObjectHideFlags: 0

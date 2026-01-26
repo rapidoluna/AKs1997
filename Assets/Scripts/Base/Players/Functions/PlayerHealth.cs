@@ -62,8 +62,5 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         {
             PlayerDeathCamera.Instance.PlayDeathAnimation();
         }
-
-        if (CashRushHUD.Instance != null)
-            CashRushHUD.Instance.ShowNotification("CRITICAL ERROR: SYSTEM OFFLINE");
     }
 }

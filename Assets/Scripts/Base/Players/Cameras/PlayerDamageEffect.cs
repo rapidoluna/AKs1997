@@ -8,7 +8,7 @@ public class PlayerDamageEffect : MonoBehaviour
 
     [Header("Digital FX Settings")]
     [SerializeField] private Image glitchOverlay;
-    [SerializeField] private float fadeSpeed = 1f;
+    [SerializeField] private float fadeSpeed = 0.5f;
 
     [Header("Camera Shake")]
     [SerializeField] private Transform cameraTransform;

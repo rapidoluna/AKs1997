@@ -36,7 +36,7 @@ public class CashRushHUD : MonoBehaviour
     public void UpdateTimer(float time)
     {
         if (timerText != null)
-            timerText.text = $"완료까지 : {Mathf.CeilToInt(time)}s";
+            timerText.text = $"캐시러시 완료까지 : {Mathf.CeilToInt(time)}s";
     }
 
     public void AddScore(int amount)

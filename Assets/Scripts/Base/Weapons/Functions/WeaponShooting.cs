@@ -31,14 +31,14 @@ public class WeaponShooting : MonoBehaviour
     {
         if (_reloading == null) _reloading = GetComponent<WeaponReloading>();
         if (_reloading != null)
-            _reloading.OnReloadComplete += SetPostReloadDelay;//재장전 완료 후 딜레이 시간만큼 더함
+            _reloading.OnReloadComplete += SetPostReloadDelay;
     }
 
     private void OnDisable()
     {
         IsShooting = false;
         if (_reloading != null)
-            _reloading.OnReloadComplete -= SetPostReloadDelay;//재장전 완료 후 딜레이 시간만큼 뺌
+            _reloading.OnReloadComplete -= SetPostReloadDelay;
     }
 
     private void SetPostReloadDelay(float delay)
@@ -93,6 +93,10 @@ public class WeaponShooting : MonoBehaviour
         {
             float spread = baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f);
             GenerateProjectile(speed, spread);
+        }
+        if (CrosshairManager.Instance != null)
+        {
+            CrosshairManager.Instance.FireExertion();
         }
     }
 

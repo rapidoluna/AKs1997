@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f936fc3f1caa6d64c876080cdf4d05a8, type: 3}
-  m_Name: BchData
+  m_Name: CPointData
   m_EditorClassIdentifier: 
-  weapon: 1
-  firing: 01000000
-  weaponName: B-CH12 Shotgun
-  weaponDescription: Drum-mag Auto Shotgun
+  weapon: 2
+  firing: 0300000001000000
+  weaponName: Charge Point SMG
+  weaponDescription: A Charge Fire Pulse Energy SMG
   weaponPrefab: {fileID: 0}
   bulletPrefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
   weaponIcon: {fileID: 21300000, guid: 677d659e4abfcef479f5ad1b49ab5caf, type: 3}
-  magSize: 24
-  weaponDamage: 4
-  effectiveRange: 30
-  bulletSpeed: 1800
-  fireRate: 300
-  tacticalReloadTimer: 0.35
-  emptyReloadTimer: 0.45
+  magSize: 50
+  weaponDamage: 12
+  effectiveRange: 60
+  bulletSpeed: 800
+  fireRate: 750
+  tacticalReloadTimer: 0.25
+  emptyReloadTimer: 0.35
   usingBullet: 1
-  firingBullet: 12
+  firingBullet: 1
   burstBullet: 0
   burstInterval: 0
-  chargeTime: 0
+  chargeTime: 0.7
   maxCharge: 100
   accelerateTime: 0
   maxAccelerate: 0

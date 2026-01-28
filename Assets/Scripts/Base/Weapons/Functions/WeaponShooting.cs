@@ -170,9 +170,18 @@ public class WeaponShooting : MonoBehaviour
     private void FireChargeSingle()
     {
         if (_ammo.IsEmpty) return;
+
         float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
+
         if (_ammo.ConsumeAmmo(_data.usingBullet))
         {
+            float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
+
+            float chargeRecoilBoost = 1f + chargeRatio;
+
+            if (recoilCamera != null)
+                recoilCamera.TriggerRecoil(recoilMult * chargeRecoilBoost);
+
             float speed = _data.bulletSpeed / 60f;
             int finalDamage = (int)(_data.weaponDamage * (1f + chargeRatio * 2f));
             GenerateProjectile(speed, baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f), finalDamage);

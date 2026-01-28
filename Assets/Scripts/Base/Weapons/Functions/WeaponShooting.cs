@@ -26,6 +26,21 @@ public class WeaponShooting : MonoBehaviour
         _reloading = GetComponent<WeaponReloading>();
         _aiming = GetComponent<WeaponAiming>();
         _mainCamera = Camera.main;
+
+        if (recoilCamera == null && _mainCamera != null)
+        {
+            recoilCamera = _mainCamera.GetComponent<WeaponRecoilCamera>();
+
+            if (recoilCamera == null)
+            {
+                recoilCamera = _mainCamera.GetComponentInChildren<WeaponRecoilCamera>();
+            }
+        }
+
+        if (recoilCamera == null)
+        {
+            Debug.LogWarning($"{gameObject.name}: WeaponRecoilCamera를 찾을 수 없음.");
+        }
     }
 
     private void OnEnable()

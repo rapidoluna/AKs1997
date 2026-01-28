@@ -134,18 +134,10 @@ PrefabInstance:
     - target: {fileID: 1776034971471777321, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: controller
       value: 
-      objectReference: {fileID: 756045975}
+      objectReference: {fileID: 747358433}
     - target: {fileID: 3299043165269126630, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Name
       value: HUD
-      objectReference: {fileID: 0}
-    - target: {fileID: 3687709742968760369, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3687709742968760369, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6022451921185764736, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Pivot.x
@@ -226,18 +218,6 @@ PrefabInstance:
     - target: {fileID: 6022451921185764736, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7688273621856167036, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8215756044489786763, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8215756044489786763, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -467,14 +447,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8061831635202445740, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: targetFOV
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8061831635202445740, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: fallDuration
-      value: 1.25
-      objectReference: {fileID: 0}
     - target: {fileID: 8720879077362830896, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: glitchOverlay
       value: 
@@ -488,9 +460,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
---- !u!114 &756045975 stripped
+--- !u!114 &747358433 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6415126442016565160, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7085546726131970602, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
   m_PrefabInstance: {fileID: 747358430}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

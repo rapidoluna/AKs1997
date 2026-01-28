@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class WeaponRecoilCamera : MonoBehaviour
 {
-    [SerializeField] private float snappiness = 12f;
+    [SerializeField] private float snappiness = 6f;
     [SerializeField] private float returnSpeed = 8f;
 
-    [SerializeField] private float recoilX = -2f;
+    [SerializeField] private float recoilX = -1f;
     [SerializeField] private float recoilY = 1f;
-    [SerializeField] private float recoilZ = 2f;
+    [SerializeField] private float recoilZ = 1f;
 
     private Vector3 _currentRotation;
     private Vector3 _targetRotation;

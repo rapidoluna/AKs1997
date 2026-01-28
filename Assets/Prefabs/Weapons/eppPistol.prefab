@@ -63,7 +63,7 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: 53b8e197d3f43744fa56d88407522223, type: 2}
   recoilCamera: {fileID: 0}
   firePoint: {fileID: 7427266900919658836}
-  baseSpread: 4
+  baseSpread: 1.8
 --- !u!114 &1618241961813643771
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b11456ef6b5ee4fb1271ccd6e7208a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adsFov: 30
+  adsFov: 35
   adsSpeed: 15
   adsRecoilMultiplier: 0.3
   adsSpreadMultiplier: 0.2

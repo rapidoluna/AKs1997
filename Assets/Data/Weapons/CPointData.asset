@@ -22,7 +22,7 @@ MonoBehaviour:
   magSize: 50
   weaponDamage: 12
   effectiveRange: 60
-  bulletSpeed: 800
+  bulletSpeed: 1600
   fireRate: 750
   tacticalReloadTimer: 0.25
   emptyReloadTimer: 0.35

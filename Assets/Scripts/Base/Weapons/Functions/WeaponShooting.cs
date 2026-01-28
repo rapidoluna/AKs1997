@@ -107,6 +107,11 @@ public class WeaponShooting : MonoBehaviour
             _currentCharge += Time.deltaTime;
             float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
 
+            if (CrosshairManager.Instance != null)
+            {
+                CrosshairManager.Instance.SetChargeRatio(chargeRatio);
+            }
+
             if (isFullAutoCharge && chargeRatio >= 1f)
             {
                 IsShooting = true;
@@ -115,6 +120,11 @@ public class WeaponShooting : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            if (CrosshairManager.Instance != null)
+            {
+                CrosshairManager.Instance.SetChargeRatio(0f);
+            }
+
             if (!isFullAutoCharge && _currentCharge >= 0.1f)
             {
                 FireChargeSingle();

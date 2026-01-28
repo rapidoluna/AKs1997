@@ -22,8 +22,8 @@ MonoBehaviour:
   magSize: 30
   weaponDamage: 16
   effectiveRange: 50
-  bulletSpeed: 1000
-  fireRate: 300
+  bulletSpeed: 1100
+  fireRate: 200
   tacticalReloadTimer: 0.4
   emptyReloadTimer: 0.55
   usingBullet: 1
@@ -33,5 +33,5 @@ MonoBehaviour:
   chargeTime: 0
   maxCharge: 100
   accelerateTime: 1.25
-  maxAccelerate: 900
+  maxAccelerate: 1200
   maxAccelerateSpeed: 1300

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1055625971927930502}
   - component: {fileID: 5860385007991766892}
   m_Layer: 0
-  m_Name: bchShotgun
+  m_Name: ktng2SMG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,10 +60,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f89c2f9801916041b6dc9facd6a4475, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _data: {fileID: 11400000, guid: b5f66a37febb0b44fa34a28b874d69b6, type: 2}
+  _data: {fileID: 11400000, guid: ccfe355990156b74a966cadb2dba34f4, type: 2}
   recoilCamera: {fileID: 0}
   firePoint: {fileID: 3583126785259777879}
-  baseSpread: 3
+  baseSpread: 2
 --- !u!114 &1055625971927930502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,9 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b11456ef6b5ee4fb1271ccd6e7208a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adsFov: 55
-  adsSpeed: 10
-  adsRecoilMultiplier: 0.5
+  adsFov: 45
+  adsSpeed: 25
+  adsRecoilMultiplier: 0.3
   adsSpreadMultiplier: 0.2
   hipOffset: {x: 0.5, y: -0.4, z: 1}
   adsOffset: {x: 0, y: -0.2, z: 1.2}
@@ -104,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3583126785259777879}
   m_Layer: 0
-  m_Name: Fire Point Shotgun
+  m_Name: Fire Point SMG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

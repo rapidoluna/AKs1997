@@ -15,6 +15,8 @@ public class CashRushHUD : MonoBehaviour
 
     private int _totalScore = 0;//플레이어 총 점수
 
+    public int CurrentScore => _totalScore; // 외부에서 점수를 읽기 전용으로 참조 가능
+
     private void Awake()
     {
         Instance = this;

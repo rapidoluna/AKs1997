@@ -34,7 +34,6 @@ public class STSNGStation : MonoBehaviour
     private IEnumerator CashRushRoutine()
     {
         _isProcessing = true;
-        _timer = 60f;
 
         if (ItemInventoryUI.Instance != null)
             ItemInventoryUI.Instance.ClearIcons();

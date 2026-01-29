@@ -35,9 +35,13 @@ public class WeaponController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchToSlot(1);
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (Mathf.Abs(scroll) > 0.1f)
+        if (Mathf.Abs(scroll) > 0.01f)
         {
-            int nextSlot = (_currentWeaponIndex == 0) ? 1 : 0;
+            int nextSlot = _currentWeaponIndex + (scroll > 0 ? -1 : 1);
+
+            if (nextSlot < 0) nextSlot = weaponSlots.Length - 1;
+            if (nextSlot >= weaponSlots.Length) nextSlot = 0;
+
             SwitchToSlot(nextSlot);
         }
     }

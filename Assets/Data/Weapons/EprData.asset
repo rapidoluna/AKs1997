@@ -32,6 +32,7 @@ MonoBehaviour:
   burstInterval: 0.025
   chargeTime: 1.7
   maxCharge: 100
+  maxHold: 0.7
   accelerateTime: 0
   maxAccelerate: 0
   maxAccelerateSpeed: 0

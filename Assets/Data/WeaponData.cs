@@ -63,9 +63,10 @@ public class WeaponData : ScriptableObject
 
     [Header("Charge Weapon Options")]
     //충전식 무기 관련
-    //충전 시간, 최대 충전 정도
+    //충전 시간, 최대 충전 정도, 최대 충전 유지 시간
     public float chargeTime;
     public float maxCharge = 100;
+    public float maxHold;
 
     [Header("Accelerate Weapon Options")]
     //가속형 무기 관련

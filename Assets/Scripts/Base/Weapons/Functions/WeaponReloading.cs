@@ -50,6 +50,12 @@ public class WeaponReloading : MonoBehaviour
         }
     }
 
+    public void TryStartReload()
+    {
+        if (_isReloading || _ammo.IsFull) return;
+        StartCoroutine(ReloadRoutine());
+    }
+
     private IEnumerator ReloadRoutine()
     {
         _isReloading = true;

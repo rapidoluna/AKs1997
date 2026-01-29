@@ -115,18 +115,38 @@ public class WeaponShooting : MonoBehaviour
 
     private void HandleChargeMode()
     {
-        bool isFullAutoCharge = _data.Firing.Contains(FiringType.Full);//충전식 연사 여부
-        bool isBurstCharge = _data.Firing.Contains(FiringType.Burst);//충전식 점사 여부
+        bool isFullAutoCharge = _data.Firing.Contains(FiringType.Full); // 충전식 연사 여부
+        bool isBurstCharge = _data.Firing.Contains(FiringType.Burst);   // 충전식 점사 여부
 
         if (Input.GetMouseButton(0))
         {
+            if (_currentCharge < 0) return;
+
             _currentCharge += Time.deltaTime;
+
+            if (!isFullAutoCharge && _currentCharge > _data.chargeTime + _data.maxHold)
+            {
+                if (isBurstCharge)
+                {
+                    if (Time.time >= _lastFireTime && !_ammo.IsEmpty)
+                        StartCoroutine(BurstRoutine());
+                }
+                else
+                {
+                    FireChargeSingle();
+                }
+
+                _currentCharge = -1f;
+                IsShooting = false;
+                if (CrosshairManager.Instance != null) CrosshairManager.Instance.SetChargeRatio(0f);
+                return;
+            }
+
             float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
 
             if (CrosshairManager.Instance != null)
                 CrosshairManager.Instance.SetChargeRatio(chargeRatio);
 
-            // 충전식 연사
             if (isFullAutoCharge && chargeRatio >= 1f)
             {
                 IsShooting = true;
@@ -135,22 +155,23 @@ public class WeaponShooting : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if (CrosshairManager.Instance != null)
-                CrosshairManager.Instance.SetChargeRatio(0f);
-
-            //충전식 점사
-            if (isBurstCharge && _currentCharge >= _data.chargeTime * 0.5f)
+            if (_currentCharge >= 0f)
             {
-                if (Time.time >= _lastFireTime && !_ammo.IsEmpty)
+                if (isBurstCharge)
                 {
-                    StartCoroutine(BurstRoutine());
+                    if (_currentCharge >= _data.chargeTime * 0.5f && Time.time >= _lastFireTime && !_ammo.IsEmpty)
+                    {
+                        StartCoroutine(BurstRoutine());
+                    }
+                }
+                else if (!isFullAutoCharge && !isBurstCharge && _currentCharge >= 0.1f)
+                {
+                    FireChargeSingle();
                 }
             }
-            //충전식 단발
-            else if (!isFullAutoCharge && !isBurstCharge && _currentCharge >= 0.1f)
-            {
-                FireChargeSingle();
-            }
+
+            if (CrosshairManager.Instance != null)
+                CrosshairManager.Instance.SetChargeRatio(0f);
 
             _currentCharge = 0f;
             IsShooting = false;
@@ -174,6 +195,12 @@ public class WeaponShooting : MonoBehaviour
 
     private void TryFire()
     {
+        if (_ammo.IsEmpty && IsShooting && !_reloading.IsReloading)
+        {
+            _reloading.TryStartReload();
+            return;
+        }
+
         if (Time.time < _lastFireTime || _ammo.IsEmpty) return;
 
         float rpm = _data.fireRate;

@@ -195,11 +195,6 @@ public class WeaponShooting : MonoBehaviour
 
     private void TryFire()
     {
-        if (_ammo.IsEmpty && IsShooting && !_reloading.IsReloading)
-        {
-            _reloading.TryStartReload();
-            return;
-        }
 
         if (Time.time < _lastFireTime || _ammo.IsEmpty) return;
 

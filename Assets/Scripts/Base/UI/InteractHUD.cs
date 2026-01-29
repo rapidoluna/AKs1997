@@ -7,14 +7,12 @@ public class InteractHUD : MonoBehaviour
 
     [SerializeField] private GameObject interactPanel;
     [SerializeField] private Text interactText;
-
     [SerializeField] private GameObject interactProgressRoot;
     [SerializeField] private Image progressFillImage;
 
     private void Awake()
     {
         Instance = this;
-
         if (interactPanel != null) interactPanel.SetActive(false);
         if (interactProgressRoot != null) interactProgressRoot.SetActive(false);
     }
@@ -22,7 +20,6 @@ public class InteractHUD : MonoBehaviour
     public void ShowPrompt(string message)
     {
         if (interactPanel == null || interactText == null) return;
-
         if (interactPanel.activeSelf && interactText.text == message) return;
 
         interactText.text = message;
@@ -31,7 +28,8 @@ public class InteractHUD : MonoBehaviour
 
     public void HidePrompt()
     {
-        if (interactPanel != null) interactPanel.SetActive(false);
+        if (interactPanel != null && interactPanel.activeSelf)
+            interactPanel.SetActive(false);
     }
 
     public void UpdateInteractProgress(float progress)

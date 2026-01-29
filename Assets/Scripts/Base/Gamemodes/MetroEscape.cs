@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class MetroEscape : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class MetroEscape : MonoBehaviour
     public void OnInteractComplete()
     {
         if (_isExiting) return;
-
         if (GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady)
         {
             StartCoroutine(EscapeSequence());
@@ -19,14 +19,14 @@ public class MetroEscape : MonoBehaviour
     {
         _isExiting = true;
 
-        Debug.Log("탈출 시퀀스 시작... 2초 대기");
+        ExtractionCameraEffect effect = Camera.main.GetComponent<ExtractionCameraEffect>();
+        if (effect != null) effect.Play(4.0f);
 
         if (CashRushHUD.Instance != null)
             CashRushHUD.Instance.ShowNotification("탈출 중...");
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(4.05f);
 
-        Debug.Log("탈출 성공! 결과 화면으로 이동.");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("ResultScene");
+        SceneManager.LoadScene("ResultScene");
     }
 }

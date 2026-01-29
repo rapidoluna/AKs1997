@@ -8,15 +8,19 @@ public class FirstPersonCamera : MonoBehaviour
 
     private WeaponRecoilCamera _recoilSystem;
     private float xRotation = 0f;
+    private bool _isLocked = false;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        _recoilSystem = mainCamera.GetComponent<WeaponRecoilCamera>();
+        if (mainCamera != null)
+            _recoilSystem = mainCamera.GetComponent<WeaponRecoilCamera>();
     }
 
     void Update()
     {
+        if (_isLocked) return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -27,5 +31,20 @@ public class FirstPersonCamera : MonoBehaviour
 
         mainCamera.transform.localRotation = Quaternion.Euler(xRotation + recoil.x, recoil.y, recoil.z);
         playerBody.Rotate(Vector3.up * mouseX);
+    }
+
+    public void SetLock(bool isLocked)
+    {
+        _isLocked = isLocked;
+        if (isLocked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 }

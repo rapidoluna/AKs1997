@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    [SerializeField] private float interactRange = 3.5f;
+    [SerializeField] private float interactRange = 4f;
     [SerializeField] private int maxInventorySize = 3;
-    [SerializeField] private float holdRequiredTime = 1.0f;
+    [SerializeField] private float holdRequiredTime = 3.0f;
 
     private List<ItemData> _inventory = new List<ItemData>();
     private GameObject _currentInteractTarget;
@@ -53,13 +53,13 @@ public class PlayerInteract : MonoBehaviour
     private string GetInteractMessage(GameObject obj)
     {
         CashItem item = obj.GetComponent<CashItem>();
-        if (item != null) return _inventory.Count < maxInventorySize ? $"[F] {item.Data.itemName}" : "FULL";
+        if (item != null) return _inventory.Count < maxInventorySize ? $"[F] {item.Data.itemName} 획득" : "인벤토리가 가득 참";
 
         STSNGStation station = obj.GetComponent<STSNGStation>();
-        if (station != null) return _inventory.Count > 0 ? "[F] DEPOSIT" : "EMPTY";
+        if (station != null) return _inventory.Count > 0 ? "[F] STS//NG에 물자 전송" : "전송할 물자가 없음";
 
         MetroEscape metro = obj.GetComponentInParent<MetroEscape>();
-        if (metro != null) return GameStateManager.Instance.IsEscapeReady ? "[HOLD F] ESCAPE" : "LOCKED";
+        if (metro != null) return GameStateManager.Instance.IsEscapeReady ? "[홀드 F] 탈출" : "탈출이 비활성화됨";
 
         return null;
     }

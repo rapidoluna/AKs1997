@@ -121,5 +121,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad178a7c034fd2478bc631360211ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timer: 60
+  _timer: 5
   maxCapacity: 3

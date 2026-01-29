@@ -536,9 +536,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b16470f5459aa4f98bf95878357088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactRange: 5
+  interactRange: 4
   maxInventorySize: 3
-  holdRequiredTime: 2
+  holdRequiredTime: 3
 --- !u!114 &5842246085799575771
 MonoBehaviour:
   m_ObjectHideFlags: 0

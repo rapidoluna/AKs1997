@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f936fc3f1caa6d64c876080cdf4d05a8, type: 3}
-  m_Name: Katana1Data
+  m_Name: AccData
   m_EditorClassIdentifier: 
-  weapon: 2
-  firing: 01000000
-  weaponName: KATANA Gen 1 SMG
-  weaponDescription: A Compact SMG.
+  weapon: 4
+  firing: 04000000
+  weaponName: ACC-BN Rifle
+  weaponDescription: An Accelerate RPM Rifle.
   weaponPrefab: {fileID: 0}
   bulletPrefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
   weaponIcon: {fileID: 21300000, guid: 677d659e4abfcef479f5ad1b49ab5caf, type: 3}
-  magSize: 36
-  weaponDamage: 11
-  effectiveRange: 45
-  bulletSpeed: 1800
-  fireRate: 1000
-  tacticalReloadTimer: 0.3
-  emptyReloadTimer: 0.32
+  magSize: 30
+  weaponDamage: 16
+  effectiveRange: 50
+  bulletSpeed: 1100
+  fireRate: 200
+  tacticalReloadTimer: 0.4
+  emptyReloadTimer: 0.55
   usingBullet: 1
   firingBullet: 1
   burstBullet: 0
@@ -33,6 +33,6 @@ MonoBehaviour:
   chargeTime: 0
   maxCharge: 100
   maxHold: 0
-  accelerateTime: 0
-  maxAccelerate: 0
-  maxAccelerateSpeed: 0
+  accelerateTime: 1.25
+  maxAccelerate: 1200
+  maxAccelerateSpeed: 1300

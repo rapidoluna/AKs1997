@@ -24,4 +24,4 @@ MonoBehaviour:
   abilityDamage: 110
   abilityPrefab: {fileID: 0}
   abilityIcon: {fileID: 0}
-  rewardWeapon: {fileID: 0}
+  rewardWeapon: {fileID: 11400000, guid: a141c6a057c934945ae07440cdd3bcc9, type: 2}

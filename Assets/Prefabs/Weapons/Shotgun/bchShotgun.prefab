@@ -91,7 +91,7 @@ MonoBehaviour:
   adsFov: 55
   adsSpeed: 10
   adsRecoilMultiplier: 0.5
-  adsSpreadMultiplier: 0.2
+  adsSpreadMultiplier: 0.8
   hipOffset: {x: 0.5, y: -0.4, z: 1}
   adsOffset: {x: 0, y: -0.2, z: 1.2}
 --- !u!1 &4932604717478316853

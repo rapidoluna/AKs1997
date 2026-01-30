@@ -5,6 +5,7 @@ public class PlayerInitializer : MonoBehaviour
     [SerializeField] private CharacterData characterData;
     [SerializeField] private Transform weaponHoldPoint;
 
+
     private void Awake()
     {
         if (characterData == null || characterData.characterPrefab == null) return;
@@ -16,4 +17,5 @@ public class PlayerInitializer : MonoBehaviour
         PlayerHealth health = GetComponent<PlayerHealth>();
         if (health != null) health.SetData(characterData);
     }
+    public CharacterData CharacterData => characterData;
 }

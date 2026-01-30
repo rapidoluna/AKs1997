@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 053099d81a47b16428106567261f3441, type: 3}
-  m_Name: RecoilessGunData
+  m_Name: StimData
   m_EditorClassIdentifier: 
   abilityType: 0
-  activeType: 2
-  abilityName: AP-4
-  abilityDescription: An UrbanOff Official Recoiless Gun.
-  abilityCooltime: 0
-  abilityDuration: 0
+  activeType: 4
+  abilityName: Stim
+  abilityDescription: Makes You Run Fast For 3 Seconds.
+  abilityCooltime: 0.05
+  abilityDuration: 3
   requiredGauge: 0
   gaugeChargeMultiplier: 0.01
-  rewardWeapon: {fileID: 11400000, guid: a141c6a057c934945ae07440cdd3bcc9, type: 2}
-  slotTarget: 3
-  allowOriginalWeaponInput: 0
-  moveSpeedMultiplier: 1
+  rewardWeapon: {fileID: 0}
+  slotTarget: 0
+  allowOriginalWeaponInput: 1
+  moveSpeedMultiplier: 5
   damageMultiplier: 1
   areaType: 0
   areaSize: {x: 1, y: 1, z: 1}
   abilityRange: 0
   abilityDamage: 0
   abilityPrefab: {fileID: 0}
-  abilityIcon: {fileID: 0}
+  abilityIcon: {fileID: 21300000, guid: 854b7e5bde11ed74c9556137c3e5cdb6, type: 3}
   maxTargets: 0
   minChargeTime: 0
   targetAcquisitionSpeed: 0

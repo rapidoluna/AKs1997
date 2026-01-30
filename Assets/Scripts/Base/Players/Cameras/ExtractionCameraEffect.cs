@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI; // Image 컴포넌트 사용을 위해 필요
+using UnityEngine.UI; 
 using System.Collections;
 
 public class ExtractionCameraEffect : MonoBehaviour
@@ -11,10 +11,10 @@ public class ExtractionCameraEffect : MonoBehaviour
 
     [SerializeField] private Image overlayImage;
 
-    [SerializeField] private float targetPitch = -65f;
-    [SerializeField] private float liftHeight = 3f;
-    [SerializeField] private float fovIncrease = 60f;
-    [SerializeField] private float shakePower = 0.15f;
+    [SerializeField] private float targetPitch = -65f;//시선 올라가는 각도
+    [SerializeField] private float liftHeight = 3f;//카메라 올라가는 높이
+    [SerializeField] private float fovIncrease = 60f;//확장될 FOV 정도
+    [SerializeField] private float shakePower = 0.15f;//화면 떨림 정도
 
     private void Awake()
     {

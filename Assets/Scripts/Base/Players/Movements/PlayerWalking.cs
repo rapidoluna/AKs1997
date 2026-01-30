@@ -86,4 +86,14 @@ public class PlayerWalking : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+
+    public void ApplyAbilitySpeed(float multiplier)
+    {
+        currentSpeed = baseSpeed * multiplier;
+    }
+
+    public void ResetSpeed()
+    {
+        currentSpeed = baseSpeed;
+    }
 }

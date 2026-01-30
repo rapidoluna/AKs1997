@@ -20,8 +20,20 @@ MonoBehaviour:
   abilityDuration: 0
   requiredGauge: 100
   gaugeChargeMultiplier: 0.01
+  rewardWeapon: {fileID: 11400000, guid: 07493108c619bbf40ad9eaec03a3b2d4, type: 2}
+  slotTarget: 3
+  allowOriginalWeaponInput: 0
+  moveSpeedMultiplier: 1
+  damageMultiplier: 1
+  areaType: 0
+  areaSize: {x: 1, y: 1, z: 1}
   abilityRange: 0
   abilityDamage: 0
   abilityPrefab: {fileID: 0}
   abilityIcon: {fileID: 0}
-  rewardWeapon: {fileID: 11400000, guid: 07493108c619bbf40ad9eaec03a3b2d4, type: 2}
+  maxTargets: 0
+  minChargeTime: 0
+  targetAcquisitionSpeed: 0
+  trackingMarkPrefab: {fileID: 0}
+  pullForce: 0
+  stunDuration: 0

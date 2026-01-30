@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SmartWinchData
   m_EditorClassIdentifier: 
   abilityType: 0
-  activeType: 0
+  activeType: 5
   abilityName: SWC08
   abilityDescription: A Smart Targetting Winch Claw That Targets 3 Enemies 15m In
     Front.
@@ -21,7 +21,20 @@ MonoBehaviour:
   abilityDuration: 0
   requiredGauge: 0
   gaugeChargeMultiplier: 0.01
+  rewardWeapon: {fileID: 0}
+  slotTarget: 0
+  allowOriginalWeaponInput: 0
+  moveSpeedMultiplier: 1
+  damageMultiplier: 1
+  areaType: 0
+  areaSize: {x: 1, y: 1, z: 1}
   abilityRange: 15
   abilityDamage: 0
   abilityPrefab: {fileID: 0}
   abilityIcon: {fileID: 0}
+  maxTargets: 3
+  minChargeTime: 0.5
+  targetAcquisitionSpeed: 0.2
+  trackingMarkPrefab: {fileID: 0}
+  pullForce: 20
+  stunDuration: 1.5

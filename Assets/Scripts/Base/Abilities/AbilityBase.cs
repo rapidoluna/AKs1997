@@ -17,4 +17,5 @@ public abstract class AbilityBase : MonoBehaviour
     public abstract void Execute();
     public virtual void OnChargeStart() { }
     public virtual void OnChargeRelease(List<GameObject> targets) { }
+    public virtual void StopAbility() { }
 }

@@ -17,6 +17,7 @@ public class WeaponShooting : MonoBehaviour
 
     private float _currentCharge = 0f;
     private float _accelerationTimer = 0f;
+    private float _damageMultiplier = 1f;
 
     public bool IsShooting { get; private set; }
 
@@ -30,24 +31,14 @@ public class WeaponShooting : MonoBehaviour
         if (recoilCamera == null && _mainCamera != null)
         {
             recoilCamera = _mainCamera.GetComponent<WeaponRecoilCamera>();
-
-            if (recoilCamera == null)
-            {
-                recoilCamera = _mainCamera.GetComponentInChildren<WeaponRecoilCamera>();
-            }
-        }
-
-        if (recoilCamera == null)
-        {
-            Debug.LogWarning($"{gameObject.name}: WeaponRecoilCamera를 찾을 수 없음.");
+            if (recoilCamera == null) recoilCamera = _mainCamera.GetComponentInChildren<WeaponRecoilCamera>();
         }
     }
 
     private void OnEnable()
     {
         if (_reloading == null) _reloading = GetComponent<WeaponReloading>();
-        if (_reloading != null)
-            _reloading.OnReloadComplete += SetPostReloadDelay;
+        if (_reloading != null) _reloading.OnReloadComplete += SetPostReloadDelay;
     }
 
     private void OnDisable()
@@ -55,20 +46,20 @@ public class WeaponShooting : MonoBehaviour
         IsShooting = false;
         _currentCharge = 0f;
         _accelerationTimer = 0f;
-        if (_reloading != null)
-            _reloading.OnReloadComplete -= SetPostReloadDelay;
+        if (_reloading != null) _reloading.OnReloadComplete -= SetPostReloadDelay;
     }
 
-    private void SetPostReloadDelay(float delay)
-    {
-        _lastFireTime = Time.time + delay;
-    }
+    private void SetPostReloadDelay(float delay) => _lastFireTime = Time.time + delay;
 
     public void Init(WeaponData data)
     {
         _data = data;
         if (firePoint == null) firePoint = transform.Find("FirePoint");
     }
+
+    public WeaponData GetWeaponData() => _data;
+
+    public void SetDamageMultiplier(float multiplier) => _damageMultiplier = multiplier;
 
     private void Update()
     {
@@ -85,7 +76,6 @@ public class WeaponShooting : MonoBehaviour
     private void HandleFiringMode()
     {
         FiringType primaryMode = _data.Firing[0];
-
         switch (primaryMode)
         {
             case FiringType.Semi:
@@ -115,26 +105,21 @@ public class WeaponShooting : MonoBehaviour
 
     private void HandleChargeMode()
     {
-        bool isFullAutoCharge = _data.Firing.Contains(FiringType.Full); // 충전식 연사 여부
-        bool isBurstCharge = _data.Firing.Contains(FiringType.Burst);   // 충전식 점사 여부
+        bool isFullAutoCharge = _data.Firing.Contains(FiringType.Full);
+        bool isBurstCharge = _data.Firing.Contains(FiringType.Burst);
 
         if (Input.GetMouseButton(0))
         {
             if (_currentCharge < 0) return;
-
             _currentCharge += Time.deltaTime;
 
             if (!isFullAutoCharge && _currentCharge > _data.chargeTime + _data.maxHold)
             {
                 if (isBurstCharge)
                 {
-                    if (Time.time >= _lastFireTime && !_ammo.IsEmpty)
-                        StartCoroutine(BurstRoutine());
+                    if (Time.time >= _lastFireTime && !_ammo.IsEmpty) StartCoroutine(BurstRoutine());
                 }
-                else
-                {
-                    FireChargeSingle();
-                }
+                else FireChargeSingle();
 
                 _currentCharge = -1f;
                 IsShooting = false;
@@ -143,9 +128,7 @@ public class WeaponShooting : MonoBehaviour
             }
 
             float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
-
-            if (CrosshairManager.Instance != null)
-                CrosshairManager.Instance.SetChargeRatio(chargeRatio);
+            if (CrosshairManager.Instance != null) CrosshairManager.Instance.SetChargeRatio(chargeRatio);
 
             if (isFullAutoCharge && chargeRatio >= 1f)
             {
@@ -159,20 +142,12 @@ public class WeaponShooting : MonoBehaviour
             {
                 if (isBurstCharge)
                 {
-                    if (_currentCharge >= _data.chargeTime * 0.5f && Time.time >= _lastFireTime && !_ammo.IsEmpty)
-                    {
-                        StartCoroutine(BurstRoutine());
-                    }
+                    if (_currentCharge >= _data.chargeTime * 0.5f && Time.time >= _lastFireTime && !_ammo.IsEmpty) StartCoroutine(BurstRoutine());
                 }
-                else if (!isFullAutoCharge && !isBurstCharge && _currentCharge >= 0.1f)
-                {
-                    FireChargeSingle();
-                }
+                else if (!isFullAutoCharge && !isBurstCharge && _currentCharge >= 0.1f) FireChargeSingle();
             }
 
-            if (CrosshairManager.Instance != null)
-                CrosshairManager.Instance.SetChargeRatio(0f);
-
+            if (CrosshairManager.Instance != null) CrosshairManager.Instance.SetChargeRatio(0f);
             _currentCharge = 0f;
             IsShooting = false;
         }
@@ -195,7 +170,6 @@ public class WeaponShooting : MonoBehaviour
 
     private void TryFire()
     {
-
         if (Time.time < _lastFireTime || _ammo.IsEmpty) return;
 
         float rpm = _data.fireRate;
@@ -215,20 +189,14 @@ public class WeaponShooting : MonoBehaviour
     private void FireChargeSingle()
     {
         if (_ammo.IsEmpty) return;
-
         float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
-
         if (_ammo.ConsumeAmmo(_data.usingBullet))
         {
             float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
-
-            float chargeRecoilBoost = 1f + chargeRatio;
-
-            if (recoilCamera != null)
-                recoilCamera.TriggerRecoil(recoilMult * chargeRecoilBoost);
+            if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult * (1f + chargeRatio));
 
             float speed = _data.bulletSpeed / 60f;
-            int finalDamage = (int)(_data.weaponDamage * (1f + chargeRatio * 2f));
+            int finalDamage = (int)(_data.weaponDamage * (1f + chargeRatio * 2f) * _damageMultiplier);
             GenerateProjectile(speed, baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f), finalDamage);
         }
     }
@@ -245,12 +213,12 @@ public class WeaponShooting : MonoBehaviour
         float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
         if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
 
+        int finalDamage = (int)(_data.weaponDamage * _damageMultiplier);
         for (int i = 0; i < _data.firingBullet; i++)
         {
             float spread = baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f);
-            GenerateProjectile(speed, spread, _data.weaponDamage);
+            GenerateProjectile(speed, spread, finalDamage);
         }
-
         if (CrosshairManager.Instance != null) CrosshairManager.Instance.FireExertion();
     }
 
@@ -260,6 +228,7 @@ public class WeaponShooting : MonoBehaviour
         float speed = _data.bulletSpeed / 60f;
         float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
         float spread = baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f);
+        int finalDamage = (int)(_data.weaponDamage * _damageMultiplier);
 
         for (int i = 0; i < _data.burstBullet; i++)
         {
@@ -267,7 +236,7 @@ public class WeaponShooting : MonoBehaviour
             if (_ammo.ConsumeAmmo(_data.usingBullet))
             {
                 if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
-                GenerateProjectile(speed, spread, _data.weaponDamage);
+                GenerateProjectile(speed, spread, finalDamage);
             }
             yield return new WaitForSeconds(_data.burstInterval);
         }
@@ -277,25 +246,13 @@ public class WeaponShooting : MonoBehaviour
     {
         if (BulletPool.Instance == null) return;
         GameObject bullet = BulletPool.Instance.GetBullet();
-
         Ray ray = _mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, _data.effectiveRange)
-            ? hit.point : ray.GetPoint(_data.effectiveRange);
+        Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, _data.effectiveRange) ? hit.point : ray.GetPoint(_data.effectiveRange);
 
         bullet.transform.position = firePoint.position;
-        Vector3 direction = (targetPoint - firePoint.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        bullet.transform.rotation = Quaternion.LookRotation((targetPoint - firePoint.position).normalized) * Quaternion.Euler(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange), 0);
 
-        float spreadX = Random.Range(-spreadRange, spreadRange);
-        float spreadY = Random.Range(-spreadRange, spreadRange);
-        bullet.transform.rotation = targetRotation * Quaternion.Euler(spreadX, spreadY, 0);
-
-        Projectile projectile = bullet.GetComponent<Projectile>();
-        if (projectile != null)
-        {
-            projectile.Init(speed, damage, _data.effectiveRange, transform.root.gameObject);
-        }
+        Projectile p = bullet.GetComponent<Projectile>();
+        if (p != null) p.Init(speed, damage, _data.effectiveRange, transform.root.gameObject);
     }
-
-    public WeaponData GetWeaponData() => _data;
 }

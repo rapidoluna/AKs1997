@@ -6,32 +6,53 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     [SerializeField] private CharacterData characterData;
     private float currentHealth;
+    private float _bonusMaxHealth;
+    private float _currentBonusHealth;
 
-    [Header("Disable when player's dead")]
     [SerializeField] private CharacterController characterController;
     [SerializeField] private MonoBehaviour[] scriptsToDisable;
 
     public float CurrentHealth => currentHealth;
-    public float MaxHealth => characterData != null ? characterData.MaxHealth : 100f;
+    public float CurrentBonusHealth => _currentBonusHealth;
+    public float BaseMaxHealth => characterData != null ? characterData.MaxHealth : 100f;
+    public float BonusMaxHealth => _bonusMaxHealth;
 
     void Awake()
     {
         IsDead = false;
-        if (characterData != null) currentHealth = MaxHealth;
+        if (characterData != null) currentHealth = BaseMaxHealth;
         if (characterController == null) characterController = GetComponent<CharacterController>();
     }
 
     public void SetData(CharacterData data)
     {
         characterData = data;
-        currentHealth = MaxHealth;
+        currentHealth = BaseMaxHealth;
+        _bonusMaxHealth = 0f;
+        _currentBonusHealth = 0f;
     }
 
     public void TakeDamage(int damage)
     {
         if (IsDead) return;
 
-        currentHealth -= damage;
+        float remainingDamage = damage;
+
+        if (_currentBonusHealth > 0)
+        {
+            if (_currentBonusHealth >= remainingDamage)
+            {
+                _currentBonusHealth -= remainingDamage;
+                remainingDamage = 0;
+            }
+            else
+            {
+                remainingDamage -= _currentBonusHealth;
+                _currentBonusHealth = 0;
+            }
+        }
+
+        currentHealth -= remainingDamage;
 
         if (PlayerDamageEffect.Instance != null)
             PlayerDamageEffect.Instance.OnHit();
@@ -47,20 +68,20 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         if (IsDead) return;
         IsDead = true;
+        foreach (var script in scriptsToDisable) if (script != null) script.enabled = false;
+        if (characterController != null) characterController.enabled = false;
+        if (PlayerDeathCamera.Instance != null) PlayerDeathCamera.Instance.PlayDeathAnimation();
+    }
 
-        foreach (var script in scriptsToDisable)
-        {
-            if (script != null) script.enabled = false;
-        }
+    public void ApplyHealthBuff(float healthBonus)
+    {
+        _bonusMaxHealth = healthBonus;
+        _currentBonusHealth = healthBonus;
+    }
 
-        if (characterController != null)
-        {
-            characterController.enabled = false;
-        }
-
-        if (PlayerDeathCamera.Instance != null)
-        {
-            PlayerDeathCamera.Instance.PlayDeathAnimation();
-        }
+    public void ResetHealthBuff()
+    {
+        _bonusMaxHealth = 0f;
+        _currentBonusHealth = 0f;
     }
 }

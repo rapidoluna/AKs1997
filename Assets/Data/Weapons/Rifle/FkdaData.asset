@@ -18,7 +18,7 @@ MonoBehaviour:
   weaponDescription: A High Fire Rate Advanced Rifle.
   weaponPrefab: {fileID: 0}
   bulletPrefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
-  weaponIcon: {fileID: 21300000, guid: 677d659e4abfcef479f5ad1b49ab5caf, type: 3}
+  weaponIcon: {fileID: 21300000, guid: 155398d54f60b0e44915671959af2baf, type: 3}
   magSize: 24
   weaponDamage: 14
   effectiveRange: 500
@@ -32,6 +32,7 @@ MonoBehaviour:
   burstInterval: 0
   chargeTime: 0
   maxCharge: 100
+  maxHold: 0
   accelerateTime: 0
   maxAccelerate: 0
   maxAccelerateSpeed: 0

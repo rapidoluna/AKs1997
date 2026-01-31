@@ -8,6 +8,7 @@ public class PlayerWalking : MonoBehaviour
     [SerializeField] private float gravity = -19.62f;
     [SerializeField] private float adsSpeedMultiplier = 0.6f;
     [SerializeField] private float shootingSpeedMultiplier = 0.8f;
+    private float _abilitySpeedMultiplier = 1f;
 
     private float currentSpeed;
     private float overrideSpeed = -1f;
@@ -78,6 +79,8 @@ public class PlayerWalking : MonoBehaviour
             }
         }
 
+        targetSpeed *= _abilitySpeedMultiplier;
+
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 10f);
 
         Vector3 move = transform.right * x + transform.forward * z;
@@ -89,11 +92,13 @@ public class PlayerWalking : MonoBehaviour
 
     public void ApplyAbilitySpeed(float multiplier)
     {
-        currentSpeed = baseSpeed * multiplier;
+        _abilitySpeedMultiplier = multiplier;
+        Debug.Log($"[PlayerWalking] 배율 적용: {multiplier} / 최종 타겟 속도: {baseSpeed * multiplier}");
     }
 
     public void ResetSpeed()
     {
-        currentSpeed = baseSpeed;
+        _abilitySpeedMultiplier = 1f;
+        Debug.Log("[PlayerWalking] 배율 초기화");
     }
 }

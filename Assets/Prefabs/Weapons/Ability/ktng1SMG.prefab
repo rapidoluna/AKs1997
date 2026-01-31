@@ -93,7 +93,7 @@ MonoBehaviour:
   adsRecoilMultiplier: 0.5
   adsSpreadMultiplier: 0.2
   hipOffset: {x: 0.5, y: -0.4, z: 1}
-  adsOffset: {x: 0, y: -0.2, z: 1.2}
+  adsOffset: {x: 0.1, y: -0.25, z: 1.4}
 --- !u!1 &4932604717478316853
 GameObject:
   m_ObjectHideFlags: 0

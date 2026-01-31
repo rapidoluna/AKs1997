@@ -16,7 +16,7 @@ MonoBehaviour:
   maxHealth: 100
   walkSpeed: 5
   runSpeed: 6.5
-  detectRange: 20
+  detectRange: 12
   attackRange: 10
   attackDamage: 14
   attackCooldown: 0.75

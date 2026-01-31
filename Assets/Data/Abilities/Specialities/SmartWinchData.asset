@@ -15,22 +15,22 @@ MonoBehaviour:
   abilityName: SWC08
   abilityIcon: {fileID: 0}
   type: 0
-  activeTypes: 03000000
-  abilityCooltime: 0
+  activeTypes: 0300000004000000
+  abilityCooltime: 1.5
   abilityDuration: 0
   abilityDamage: 0
   abilityRange: 15
-  ultimateChargeSpeed: 5
+  ultimateChargeSpeed: 0
   moveSpeedMultiplier: 1
   maxHealthBonus: 0
   damageMultiplier: 1
-  minChargeTime: 0.5
+  minChargeTime: 0.05
   maxTargets: 3
-  targetAcquisitionSpeed: 0.2
+  targetAcquisitionSpeed: 2.5
   areaSize: {x: 1, y: 1, z: 1}
   pullForce: 20
   useReloadLimit: 0
   maxReloadCount: 3
-  abilityPrefab: {fileID: 0}
-  rewardWeapon: {fileID: 0}
-  trackingMark: {fileID: 0}
+  abilityPrefab: {fileID: 8312056155373953127, guid: 23c07708e57e3c54fabca2389b1994fa, type: 3}
+  rewardWeapon: {fileID: 1494362112671429788, guid: d5c4f05e4cb3f4e44a584d7ae65ede95, type: 3}
+  trackingMark: {fileID: 6378361969594758155, guid: a5f6966cb1fabb64e9b80d32cbb74f1a, type: 3}

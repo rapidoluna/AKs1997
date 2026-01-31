@@ -20,7 +20,7 @@ MonoBehaviour:
   abilityDuration: 0
   abilityDamage: 0
   abilityRange: 0
-  ultimateChargeSpeed: 5
+  ultimateChargeSpeed: 0
   moveSpeedMultiplier: 1
   maxHealthBonus: 0
   damageMultiplier: 1

@@ -1,10 +1,12 @@
 using UnityEngine;
+using System.Collections;
 
 public class WeaponController : MonoBehaviour
 {
     [SerializeField] private GameObject[] weaponSlots = new GameObject[3];
     private int _currentWeaponIndex = 0;
     private bool _isWeaponLocked = false;
+    private bool _isSwapping = false;
 
     public GameObject[] Slots => weaponSlots;
     public int CurrentIndex => _currentWeaponIndex;
@@ -31,30 +33,29 @@ public class WeaponController : MonoBehaviour
 
     private void Update()
     {
-        if (_isWeaponLocked) return;
+        if (_isWeaponLocked || _isSwapping) return;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchToSlot(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchToSlot(1);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchWithTimer(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchWithTimer(1);
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Abs(scroll) > 0.01f)
         {
-            int nextSlot = _currentWeaponIndex + (scroll > 0 ? -1 : 1);
-            if (nextSlot < 0) nextSlot = 1;
-            if (nextSlot > 1) nextSlot = 0;
-            SwitchToSlot(nextSlot);
+            int nextSlot = _currentWeaponIndex == 0 ? 1 : 0;
+            SwitchWithTimer(nextSlot);
         }
     }
 
-    public void SwitchToSlot(int index, bool lockWeapon = false)
+    public void SwitchWithTimer(int index)
     {
-        if (index < 0 || index >= weaponSlots.Length) return;
+        if (index == _currentWeaponIndex || index < 0 || index >= weaponSlots.Length || weaponSlots[index] == null) return;
 
-        if (weaponSlots[index] == null)
-        {
-            Debug.LogWarning($"[WeaponController] Slot {index} is empty.");
-            return;
-        }
+        StartCoroutine(SwapCooldownRoutine(index));
+    }
+
+    private IEnumerator SwapCooldownRoutine(int index)
+    {
+        _isSwapping = true;
 
         if (weaponSlots[_currentWeaponIndex] != null)
             weaponSlots[_currentWeaponIndex].SetActive(false);
@@ -62,6 +63,19 @@ public class WeaponController : MonoBehaviour
         _currentWeaponIndex = index;
         weaponSlots[_currentWeaponIndex].SetActive(true);
 
+        yield return new WaitForSeconds(0.65f);
+        _isSwapping = false;
+    }
+
+    public void SwitchToSlot(int index, bool lockWeapon = false)
+    {
+        if (index < 0 || index >= weaponSlots.Length || weaponSlots[index] == null) return;
+
+        if (weaponSlots[_currentWeaponIndex] != null)
+            weaponSlots[_currentWeaponIndex].SetActive(false);
+
+        _currentWeaponIndex = index;
+        weaponSlots[_currentWeaponIndex].SetActive(true);
         _isWeaponLocked = lockWeapon;
     }
 

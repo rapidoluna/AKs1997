@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f936fc3f1caa6d64c876080cdf4d05a8, type: 3}
+  m_Name: SwcData
+  m_EditorClassIdentifier: 
+  weapon: 4
+  firing: 00000000
+  weaponName: SWC08
+  weaponDescription: Smart Winch Claw Suit Case.
+  weaponPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  weaponIcon: {fileID: 0}
+  magSize: 1
+  weaponDamage: 0
+  effectiveRange: 0
+  bulletSpeed: 0
+  fireRate: 0
+  tacticalReloadTimer: 0
+  emptyReloadTimer: 0
+  usingBullet: 0
+  firingBullet: 0
+  burstBullet: 0
+  burstInterval: 0
+  chargeTime: 0
+  maxCharge: 100
+  maxHold: 0
+  accelerateTime: 0
+  maxAccelerate: 0
+  maxAccelerateSpeed: 0

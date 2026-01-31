@@ -35,6 +35,7 @@ public class AbilityProcessor : MonoBehaviour
                 AbilityActiveType.Buff => gameObject.AddComponent<AbilityBuff>(),
                 AbilityActiveType.Equip => gameObject.AddComponent<AbilityEquip>(),
                 AbilityActiveType.Overlay => gameObject.AddComponent<AbilityOverlay>(),
+                AbilityActiveType.Charge => gameObject.AddComponent<AbilityCharge>(),
                 _ => null
             };
 

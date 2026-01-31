@@ -24,6 +24,7 @@ public class WeaponShooting : MonoBehaviour
     public event Action OnResourceExhausted;
 
     public bool IsShooting { get; private set; }
+    public Transform FirePoint => firePoint;
 
     private void Awake()
     {

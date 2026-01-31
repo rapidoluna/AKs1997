@@ -577,7 +577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0402003c21eadde44a281dbe2065d875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
+  characterData: {fileID: 11400000, guid: 1016d0dc7b0089642b5810d08d6d9b0b, type: 2}
   characterController: {fileID: 7498905321667918934}
   scriptsToDisable:
   - {fileID: 2186220335113528223}
@@ -610,7 +610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e367c1a82ad1db14285a6be6827aa85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
+  characterData: {fileID: 11400000, guid: 1016d0dc7b0089642b5810d08d6d9b0b, type: 2}
   weaponHoldPoint: {fileID: 2815454732221533248}
 --- !u!1001 &5090906453280571949
 PrefabInstance:

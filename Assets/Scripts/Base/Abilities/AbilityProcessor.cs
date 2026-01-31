@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class AbilityProcessor : MonoBehaviour
 {
     private AbilityData _abilityData;
-    private AbilityBase _abilityEffect;
+    private List<AbilityBase> _abilityEffects = new List<AbilityBase>();
 
     private float _cooldownTimer = 0f;
     private bool _isDurationActive = false;
@@ -14,73 +14,64 @@ public class AbilityProcessor : MonoBehaviour
     {
         PlayerInitializer init = GetComponentInParent<PlayerInitializer>();
         PlayerWalking walk = GetComponentInParent<PlayerWalking>();
+        Transform firePoint = transform;
 
         if (init != null && init.CharacterData != null)
         {
             _abilityData = init.CharacterData.characterSpeciality;
-
             if (_abilityData != null)
             {
-                Debug.Log($"[AbilityProcessor] 능력 초기화 완료: {_abilityData.abilityName} (Type: {_abilityData.activeType})");
-                _abilityEffect = CreateEffect(_abilityData, walk);
-            }
-            else
-            {
-                Debug.LogWarning("[AbilityProcessor] Speciality 데이터가 CharacterData에 없습니다.");
+                CreateEffects(_abilityData, walk, firePoint);
             }
         }
     }
 
-    private AbilityBase CreateEffect(AbilityData data, PlayerWalking walk)
+    private void CreateEffects(AbilityData data, PlayerWalking walk, Transform firePoint)
     {
-        AbilityBase effect = data.activeType switch
+        foreach (var type in data.activeTypes)
         {
-            AbilityActiveType.Buff => gameObject.AddComponent<AbilityBuff>(),
-            _ => null
-        };
+            AbilityBase effect = type switch
+            {
+                AbilityActiveType.Buff => gameObject.AddComponent<AbilityBuff>(),
+                AbilityActiveType.Equip => gameObject.AddComponent<AbilityEquip>(),
+                _ => null
+            };
 
-        if (effect != null)
-        {
-            effect.Initialize(data, walk, null);
+            if (effect != null)
+            {
+                effect.Initialize(data, walk, firePoint);
+                _abilityEffects.Add(effect);
+            }
         }
-        return effect;
     }
 
     private void Update()
     {
-        if (_abilityData == null || _abilityEffect == null) return;
+        if (_abilityData == null || _abilityEffects.Count == 0) return;
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (_isDurationActive)
             {
-                if (_abilityData.abilityDuration <= 0)
-                {
-                    Debug.Log($"[AbilityProcessor] {_abilityData.abilityName} 토글 종료 시도");
-                    StopEffect();
-                }
+                if (_abilityData.abilityDuration <= 0) StopEffect();
             }
             else if (Time.time >= _cooldownTimer)
             {
-                Debug.Log($"[AbilityProcessor] {_abilityData.abilityName} 실행 시도");
                 StartEffect();
-            }
-            else
-            {
-                Debug.Log($"[AbilityProcessor] 쿨타임 대기 중: {(_cooldownTimer - Time.time):F1}초 남음");
             }
         }
     }
 
     private void StartEffect()
     {
-        _abilityEffect.Execute();
+        foreach (var effect in _abilityEffects)
+        {
+            effect.Execute();
+        }
         _isDurationActive = true;
-        Debug.Log($"[AbilityProcessor] {_abilityData.abilityName} 활성화됨");
 
         if (_abilityData.abilityDuration > 0)
         {
-            Debug.Log($"[AbilityProcessor] 지속 시간 타이머 시작: {_abilityData.abilityDuration}초");
             StartCoroutine(DurationRoutine(_abilityData.abilityDuration));
         }
     }
@@ -88,17 +79,19 @@ public class AbilityProcessor : MonoBehaviour
     private IEnumerator DurationRoutine(float duration)
     {
         yield return new WaitForSeconds(duration);
-        Debug.Log($"[AbilityProcessor] 지속 시간 종료");
-        StopEffect();
+        if (_isDurationActive) StopEffect();
     }
 
-    private void StopEffect()
+    public void StopEffect()
     {
         if (!_isDurationActive) return;
 
-        _abilityEffect.StopAbility();
+        foreach (var effect in _abilityEffects)
+        {
+            effect.StopAbility();
+        }
+
         _isDurationActive = false;
         _cooldownTimer = Time.time + _abilityData.abilityCooltime;
-        Debug.Log($"[AbilityProcessor] {_abilityData.abilityName} 비활성화됨. 쿨타임 시작: {_abilityData.abilityCooltime}초");
     }
 }

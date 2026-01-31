@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum AbilityType { Speciality, Ultimate }
@@ -9,10 +10,10 @@ public class AbilityData : ScriptableObject
     public string abilityName;
     public Sprite abilityIcon;
     public AbilityType type;
-    public AbilityActiveType activeType;
+    public List<AbilityActiveType> activeTypes = new List<AbilityActiveType>();
 
     public float abilityCooltime;
-    public float abilityDuration; // 0이면 무한 지속(토글), 0보다 크면 타이머 적용
+    public float abilityDuration;// 0이면 무한 지속(토글), 0보다 크면 타이머 적용
     public float abilityDamage;
     public float abilityRange;
 
@@ -28,7 +29,10 @@ public class AbilityData : ScriptableObject
     public Vector3 areaSize;
     public float pullForce;
 
-    public GameObject abilityPrefab;   // 발사체 또는 효과 이펙트
-    public GameObject rewardWeapon;    // 장착용 무기 또는 손에 생성될 장치
-    public GameObject trackingMark;    // 타겟팅 표식
+    public bool useReloadLimit = false; // 재장전 제한 사용 여부
+    public int maxReloadCount = 3;
+
+    public GameObject abilityPrefab;// 발사체 또는 효과 이펙트
+    public GameObject rewardWeapon;// 장착용 무기 또는 손에 생성될 장치
+    public GameObject trackingMark;// 타겟팅 표식
 }

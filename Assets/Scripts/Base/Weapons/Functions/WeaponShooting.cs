@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +19,9 @@ public class WeaponShooting : MonoBehaviour
     private float _currentCharge = 0f;
     private float _accelerationTimer = 0f;
     private float _damageMultiplier = 1f;
+
+    private int _remainingReloads = -1;
+    public event Action OnResourceExhausted;
 
     public bool IsShooting { get; private set; }
 
@@ -49,7 +53,16 @@ public class WeaponShooting : MonoBehaviour
         if (_reloading != null) _reloading.OnReloadComplete -= SetPostReloadDelay;
     }
 
-    private void SetPostReloadDelay(float delay) => _lastFireTime = Time.time + delay;
+    private void SetPostReloadDelay(float delay)
+    {
+        _lastFireTime = Time.time + delay;
+
+        if (_remainingReloads > 0)
+        {
+            _remainingReloads--;
+            Debug.Log($"[WeaponShooting] 남은 재장전 가능 횟수: {_remainingReloads}");
+        }
+    }
 
     public void Init(WeaponData data)
     {
@@ -61,13 +74,21 @@ public class WeaponShooting : MonoBehaviour
 
     public void SetDamageMultiplier(float multiplier) => _damageMultiplier = multiplier;
 
+    public void SetReloadLimit(int maxReloads) => _remainingReloads = maxReloads;
+
     private void Update()
     {
-        if (PlayerHealth.IsDead || _data == null || _reloading.IsReloading)
+        if (PlayerHealth.IsDead || _data == null || (_reloading != null && _reloading.IsReloading))
         {
             IsShooting = false;
             _currentCharge = 0f;
             return;
+        }
+
+        if (_remainingReloads == 0 && _ammo != null && _ammo.IsEmpty && !IsShooting)
+        {
+            OnResourceExhausted?.Invoke();
+            _remainingReloads = -1;
         }
 
         HandleFiringMode();
@@ -170,7 +191,7 @@ public class WeaponShooting : MonoBehaviour
 
     private void TryFire()
     {
-        if (Time.time < _lastFireTime || _ammo.IsEmpty) return;
+        if (Time.time < _lastFireTime || (_ammo != null && _ammo.IsEmpty)) return;
 
         float rpm = _data.fireRate;
         if (_data.Firing[0] == FiringType.Accelerate)
@@ -183,14 +204,14 @@ public class WeaponShooting : MonoBehaviour
         _lastFireTime = Time.time + fireInterval;
 
         if (_data.Firing[0] == FiringType.Burst) StartCoroutine(BurstRoutine());
-        else if (_ammo.ConsumeAmmo(_data.usingBullet)) Fire();
+        else if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet)) Fire();
     }
 
     private void FireChargeSingle()
     {
-        if (_ammo.IsEmpty) return;
+        if (_ammo != null && _ammo.IsEmpty) return;
         float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
-        if (_ammo.ConsumeAmmo(_data.usingBullet))
+        if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
         {
             float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
             if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult * (1f + chargeRatio));
@@ -232,8 +253,8 @@ public class WeaponShooting : MonoBehaviour
 
         for (int i = 0; i < _data.burstBullet; i++)
         {
-            if (_ammo.IsEmpty) break;
-            if (_ammo.ConsumeAmmo(_data.usingBullet))
+            if (_ammo != null && _ammo.IsEmpty) break;
+            if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
             {
                 if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
                 GenerateProjectile(speed, spread, finalDamage);
@@ -250,7 +271,7 @@ public class WeaponShooting : MonoBehaviour
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, _data.effectiveRange) ? hit.point : ray.GetPoint(_data.effectiveRange);
 
         bullet.transform.position = firePoint.position;
-        bullet.transform.rotation = Quaternion.LookRotation((targetPoint - firePoint.position).normalized) * Quaternion.Euler(Random.Range(-spreadRange, spreadRange), Random.Range(-spreadRange, spreadRange), 0);
+        bullet.transform.rotation = Quaternion.LookRotation((targetPoint - firePoint.position).normalized) * Quaternion.Euler(UnityEngine.Random.Range(-spreadRange, spreadRange), UnityEngine.Random.Range(-spreadRange, spreadRange), 0);
 
         Projectile p = bullet.GetComponent<Projectile>();
         if (p != null) p.Init(speed, damage, _data.effectiveRange, transform.root.gameObject);

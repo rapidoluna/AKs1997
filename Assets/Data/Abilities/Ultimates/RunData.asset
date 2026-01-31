@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Runner
   abilityIcon: {fileID: 21300000, guid: 9da947f3eb3ef70409b28ae37142631b, type: 3}
   type: 1
-  activeType: 2
+  activeTypes: 02000000
   abilityCooltime: 0
   abilityDuration: 15
   abilityDamage: 0
@@ -29,6 +29,8 @@ MonoBehaviour:
   targetAcquisitionSpeed: 0
   areaSize: {x: 1, y: 1, z: 1}
   pullForce: 0
+  useReloadLimit: 0
+  maxReloadCount: 3
   abilityPrefab: {fileID: 0}
   rewardWeapon: {fileID: 0}
   trackingMark: {fileID: 0}

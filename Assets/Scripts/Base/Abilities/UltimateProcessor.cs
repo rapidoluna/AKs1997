@@ -1,18 +1,19 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UltimateProcessor : MonoBehaviour
 {
     private AbilityData _abilityData;
-    private AbilityBase _abilityEffect;
+    private List<AbilityBase> _abilityEffects = new List<AbilityBase>();
     private UltimateCharge _chargeSystem;
-
     private bool _isDurationActive = false;
 
     private void Start()
     {
         PlayerInitializer init = GetComponentInParent<PlayerInitializer>();
         PlayerWalking walk = GetComponentInParent<PlayerWalking>();
+        Transform firePoint = transform;
 
         if (init != null && init.CharacterData != null)
         {
@@ -21,47 +22,57 @@ public class UltimateProcessor : MonoBehaviour
             {
                 _chargeSystem = gameObject.AddComponent<UltimateCharge>();
                 _chargeSystem.Initialize(_abilityData);
-
-                _abilityEffect = CreateEffect(_abilityData, walk);
+                CreateEffects(_abilityData, walk, firePoint);
             }
         }
     }
 
-    private AbilityBase CreateEffect(AbilityData data, PlayerWalking walk)
+    private void CreateEffects(AbilityData data, PlayerWalking walk, Transform firePoint)
     {
-        AbilityBase effect = data.activeType switch
+        foreach (var type in data.activeTypes)
         {
-            AbilityActiveType.Buff => gameObject.AddComponent<AbilityBuff>(),
-            _ => null
-        };
+            AbilityBase effect = type switch
+            {
+                AbilityActiveType.Buff => gameObject.AddComponent<AbilityBuff>(),
+                AbilityActiveType.Equip => gameObject.AddComponent<AbilityEquip>(),
+                _ => null
+            };
 
-        if (effect != null) effect.Initialize(data, walk, null);
-        return effect;
+            if (effect != null)
+            {
+                effect.Initialize(data, walk, firePoint);
+                _abilityEffects.Add(effect);
+            }
+        }
     }
 
     private void Update()
     {
-        if (_abilityData == null || _abilityEffect == null) return;
+        if (_abilityData == null || _abilityEffects.Count == 0) return;
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (!_isDurationActive && _chargeSystem.IsReady)
+            if (_isDurationActive)
+            {
+                if (_abilityData.abilityDuration <= 0) StopUltimate();
+            }
+            else if (_chargeSystem.IsReady)
             {
                 StartUltimate();
-            }
-            else if (!_chargeSystem.IsReady)
-            {
-                Debug.Log($"[Ultimate] 게이지 부족: {(_chargeSystem.CurrentGauge):F1}/100");
             }
         }
     }
 
     private void StartUltimate()
     {
-        Debug.Log($"[Ultimate] {_abilityData.abilityName} 발동!");
-        _abilityEffect.Execute();
         _isDurationActive = true;
         _chargeSystem.ResetGauge();
+        _chargeSystem.SetLock(true);
+
+        foreach (var effect in _abilityEffects)
+        {
+            effect.Execute();
+        }
 
         if (_abilityData.abilityDuration > 0)
         {
@@ -72,14 +83,19 @@ public class UltimateProcessor : MonoBehaviour
     private IEnumerator DurationRoutine(float duration)
     {
         yield return new WaitForSeconds(duration);
-        StopUltimate();
+        if (_isDurationActive) StopUltimate();
     }
 
-    private void StopUltimate()
+    public void StopUltimate()
     {
         if (!_isDurationActive) return;
-        _abilityEffect.StopAbility();
+
+        foreach (var effect in _abilityEffects)
+        {
+            effect.StopAbility();
+        }
+
         _isDurationActive = false;
-        Debug.Log($"[Ultimate] {_abilityData.abilityName} 종료");
+        _chargeSystem.SetLock(false);
     }
 }

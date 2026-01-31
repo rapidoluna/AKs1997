@@ -12,28 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053099d81a47b16428106567261f3441, type: 3}
   m_Name: MindwaveData
   m_EditorClassIdentifier: 
-  abilityType: 0
-  activeType: 1
   abilityName: Mind Wave
-  abilityDescription: A Wave That Disrupts The Minds Of Enemies 10 Meters In Front.
+  abilityIcon: {fileID: 0}
+  type: 0
+  activeTypes: 01000000
   abilityCooltime: 0
   abilityDuration: 0
-  requiredGauge: 0
-  gaugeChargeMultiplier: 0.01
-  rewardWeapon: {fileID: 0}
-  slotTarget: 0
-  allowOriginalWeaponInput: 0
-  moveSpeedMultiplier: 1
-  damageMultiplier: 1
-  areaType: 2
-  areaSize: {x: 2, y: 1, z: 5}
-  abilityRange: 10
   abilityDamage: 85
-  abilityPrefab: {fileID: 0}
-  abilityIcon: {fileID: 0}
-  maxTargets: 0
+  abilityRange: 10
+  ultimateChargeSpeed: 5
+  moveSpeedMultiplier: 1
+  maxHealthBonus: 0
+  damageMultiplier: 1
   minChargeTime: 0
+  maxTargets: 0
   targetAcquisitionSpeed: 0
-  trackingMarkPrefab: {fileID: 0}
+  areaSize: {x: 2, y: 1, z: 5}
   pullForce: 0
-  stunDuration: 0
+  useReloadLimit: 0
+  maxReloadCount: 3
+  abilityPrefab: {fileID: 0}
+  rewardWeapon: {fileID: 0}
+  trackingMark: {fileID: 0}

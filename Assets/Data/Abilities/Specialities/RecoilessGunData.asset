@@ -12,28 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 053099d81a47b16428106567261f3441, type: 3}
   m_Name: RecoilessGunData
   m_EditorClassIdentifier: 
-  abilityType: 0
-  activeType: 2
   abilityName: AP-4
-  abilityDescription: An UrbanOff Official Recoiless Gun.
-  abilityCooltime: 0
-  abilityDuration: 0
-  requiredGauge: 0
-  gaugeChargeMultiplier: 0.01
-  rewardWeapon: {fileID: 11400000, guid: a141c6a057c934945ae07440cdd3bcc9, type: 2}
-  slotTarget: 3
-  allowOriginalWeaponInput: 0
-  moveSpeedMultiplier: 1
-  damageMultiplier: 1
-  areaType: 0
-  areaSize: {x: 1, y: 1, z: 1}
-  abilityRange: 0
-  abilityDamage: 0
-  abilityPrefab: {fileID: 0}
   abilityIcon: {fileID: 0}
-  maxTargets: 0
+  type: 0
+  activeTypes: 04000000
+  abilityCooltime: 5
+  abilityDuration: 0
+  abilityDamage: 0
+  abilityRange: 0
+  ultimateChargeSpeed: 5
+  moveSpeedMultiplier: 1
+  maxHealthBonus: 0
+  damageMultiplier: 1
   minChargeTime: 0
+  maxTargets: 0
   targetAcquisitionSpeed: 0
-  trackingMarkPrefab: {fileID: 0}
+  areaSize: {x: 1, y: 1, z: 1}
   pullForce: 0
-  stunDuration: 0
+  useReloadLimit: 1
+  maxReloadCount: 3
+  abilityPrefab: {fileID: 0}
+  rewardWeapon: {fileID: 1494362112671429788, guid: 0b2e69db9e02536488ab45cfc346fc38, type: 3}
+  trackingMark: {fileID: 0}

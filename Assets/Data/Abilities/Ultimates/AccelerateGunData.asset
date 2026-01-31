@@ -14,21 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: ACC-BN
   abilityIcon: {fileID: 0}
-  type: 0
-  activeType: 2
+  type: 1
+  activeTypes: 0400000002000000
   abilityCooltime: 0
   abilityDuration: 0
   abilityDamage: 0
   abilityRange: 0
   ultimateChargeSpeed: 0.5
-  moveSpeedMultiplier: 1
-  maxHealthBonus: 0
+  moveSpeedMultiplier: 1.35
+  maxHealthBonus: 50
   damageMultiplier: 1
   minChargeTime: 0
   maxTargets: 0
   targetAcquisitionSpeed: 0
   areaSize: {x: 1, y: 1, z: 1}
   pullForce: 0
+  useReloadLimit: 1
+  maxReloadCount: 3
   abilityPrefab: {fileID: 0}
-  rewardWeapon: {fileID: 0}
+  rewardWeapon: {fileID: 1494362112671429788, guid: 541eafedcb6175d4bae251a85673415d, type: 3}
   trackingMark: {fileID: 0}

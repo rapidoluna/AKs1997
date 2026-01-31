@@ -10,10 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7449395157772840678}
   - component: {fileID: 1162082548279593935}
-  - component: {fileID: 6513276428781071443}
-  - component: {fileID: 1634040572441782436}
   - component: {fileID: 315380270363290852}
-  - component: {fileID: 3073795387467897452}
   m_Layer: 0
   m_Name: Ability Holder
   m_TagString: Untagged
@@ -48,30 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce3dc6c8cafc6c54c9a34e515ec1b8b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6513276428781071443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188881520401524993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47fb6b187834dfa4bbab0fbc57fadb07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1634040572441782436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188881520401524993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d7634399778fe4ea3137685d303bc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &315380270363290852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,18 +55,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfd8e7f1b699636478f43fea239c1ac9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3073795387467897452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188881520401524993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66b141c715f3bfc4dbee852280e0ea08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &742535977893216238

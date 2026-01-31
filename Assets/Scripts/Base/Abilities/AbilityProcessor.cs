@@ -94,4 +94,21 @@ public class AbilityProcessor : MonoBehaviour
         _isDurationActive = false;
         _cooldownTimer = Time.time + _abilityData.abilityCooltime;
     }
+
+    public bool IsActive() => _isDurationActive;
+
+    public float GetCooldownRatio()
+    {
+        if (_isDurationActive) return 0f;
+        float totalCd = _abilityData.abilityCooltime;
+        if (totalCd <= 0) return 1f;
+        float elapsed = Time.time - (_cooldownTimer - totalCd);
+        return Mathf.Clamp01(elapsed / totalCd);
+    }
+
+    public float GetRemainingCooldown()
+    {
+        float remaining = _cooldownTimer - Time.time;
+        return remaining > 0 ? remaining : 0;
+    }
 }

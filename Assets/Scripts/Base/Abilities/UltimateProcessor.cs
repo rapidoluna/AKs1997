@@ -98,4 +98,6 @@ public class UltimateProcessor : MonoBehaviour
         _isDurationActive = false;
         _chargeSystem.SetLock(false);
     }
+
+    public bool IsActive() => _isDurationActive;
 }

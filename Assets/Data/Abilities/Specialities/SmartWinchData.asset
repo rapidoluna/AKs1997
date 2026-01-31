@@ -16,7 +16,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 0}
   type: 0
   activeTypes: 0300000004000000
-  abilityCooltime: 1.5
+  abilityCooltime: 25
   abilityDuration: 0
   abilityDamage: 0
   abilityRange: 15

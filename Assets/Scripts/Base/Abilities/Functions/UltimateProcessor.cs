@@ -2,12 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class AbilityProcessor : MonoBehaviour
+public class UltimateProcessor : MonoBehaviour
 {
     private AbilityData _abilityData;
     private List<AbilityBase> _abilityEffects = new List<AbilityBase>();
-
-    private float _cooldownTimer = 0f;
+    private UltimateCharge _chargeSystem;
     private bool _isDurationActive = false;
 
     private void Start()
@@ -18,9 +17,11 @@ public class AbilityProcessor : MonoBehaviour
 
         if (init != null && init.CharacterData != null)
         {
-            _abilityData = init.CharacterData.characterSpeciality;
+            _abilityData = init.CharacterData.characterUltimate;
             if (_abilityData != null)
             {
+                _chargeSystem = gameObject.AddComponent<UltimateCharge>();
+                _chargeSystem.Initialize(_abilityData);
                 CreateEffects(_abilityData, walk, firePoint);
             }
         }
@@ -36,6 +37,7 @@ public class AbilityProcessor : MonoBehaviour
                 AbilityActiveType.Equip => gameObject.AddComponent<AbilityEquip>(),
                 AbilityActiveType.Overlay => gameObject.AddComponent<AbilityOverlay>(),
                 AbilityActiveType.Charge => gameObject.AddComponent<AbilityCharge>(),
+                AbilityActiveType.Instant => gameObject.AddComponent<AbilityInstant>(),
                 _ => null
             };
 
@@ -51,26 +53,29 @@ public class AbilityProcessor : MonoBehaviour
     {
         if (_abilityData == null || _abilityEffects.Count == 0) return;
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             if (_isDurationActive)
             {
-                if (_abilityData.abilityDuration <= 0) StopEffect();
+                if (_abilityData.abilityDuration <= 0) StopUltimate();
             }
-            else if (Time.time >= _cooldownTimer)
+            else if (_chargeSystem.IsReady)
             {
-                StartEffect();
+                StartUltimate();
             }
         }
     }
 
-    private void StartEffect()
+    private void StartUltimate()
     {
+        _isDurationActive = true;
+        _chargeSystem.ResetGauge();
+        _chargeSystem.SetLock(true);
+
         foreach (var effect in _abilityEffects)
         {
             effect.Execute();
         }
-        _isDurationActive = true;
 
         if (_abilityData.abilityDuration > 0)
         {
@@ -81,10 +86,10 @@ public class AbilityProcessor : MonoBehaviour
     private IEnumerator DurationRoutine(float duration)
     {
         yield return new WaitForSeconds(duration);
-        if (_isDurationActive) StopEffect();
+        if (_isDurationActive) StopUltimate();
     }
 
-    public void StopEffect()
+    public void StopUltimate()
     {
         if (!_isDurationActive) return;
 
@@ -94,23 +99,8 @@ public class AbilityProcessor : MonoBehaviour
         }
 
         _isDurationActive = false;
-        _cooldownTimer = Time.time + _abilityData.abilityCooltime;
+        _chargeSystem.SetLock(false);
     }
 
     public bool IsActive() => _isDurationActive;
-
-    public float GetCooldownRatio()
-    {
-        if (_isDurationActive) return 0f;
-        float totalCd = _abilityData.abilityCooltime;
-        if (totalCd <= 0) return 1f;
-        float elapsed = Time.time - (_cooldownTimer - totalCd);
-        return Mathf.Clamp01(elapsed / totalCd);
-    }
-
-    public float GetRemainingCooldown()
-    {
-        float remaining = _cooldownTimer - Time.time;
-        return remaining > 0 ? remaining : 0;
-    }
 }

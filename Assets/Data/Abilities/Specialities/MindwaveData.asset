@@ -16,10 +16,10 @@ MonoBehaviour:
   abilityIcon: {fileID: 0}
   type: 0
   activeTypes: 01000000
-  abilityCooltime: 0
+  abilityCooltime: 20
   abilityDuration: 0
-  abilityDamage: 85
-  abilityRange: 10
+  abilityDamage: 95
+  abilityRange: 5
   ultimateChargeSpeed: 0
   moveSpeedMultiplier: 1
   maxHealthBonus: 0
@@ -27,7 +27,7 @@ MonoBehaviour:
   minChargeTime: 0
   maxTargets: 0
   targetAcquisitionSpeed: 0
-  areaSize: {x: 2, y: 1, z: 5}
+  areaSize: {x: 4, y: 10, z: 4}
   pullForce: 0
   useReloadLimit: 0
   maxReloadCount: 3

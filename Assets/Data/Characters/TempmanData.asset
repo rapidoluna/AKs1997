@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Temp Man
   characterDescription: The Temporary Guy.
-  characterSpeciality: {fileID: 11400000, guid: 1629836c1c6c6874887ed1e96283c632, type: 2}
+  characterSpeciality: {fileID: 11400000, guid: 7cc6979dae09383478bfc0428c2010e5, type: 2}
   characterUltimate: {fileID: 11400000, guid: 8d4879abd472bb646b1f770792505193, type: 2}
   characterPrefab: {fileID: 0}
   characterIcon: {fileID: 21300000, guid: e4b97da4b851f654386dc45e9994ad2d, type: 3}

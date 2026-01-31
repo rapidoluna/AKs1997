@@ -16,7 +16,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 0}
   type: 0
   activeTypes: 04000000
-  abilityCooltime: 20
+  abilityCooltime: 30
   abilityDuration: 0
   abilityDamage: 0
   abilityRange: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
   areaSize: {x: 1, y: 1, z: 1}
   pullForce: 0
   useReloadLimit: 1
-  maxReloadCount: 3
+  maxReloadCount: 1
   abilityPrefab: {fileID: 0}
   rewardWeapon: {fileID: 1494362112671429788, guid: 0b2e69db9e02536488ab45cfc346fc38, type: 3}
   trackingMark: {fileID: 0}

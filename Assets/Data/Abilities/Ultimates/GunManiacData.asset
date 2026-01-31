@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 053099d81a47b16428106567261f3441, type: 3}
-  m_Name: AkimboData
+  m_Name: GunManiacData
   m_EditorClassIdentifier: 
-  abilityName: '"Unleash The Madness"'
-  abilityIcon: {fileID: 21300000, guid: 854b7e5bde11ed74c9556137c3e5cdb6, type: 3}
-  type: 0
-  activeTypes: 05000000
-  abilityCooltime: 10
-  abilityDuration: 20
+  abilityName: Runner Gunner
+  abilityIcon: {fileID: 0}
+  type: 1
+  activeTypes: 0200000005000000
+  abilityCooltime: 0
+  abilityDuration: 15
   abilityDamage: 0
   abilityRange: 0
   ultimateChargeSpeed: 5
-  moveSpeedMultiplier: 1
-  maxHealthBonus: 0
-  damageMultiplier: 1
+  moveSpeedMultiplier: 1.25
+  maxHealthBonus: 75
+  damageMultiplier: 1.5
   minChargeTime: 0
   maxTargets: 0
   targetAcquisitionSpeed: 0
-  areaSize: {x: 1, y: 1, z: 1}
+  areaSize: {x: 0, y: 0, z: 0}
   pullForce: 0
   useReloadLimit: 0
   maxReloadCount: 3

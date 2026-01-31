@@ -35,6 +35,7 @@ public class UltimateProcessor : MonoBehaviour
             {
                 AbilityActiveType.Buff => gameObject.AddComponent<AbilityBuff>(),
                 AbilityActiveType.Equip => gameObject.AddComponent<AbilityEquip>(),
+                AbilityActiveType.Overlay => gameObject.AddComponent<AbilityOverlay>(),
                 _ => null
             };
 

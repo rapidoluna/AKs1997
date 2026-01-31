@@ -16,6 +16,8 @@ public class AbilityData : ScriptableObject
     public float abilityDamage;
     public float abilityRange;
 
+    public float ultimateChargeSpeed = 5.0f;
+
     public float moveSpeedMultiplier = 1f;
     public float maxHealthBonus = 0f;
     public float damageMultiplier = 1f;

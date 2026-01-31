@@ -31,15 +31,24 @@ public class PlayerHealthUI : MonoBehaviour
 
         if (bonusHealthBarFill != null)
         {
-            bool hasBonus = playerHealth.BonusMaxHealth > 0;
+            float bonusTarget = (playerHealth.BonusMaxHealth > 0)
+                ? (playerHealth.CurrentBonusHealth / maxBonusDisplay)
+                : 0f;
 
-            if (bonusHealthBarFill.gameObject.activeSelf != hasBonus)
-                bonusHealthBarFill.gameObject.SetActive(hasBonus);
+            bonusHealthBarFill.fillAmount = Mathf.Lerp(bonusHealthBarFill.fillAmount, bonusTarget, Time.deltaTime * lerpSpeed);
 
-            if (hasBonus)
+            if (bonusHealthBarFill.fillAmount > 0.001f || playerHealth.BonusMaxHealth > 0)
             {
-                float bonusTarget = playerHealth.CurrentBonusHealth / maxBonusDisplay;
-                bonusHealthBarFill.fillAmount = Mathf.Lerp(bonusHealthBarFill.fillAmount, bonusTarget, Time.deltaTime * lerpSpeed);
+                if (!bonusHealthBarFill.gameObject.activeSelf)
+                    bonusHealthBarFill.gameObject.SetActive(true);
+            }
+            else
+            {
+                if (bonusHealthBarFill.gameObject.activeSelf)
+                {
+                    bonusHealthBarFill.fillAmount = 0;
+                    bonusHealthBarFill.gameObject.SetActive(false);
+                }
             }
         }
     }

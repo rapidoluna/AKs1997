@@ -135,10 +135,6 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 747358433}
-    - target: {fileID: 2728463836705781477, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: bonusHealthBarFill
-      value: 
-      objectReference: {fileID: 293012607}
     - target: {fileID: 3299043165269126630, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Name
       value: HUD
@@ -289,17 +285,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 288b114b608c0e44886785e208504c5d, type: 3}
---- !u!114 &293012607 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7239755205601745274, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-  m_PrefabInstance: {fileID: 146810574}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &434047231
 PrefabInstance:
   m_ObjectHideFlags: 0

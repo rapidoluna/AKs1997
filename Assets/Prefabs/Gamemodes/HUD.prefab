@@ -491,6 +491,7 @@ MonoBehaviour:
   healthBarFill: {fileID: 893038475083206117}
   bonusHealthBarFill: {fileID: 7239755205601745274}
   lerpSpeed: 5
+  maxBonusDisplay: 100
 --- !u!1 &2744030452602797647
 GameObject:
   m_ObjectHideFlags: 0

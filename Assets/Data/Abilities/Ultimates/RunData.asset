@@ -20,9 +20,10 @@ MonoBehaviour:
   abilityDuration: 15
   abilityDamage: 0
   abilityRange: 0
+  ultimateChargeSpeed: 10
   moveSpeedMultiplier: 2
-  maxHealthBonus: 0
-  damageMultiplier: 1
+  maxHealthBonus: 75
+  damageMultiplier: 5
   minChargeTime: 0
   maxTargets: 0
   targetAcquisitionSpeed: 0

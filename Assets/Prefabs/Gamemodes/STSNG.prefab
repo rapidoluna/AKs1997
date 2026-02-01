@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6736083725725147081}
   - component: {fileID: 8962133109646336232}
   - component: {fileID: 1288962194942253968}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: STSNG
   m_TagString: Station
   m_Icon: {fileID: 0}

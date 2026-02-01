@@ -4,13 +4,11 @@ public class CrosshairManager : MonoBehaviour
 {
     public static CrosshairManager Instance;
 
-    [Header("Crosshair Elements")]
     [SerializeField] private RectTransform bottomBar;//하단 막대
     [SerializeField] private RectTransform leftBar;//왼쪽 막대
     [SerializeField] private RectTransform rightBar;//오른쪽 막대
     [SerializeField] private CanvasGroup crosshairGroup;//조준점 그룹
 
-    [Header("Settings")]
     [SerializeField] private float baseSpread = 20f;//기본적으로 조준점이 벌려져있을 정도
     [SerializeField] private float minChargeSpread = 5f;//충전식 무기 사용 시 조준점이 모이는 최소 정도
     [SerializeField] private float maxSpread = 80f;//사격 시 조준점이 벌어지는 최대 정도

@@ -2505,7 +2505,7 @@ MonoBehaviour:
   crosshairGroup: {fileID: 0}
   baseSpread: 20
   minChargeSpread: 5
-  maxSpread: 50
+  maxSpread: 80
   restoreSpeed: 10
   jumpExertion: 20
   fadeSpeed: 15

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AccelerateGunData
   m_EditorClassIdentifier: 
   abilityName: ACC-BN
-  abilityIcon: {fileID: 0}
+  abilityIcon: {fileID: 21300000, guid: f61b210fb89425b41a5cf31af8b12f5b, type: 3}
   type: 1
   activeTypes: 0400000002000000
   abilityCooltime: 0

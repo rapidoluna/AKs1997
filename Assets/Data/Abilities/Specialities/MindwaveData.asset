@@ -27,7 +27,7 @@ MonoBehaviour:
   minChargeTime: 0
   maxTargets: 0
   targetAcquisitionSpeed: 0
-  areaSize: {x: 4, y: 10, z: 4}
+  areaSize: {x: 5, y: 5, z: 10}
   pullForce: 0
   useReloadLimit: 0
   maxReloadCount: 3

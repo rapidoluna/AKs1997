@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SmartWinchData
   m_EditorClassIdentifier: 
   abilityName: SWC08
-  abilityIcon: {fileID: 0}
+  abilityIcon: {fileID: 21300000, guid: bd1d7f11714010f4b9bdbffc7001d6b9, type: 3}
   type: 0
   activeTypes: 0300000004000000
   abilityCooltime: 25

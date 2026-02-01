@@ -52,16 +52,42 @@ public class PlayerInteract : MonoBehaviour
 
     private string GetInteractMessage(GameObject obj)
     {
-        CashItem item = obj.GetComponent<CashItem>();
-        if (item != null) return _inventory.Count < maxInventorySize ? $"[F] {item.Data.itemName} 획득" : "인벤토리가 가득 참";
+        if (obj.CompareTag("Station"))
+        {
+            STSNGStation station = obj.GetComponent<STSNGStation>();
+            if (station != null)
+            {
+                if (GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady)
+                {
+                    return "전송이 비활성화됨";
+                }
 
-        STSNGStation station = obj.GetComponent<STSNGStation>();
-        if (GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady)
-            return "전송이 비활성화됨";
-        if (station != null) return _inventory.Count > 0 ? "[F] STS//NG에 물자 전송" : "전송할 물자가 없음";
+                if (station.IsProcessing)
+                {
+                    return "캐시러시 진행 중";
+                }
 
-        MetroEscape metro = obj.GetComponentInParent<MetroEscape>();
-        if (metro != null) return GameStateManager.Instance.IsEscapeReady ? "[홀드 F] 탈출" : "탈출이 비활성화됨";
+                return _inventory.Count > 0 ? "[F] STS//NG에 물자 전송" : "전송할 물자가 없음";
+            }
+        }
+
+        if (obj.CompareTag("Item"))
+        {
+            CashItem item = obj.GetComponent<CashItem>();
+            if (item != null)
+            {
+                return _inventory.Count < maxInventorySize ? $"[F] {item.Data.itemName} 획득" : "인벤토리가 가득 참";
+            }
+        }
+
+        if (obj.CompareTag("Metro"))
+        {
+            MetroEscape metro = obj.GetComponentInParent<MetroEscape>();
+            if (metro != null)
+            {
+                return GameStateManager.Instance.IsEscapeReady ? "[홀드 F] 탈출" : "탈출이 비활성화됨";
+            }
+        }
 
         return null;
     }

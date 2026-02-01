@@ -4,6 +4,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private EnemyData data;
     private int _currentHealth;
+    private bool _isDead = false;
 
     private void Awake()
     {
@@ -12,8 +13,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             _currentHealth = data.maxHealth;
         }
     }
-
-    private bool _isDead = false;
 
     public void TakeDamage(int damage)
     {
@@ -32,20 +31,24 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (_isDead) return;
         _isDead = true;
 
-        DropItem();
+        DropItems();
 
         Destroy(gameObject);
     }
 
-    private void DropItem()
+    private void DropItems()
     {
-        if (data == null || data.dropItemPrefab == null) return;
+        if (data == null || data.dropTable == null || data.dropTable.Count == 0) return;
 
-        // 확률 체크 (EnemyData의 dropRate 사용)
-        float randomValue = Random.Range(0f, 100f);
-        if (randomValue <= data.dropRate)
+        foreach (var drop in data.dropTable)
         {
-            Instantiate(data.dropItemPrefab, transform.position, Quaternion.identity);
+            if (drop.itemPrefab == null) continue;
+
+            float randomValue = Random.Range(0f, 100f);
+            if (randomValue <= drop.dropRate)
+            {
+                Instantiate(drop.itemPrefab, transform.position, Quaternion.identity);
+            }
         }
     }
 }

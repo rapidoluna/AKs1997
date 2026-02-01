@@ -20,8 +20,9 @@ MonoBehaviour:
   attackRange: 10
   attackDamage: 14
   attackCooldown: 0.75
-  dropItemPrefab: {fileID: 7211311765366701037, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
-  dropRate: 100
+  dropTable:
+  - itemPrefab: {fileID: 7211311765366701037, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
+    dropRate: 100
   bulletPrefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
   bulletSpeed: 1800
   enemyPrefab: {fileID: 380913658723383205, guid: 912948c5270d9244caf09555a011b8e7, type: 3}

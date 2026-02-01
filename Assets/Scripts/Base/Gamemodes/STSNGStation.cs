@@ -5,10 +5,13 @@ using UnityEngine;
 public class STSNGStation : MonoBehaviour
 {
     private bool _isProcessing = false;
-    [SerializeField] private float _timer = 60f;
+    [SerializeField] private float _maxTimer = 60f;
+    private float _currentTimer;
     private int _storedCash = 0;
     private int _currentDepositCount = 0;
     [SerializeField] private int maxCapacity = 3;
+
+    public bool IsProcessing => _isProcessing;
 
     public bool CanAcceptItems(int count)
     {
@@ -20,6 +23,7 @@ public class STSNGStation : MonoBehaviour
     {
         if (_isProcessing || items.Count > maxCapacity) return;
 
+        _currentTimer = _maxTimer;
         int totalValue = 0;
         _currentDepositCount = items.Count;
 
@@ -41,16 +45,16 @@ public class STSNGStation : MonoBehaviour
 
         if (CashRushHUD.Instance != null)
         {
-            CashRushHUD.Instance.ShowNotification($"캐시러시 시작");
+            CashRushHUD.Instance.ShowNotification("캐시러시 시작");
             CashRushHUD.Instance.SetTimerActive(true, _storedCash);
         }
 
-        while (_timer > 0)
+        while (_currentTimer > 0)
         {
-            _timer -= Time.deltaTime;
+            _currentTimer -= Time.deltaTime;
             if (CashRushHUD.Instance != null)
             {
-                CashRushHUD.Instance.UpdateTimer(_timer);
+                CashRushHUD.Instance.UpdateTimer(_currentTimer);
             }
             yield return null;
         }
@@ -70,6 +74,4 @@ public class STSNGStation : MonoBehaviour
         _storedCash = 0;
         _currentDepositCount = 0;
     }
-    //프로퍼티
-    public bool IsProcessing => _isProcessing;
 }

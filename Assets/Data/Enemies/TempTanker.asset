@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb23e165b022934894d333507b690ec, type: 3}
+  m_Name: TempTanker
+  m_EditorClassIdentifier: 
+  pattern: 3
+  enemyName: Tanker Enemy
+  maxHealth: 150
+  walkSpeed: 4
+  runSpeed: 4.8
+  detectRange: 7
+  attackRange: 7
+  attackDamage: 20
+  attackCooldown: 1
+  dropTable:
+  - itemPrefab: {fileID: 7211311765366701037, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
+    dropRate: 100
+  bulletPrefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
+  bulletSpeed: 1600
+  dodgeChance: 0.3
+  meleeRange: 3
+  meleeDamage: 30
+  meleeCooldown: 1.5
+  enemyPrefab: {fileID: 380913658723383205, guid: 912948c5270d9244caf09555a011b8e7, type: 3}
+  enemyIcon: {fileID: 0}

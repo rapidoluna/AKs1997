@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 9031425461348426681}
   - component: {fileID: 7995758507658134210}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Agile Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

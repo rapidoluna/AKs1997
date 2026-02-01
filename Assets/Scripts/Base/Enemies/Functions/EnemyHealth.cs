@@ -5,6 +5,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [SerializeField] private EnemyData data;
     private int _currentHealth;
     private bool _isDead = false;
+    private EnemySpawn _mySpawner;
 
     private void Awake()
     {
@@ -14,9 +15,29 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         }
     }
 
+    public void SetSpawner(EnemySpawn spawner)
+    {
+        _mySpawner = spawner;
+    }
+
     public void TakeDamage(int damage)
     {
         if (_isDead) return;
+
+        EnemyPatternController pattern = GetComponent<EnemyPatternController>();
+        if (pattern != null) pattern.TryDodge();
+
+        EnemyDetect detector = GetComponent<EnemyDetect>();
+        if (detector != null)
+        {
+            detector.StartForceTracking(10f);
+
+            EnemyController controller = GetComponent<EnemyController>();
+            if (controller != null && controller.player != null && EnemyGroup.Instance != null)
+            {
+                EnemyGroup.Instance.ReportTarget(controller.player.position, detector);
+            }
+        }
 
         _currentHealth -= damage;
 
@@ -31,8 +52,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (_isDead) return;
         _isDead = true;
 
-        DropItems();
+        if (_mySpawner != null)
+        {
+            _mySpawner.OnEnemyDestroyed();
+        }
 
+        DropItems();
         Destroy(gameObject);
     }
 

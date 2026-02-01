@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour
     private GameObject _owner;
     private Vector3 _startPosition;
 
+    [SerializeField] private float soundRadius = 5f;
+
     public void Init(float speed, int damage, float range, GameObject owner)
     {
         _speed = speed;
@@ -21,9 +23,30 @@ public class Projectile : MonoBehaviour
     {
         transform.Translate(Vector3.forward * _speed * Time.deltaTime);
 
+        if (_owner != null && _owner.CompareTag("Player"))
+        {
+            DetectNearbyEnemies();
+        }
+
         if (Vector3.Distance(_startPosition, transform.position) >= _range)
         {
             gameObject.SetActive(false);
+        }
+    }
+
+    private void DetectNearbyEnemies()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, soundRadius);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("Enemy"))
+            {
+                EnemyDetect detector = hitCollider.GetComponent<EnemyDetect>();
+                if (detector != null)
+                {
+                    detector.OnProjectileDetected(_owner.transform.position);
+                }
+            }
         }
     }
 

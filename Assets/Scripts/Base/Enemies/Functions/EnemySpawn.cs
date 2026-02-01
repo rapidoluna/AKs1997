@@ -3,24 +3,31 @@ using UnityEngine;
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private int maxEnemies = 10;
 
-    private float _lastSpawnTime;
     private int _currentEnemyCount;
 
-    private void Update()
+    public GameObject SpawnEnemyExplicitly()
     {
-        if (_currentEnemyCount < maxEnemies && Time.time >= _lastSpawnTime + spawnInterval)
+        if (_currentEnemyCount >= maxEnemies) return null;
+
+        GameObject enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        RegisterEnemy(enemy);
+        _currentEnemyCount++;
+        return enemy;
+    }
+
+    private void RegisterEnemy(GameObject enemy)
+    {
+        EnemyHealth health = enemy.GetComponent<EnemyHealth>();
+        if (health != null)
         {
-            SpawnEnemy();
+            health.SetSpawner(this);
         }
     }
 
-    private void SpawnEnemy()
+    public void OnEnemyDestroyed()
     {
-        Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-        _lastSpawnTime = Time.time;
-        _currentEnemyCount++;
+        _currentEnemyCount--;
     }
 }

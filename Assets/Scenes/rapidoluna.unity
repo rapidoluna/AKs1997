@@ -240,10 +240,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: STSNG
       objectReference: {fileID: 0}
-    - target: {fileID: 5940223725498548707, guid: 288b114b608c0e44886785e208504c5d, type: 3}
-      propertyPath: m_TagString
-      value: Station
-      objectReference: {fileID: 0}
     - target: {fileID: 8727159523695679128, guid: 288b114b608c0e44886785e208504c5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -577,14 +573,6 @@ PrefabInstance:
     - target: {fileID: 5940223725498548707, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
       propertyPath: m_Name
       value: Metro
-      objectReference: {fileID: 0}
-    - target: {fileID: 5940223725498548707, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
-      propertyPath: m_TagString
-      value: Metro
-      objectReference: {fileID: 0}
-    - target: {fileID: 6736083725725147081, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
-      propertyPath: m_Size.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8727159523695679128, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
       propertyPath: m_LocalPosition.x

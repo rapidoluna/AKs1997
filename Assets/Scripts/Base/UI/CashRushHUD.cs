@@ -15,7 +15,7 @@ public class CashRushHUD : MonoBehaviour
 
     private int _totalScore = 0;//플레이어 총 점수
 
-    public int CurrentScore => _totalScore; // 외부에서 점수를 읽기 전용으로 참조 가능
+    public int CurrentScore => _totalScore;
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class CashRushHUD : MonoBehaviour
 
         if (active && payoutText != null)
         {
-            payoutText.text = $"+ {potentialAmount:N0} 캐시";
+            payoutText.text = $"+ {potentialAmount:N0}";
         }
     }
 
@@ -50,7 +50,7 @@ public class CashRushHUD : MonoBehaviour
     private void UpdateScoreUI()
     {
         if (scoreText != null)
-            scoreText.text = $"현재 캐시 : {_totalScore:N0}";
+            scoreText.text = $"{_totalScore:N0}";
     }
 
     public void ShowNotification(string message)

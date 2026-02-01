@@ -12,7 +12,8 @@ public class STSNGStation : MonoBehaviour
 
     public bool CanAcceptItems(int count)
     {
-        return !_isProcessing && count <= maxCapacity;
+        bool isEscapeReady = GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady;
+        return !_isProcessing && count <= maxCapacity && !isEscapeReady;
     }
 
     public void DepositItems(List<ItemData> items)

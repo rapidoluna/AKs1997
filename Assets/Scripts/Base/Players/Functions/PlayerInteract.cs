@@ -56,6 +56,8 @@ public class PlayerInteract : MonoBehaviour
         if (item != null) return _inventory.Count < maxInventorySize ? $"[F] {item.Data.itemName} 획득" : "인벤토리가 가득 참";
 
         STSNGStation station = obj.GetComponent<STSNGStation>();
+        if (GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady)
+            return "전송이 비활성화됨";
         if (station != null) return _inventory.Count > 0 ? "[F] STS//NG에 물자 전송" : "전송할 물자가 없음";
 
         MetroEscape metro = obj.GetComponentInParent<MetroEscape>();
@@ -117,7 +119,7 @@ public class PlayerInteract : MonoBehaviour
             {
                 _inventory.Add(itemScript.Data);
                 if (ItemInventoryUI.Instance != null) ItemInventoryUI.Instance.AddItemIcon(itemScript.Data.itemIcon);
-                if (CashRushHUD.Instance != null) CashRushHUD.Instance.ShowNotification(itemScript.Data.itemName);
+                if (CashRushHUD.Instance != null) CashRushHUD.Instance.ShowNotification($"{itemScript.Data.itemName} 획득");
                 itemScript.Collect();
                 return;
             }

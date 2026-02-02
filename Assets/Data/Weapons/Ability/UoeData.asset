@@ -19,11 +19,14 @@ MonoBehaviour:
   weaponPrefab: {fileID: 0}
   bulletPrefab: {fileID: 0}
   weaponIcon: {fileID: 21300000, guid: 677d659e4abfcef479f5ad1b49ab5caf, type: 3}
+  casingPrefab: {fileID: 1013923840026961610, guid: 242aad98e67ea904f9934314a4ddb967, type: 3}
+  ejectCasing: 1
+  ejectionForce: 5
   magSize: 125
   weaponDamage: 15
   effectiveRange: 65
   bulletSpeed: 1800
-  fireRate: 1800
+  fireRate: 3000
   tacticalReloadTimer: 1.7
   emptyReloadTimer: 1.75
   usingBullet: 1

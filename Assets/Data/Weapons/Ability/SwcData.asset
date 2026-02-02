@@ -19,7 +19,10 @@ MonoBehaviour:
   weaponPrefab: {fileID: 0}
   bulletPrefab: {fileID: 0}
   weaponIcon: {fileID: 0}
-  magSize: 1
+  casingPrefab: {fileID: 0}
+  ejectCasing: 0
+  ejectionForce: 5
+  magSize: 0
   weaponDamage: 0
   effectiveRange: 0
   bulletSpeed: 0

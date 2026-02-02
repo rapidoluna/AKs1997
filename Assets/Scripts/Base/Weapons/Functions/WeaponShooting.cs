@@ -14,6 +14,7 @@ public class WeaponShooting : MonoBehaviour
 
     [SerializeField] private WeaponRecoilCamera recoilCamera;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform shellEjectPoint;
     [SerializeField] private float baseSpread = 2.0f;
 
     private float _currentCharge = 0f;
@@ -57,12 +58,7 @@ public class WeaponShooting : MonoBehaviour
     private void SetPostReloadDelay(float delay)
     {
         _lastFireTime = Time.time + delay;
-
-        if (_remainingReloads > 0)
-        {
-            _remainingReloads--;
-            Debug.Log($"[WeaponShooting] 남은 재장전 가능 횟수: {_remainingReloads}");
-        }
+        if (_remainingReloads > 0) _remainingReloads--;
     }
 
     public void Init(WeaponData data)
@@ -72,9 +68,7 @@ public class WeaponShooting : MonoBehaviour
     }
 
     public WeaponData GetWeaponData() => _data;
-
     public void SetDamageMultiplier(float multiplier) => _damageMultiplier = multiplier;
-
     public void SetReloadLimit(int maxReloads) => _remainingReloads = maxReloads;
 
     private void Update()
@@ -205,7 +199,11 @@ public class WeaponShooting : MonoBehaviour
         _lastFireTime = Time.time + fireInterval;
 
         if (_data.Firing[0] == FiringType.Burst) StartCoroutine(BurstRoutine());
-        else if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet)) Fire();
+        else if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
+        {
+            for (int i = 0; i < _data.usingBullet; i++) EjectCasing();
+            Fire();
+        }
     }
 
     private void FireChargeSingle()
@@ -214,6 +212,8 @@ public class WeaponShooting : MonoBehaviour
         float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
         if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
         {
+            for (int i = 0; i < _data.usingBullet; i++) EjectCasing();
+
             float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
             if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult * (1f + chargeRatio));
 
@@ -257,6 +257,7 @@ public class WeaponShooting : MonoBehaviour
             if (_ammo != null && _ammo.IsEmpty) break;
             if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
             {
+                for (int j = 0; j < _data.usingBullet; j++) EjectCasing();
                 if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
                 GenerateProjectile(speed, spread, finalDamage);
             }
@@ -272,9 +273,30 @@ public class WeaponShooting : MonoBehaviour
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, _data.effectiveRange) ? hit.point : ray.GetPoint(_data.effectiveRange);
 
         bullet.transform.position = firePoint.position;
-        bullet.transform.rotation = Quaternion.LookRotation((targetPoint - firePoint.position).normalized) * Quaternion.Euler(UnityEngine.Random.Range(-spreadRange, spreadRange), UnityEngine.Random.Range(-spreadRange, spreadRange), 0);
+        float randX = UnityEngine.Random.Range(-spreadRange, spreadRange);
+        float randY = UnityEngine.Random.Range(-spreadRange, spreadRange);
+        bullet.transform.rotation = Quaternion.LookRotation((targetPoint - firePoint.position).normalized) * Quaternion.Euler(randX, randY, 0);
 
         Projectile p = bullet.GetComponent<Projectile>();
         if (p != null) p.Init(speed, damage, _data.effectiveRange, transform.root.gameObject);
+    }
+
+    private void EjectCasing()
+    {
+        if (_data == null || !_data.ejectCasing || _data.casingPrefab == null || shellEjectPoint == null) return;
+
+        GameObject casing = Instantiate(_data.casingPrefab, shellEjectPoint.position, shellEjectPoint.rotation);
+        Rigidbody rb = casing.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            float randX = UnityEngine.Random.Range(0.8f, 1.2f);
+            float randY = UnityEngine.Random.Range(0.3f, 0.7f);
+            float randZ = UnityEngine.Random.Range(-0.2f, 0.2f);
+
+            Vector3 ejectDir = (shellEjectPoint.right * randX + shellEjectPoint.up * randY + shellEjectPoint.forward * randZ).normalized;
+            rb.AddForce(ejectDir * _data.ejectionForce, ForceMode.Impulse);
+            rb.AddTorque(UnityEngine.Random.insideUnitSphere * 15f, ForceMode.Impulse);
+        }
+        Destroy(casing, 2f);
     }
 }

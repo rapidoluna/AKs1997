@@ -285,16 +285,16 @@ public class WeaponShooting : MonoBehaviour
         if (_data == null || !_data.ejectCasing || _data.casingPrefab == null || shellEjectPoints == null || shellEjectPoints.Length == 0) return;
 
         Transform targetPoint = shellEjectPoints[index % shellEjectPoints.Length];
-
         GameObject casing = Instantiate(_data.casingPrefab, targetPoint.position, targetPoint.rotation);
         Rigidbody rb = casing.GetComponent<Rigidbody>();
+
         if (rb != null)
         {
-            float randX = UnityEngine.Random.Range(-0.1f, 0.1f);
-            float randY = UnityEngine.Random.Range(0.4f, 0.6f);
-            float randZ = UnityEngine.Random.Range(0.9f, 1.1f);
+            float sideForce = UnityEngine.Random.Range(0.9f, 1.1f);
+            float upForce = UnityEngine.Random.Range(0.6f, 0.9f);
+            float forwardForce = UnityEngine.Random.Range(-0.1f, 0.1f);
 
-            Vector3 ejectDir = targetPoint.TransformDirection(new Vector3(randX, randY, randZ)).normalized;
+            Vector3 ejectDir = (targetPoint.right * sideForce + targetPoint.up * upForce + targetPoint.forward * forwardForce).normalized;
 
             rb.AddForce(ejectDir * _data.ejectionForce, ForceMode.Impulse);
             rb.AddTorque(UnityEngine.Random.insideUnitSphere * 15f, ForceMode.Impulse);

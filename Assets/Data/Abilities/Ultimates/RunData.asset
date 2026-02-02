@@ -1,36 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 053099d81a47b16428106567261f3441, type: 3}
-  m_Name: RunData
-  m_EditorClassIdentifier: 
-  abilityName: Runner
-  abilityIcon: {fileID: 21300000, guid: 9da947f3eb3ef70409b28ae37142631b, type: 3}
-  type: 1
-  activeTypes: 02000000
-  abilityCooltime: 0
-  abilityDuration: 15
-  abilityDamage: 0
-  abilityRange: 0
-  ultimateChargeSpeed: 10
-  moveSpeedMultiplier: 2
-  maxHealthBonus: 75
-  damageMultiplier: 5
-  minChargeTime: 0
-  maxTargets: 0
-  targetAcquisitionSpeed: 0
-  areaSize: {x: 1, y: 1, z: 1}
-  pullForce: 0
-  useReloadLimit: 0
-  maxReloadCount: 3
-  abilityPrefab: {fileID: 0}
-  rewardWeapon: {fileID: 0}
-  trackingMark: {fileID: 0}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5ae663c701bb5790c5ee45811642c0554a8632739238499e9af2bcf60c9e7b55
+size 943

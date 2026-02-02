@@ -1,36 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 053099d81a47b16428106567261f3441, type: 3}
-  m_Name: SmartWinchData
-  m_EditorClassIdentifier: 
-  abilityName: SWC08
-  abilityIcon: {fileID: 21300000, guid: bd1d7f11714010f4b9bdbffc7001d6b9, type: 3}
-  type: 0
-  activeTypes: 0300000004000000
-  abilityCooltime: 25
-  abilityDuration: 0
-  abilityDamage: 0
-  abilityRange: 15
-  ultimateChargeSpeed: 0
-  moveSpeedMultiplier: 1
-  maxHealthBonus: 0
-  damageMultiplier: 1
-  minChargeTime: 0.05
-  maxTargets: 3
-  targetAcquisitionSpeed: 2.5
-  areaSize: {x: 1, y: 1, z: 1}
-  pullForce: 20
-  useReloadLimit: 0
-  maxReloadCount: 3
-  abilityPrefab: {fileID: 8312056155373953127, guid: 23c07708e57e3c54fabca2389b1994fa, type: 3}
-  rewardWeapon: {fileID: 1494362112671429788, guid: d5c4f05e4cb3f4e44a584d7ae65ede95, type: 3}
-  trackingMark: {fileID: 6378361969594758155, guid: a5f6966cb1fabb64e9b80d32cbb74f1a, type: 3}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7e464adc426a7c55f9a562bed7d60e858d69206aeb5e0a07bc0834bdb9829298
+size 1163

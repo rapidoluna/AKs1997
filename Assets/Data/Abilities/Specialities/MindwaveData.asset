@@ -1,36 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 053099d81a47b16428106567261f3441, type: 3}
-  m_Name: MindwaveData
-  m_EditorClassIdentifier: 
-  abilityName: Mind Wave
-  abilityIcon: {fileID: 0}
-  type: 0
-  activeTypes: 01000000
-  abilityCooltime: 20
-  abilityDuration: 0
-  abilityDamage: 95
-  abilityRange: 5
-  ultimateChargeSpeed: 0
-  moveSpeedMultiplier: 1
-  maxHealthBonus: 0
-  damageMultiplier: 1
-  minChargeTime: 0
-  maxTargets: 0
-  targetAcquisitionSpeed: 0
-  areaSize: {x: 5, y: 5, z: 10}
-  pullForce: 0
-  useReloadLimit: 0
-  maxReloadCount: 3
-  abilityPrefab: {fileID: 0}
-  rewardWeapon: {fileID: 0}
-  trackingMark: {fileID: 0}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ccac4fe1a6691fe75940f27e70e08a7469ec71dd8b6a5262f1a7e3f7759a688c
+size 895

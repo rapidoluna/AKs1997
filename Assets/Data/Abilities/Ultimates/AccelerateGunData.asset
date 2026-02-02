@@ -1,36 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 053099d81a47b16428106567261f3441, type: 3}
-  m_Name: AccelerateGunData
-  m_EditorClassIdentifier: 
-  abilityName: ACC-BN
-  abilityIcon: {fileID: 21300000, guid: f61b210fb89425b41a5cf31af8b12f5b, type: 3}
-  type: 1
-  activeTypes: 0400000002000000
-  abilityCooltime: 0
-  abilityDuration: 0
-  abilityDamage: 0
-  abilityRange: 0
-  ultimateChargeSpeed: 0.5
-  moveSpeedMultiplier: 1.35
-  maxHealthBonus: 50
-  damageMultiplier: 1
-  minChargeTime: 0
-  maxTargets: 0
-  targetAcquisitionSpeed: 0
-  areaSize: {x: 1, y: 1, z: 1}
-  pullForce: 0
-  useReloadLimit: 1
-  maxReloadCount: 3
-  abilityPrefab: {fileID: 0}
-  rewardWeapon: {fileID: 1494362112671429788, guid: 541eafedcb6175d4bae251a85673415d, type: 3}
-  trackingMark: {fileID: 0}
+version https://git-lfs.github.com/spec/v1
+oid sha256:dec1ee0a85181267df121a5d777f5926a9a6bad755f2d6da5e944bec5be21bd6
+size 1031

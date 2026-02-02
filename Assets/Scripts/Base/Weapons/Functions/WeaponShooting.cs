@@ -9,6 +9,7 @@ public class WeaponShooting : MonoBehaviour
     private WeaponAmmo _ammo;
     private WeaponReloading _reloading;
     private WeaponAiming _aiming;
+    private PlayerHealing _healing;
     private float _lastFireTime;
     private Camera _mainCamera;
 
@@ -30,6 +31,7 @@ public class WeaponShooting : MonoBehaviour
         _ammo = GetComponent<WeaponAmmo>();
         _reloading = GetComponent<WeaponReloading>();
         _aiming = GetComponent<WeaponAiming>();
+        _healing = transform.root.GetComponent<PlayerHealing>();
         _mainCamera = Camera.main;
 
         if (recoilCamera == null && _mainCamera != null)
@@ -71,7 +73,9 @@ public class WeaponShooting : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerHealth.IsDead || _data == null || (_reloading != null && _reloading.IsReloading))
+        if (PlayerHealth.IsDead || _data == null ||
+            (_reloading != null && _reloading.IsReloading) ||
+            (_healing != null && _healing.IsHealing))
         {
             IsShooting = false;
             _currentCharge = 0f;

@@ -64,6 +64,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
     }
 
+    public void Heal(float amount)
+    {
+        if (IsDead) return;
+        currentHealth = Mathf.Min(currentHealth + amount, BaseMaxHealth);
+    }
+
+    public bool IsFullHealth()
+    {
+        return currentHealth >= BaseMaxHealth;
+    }
+
     private void Die()
     {
         if (IsDead) return;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GunManiacData
   m_EditorClassIdentifier: 
   abilityName: Runner Gunner
-  abilityIcon: {fileID: 0}
+  abilityIcon: {fileID: 21300000, guid: 9da947f3eb3ef70409b28ae37142631b, type: 3}
   type: 1
   activeTypes: 0200000005000000
   abilityCooltime: 0

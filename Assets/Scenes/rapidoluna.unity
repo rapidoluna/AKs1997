@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SubtractiveShadowColor: {r: 0.42519584, g: 0.47840664, b: 0.6132076, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 5f0bedbcfe454ff45bf9aedccc78c2ff, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -135,14 +135,14 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 747358433}
-    - target: {fileID: 2728463836705781477, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-      propertyPath: healPreviewBarFill
-      value: 
-      objectReference: {fileID: 564337214}
     - target: {fileID: 3299043165269126630, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 5113411408562834800, guid: 6a26230778dc67142be8fdae76125072, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1676415478}
     - target: {fileID: 6022451921185764736, guid: 6a26230778dc67142be8fdae76125072, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -285,11 +285,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 288b114b608c0e44886785e208504c5d, type: 3}
---- !u!1 &362288653 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2705413580982734328, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-  m_PrefabInstance: {fileID: 747358430}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &434047231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -351,17 +346,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
---- !u!114 &564337214 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5266353011966465751, guid: 6a26230778dc67142be8fdae76125072, type: 3}
-  m_PrefabInstance: {fileID: 146810574}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &662326329
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -431,10 +415,6 @@ PrefabInstance:
       propertyPath: overlayImage
       value: 
       objectReference: {fileID: 922085540}
-    - target: {fileID: 5842246085799575771, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: characterData
-      value: 
-      objectReference: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
     - target: {fileID: 6736942281001848004, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -475,18 +455,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7085546726131970602, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: 'weaponSlots.Array.data[0]'
-      value: 
-      objectReference: {fileID: 362288653}
-    - target: {fileID: 7085546726131970602, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: 'weaponSlots.Array.data[1]'
-      value: 
-      objectReference: {fileID: 1253856416}
-    - target: {fileID: 8590870940800165938, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: characterData
-      value: 
-      objectReference: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
+    - target: {fileID: 7626359852371170099, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: m_Antialiasing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8720879077362830896, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: glitchOverlay
       value: 
@@ -498,10 +470,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8913491952459388385, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1640857300}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
 --- !u!114 &747358433 stripped
 MonoBehaviour:
@@ -593,36 +562,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
---- !u!1 &1253856416 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5443666614230908247, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-  m_PrefabInstance: {fileID: 747358430}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1522249744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8612817926721763514, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
   m_PrefabInstance: {fileID: 747358430}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1640857287 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8913491952459388385, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+--- !u!20 &1676415478 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 6480854708957857858, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
   m_PrefabInstance: {fileID: 747358430}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1640857300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1640857287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bae043bf397bcce47b5ca613ba308c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healDuration: 1
-  healAmount: 30
-  maxMedkits: 5
 --- !u!1001 &1647615359129293082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -631,10 +580,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 947083684077263685, guid: 2096fef879f548c4fa62771eb6fe8c6f, type: 3}
-      propertyPath: m_TagString
-      value: Cover
-      objectReference: {fileID: 0}
     - target: {fileID: 3256278133636887522, guid: 2096fef879f548c4fa62771eb6fe8c6f, type: 3}
       propertyPath: m_Name
       value: Test Map

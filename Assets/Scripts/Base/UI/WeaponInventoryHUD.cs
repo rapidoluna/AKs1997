@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class WeaponInventoryHUD : MonoBehaviour
 {
@@ -8,12 +9,12 @@ public class WeaponInventoryHUD : MonoBehaviour
     [Header("Slot 1 (Main)")]
     [SerializeField] private RectTransform slot1Transform;
     [SerializeField] private Image slot1Icon;
-    [SerializeField] private Text slot1AmmoText;
+    [SerializeField] private TextMeshProUGUI slot1AmmoText; // TMP 타입 유지
 
     [Header("Slot 2 (Sub)")]
     [SerializeField] private RectTransform slot2Transform;
     [SerializeField] private Image slot2Icon;
-    [SerializeField] private Text slot2AmmoText;
+    [SerializeField] private TextMeshProUGUI slot2AmmoText; // TMP 타입 유지
 
     [Header("Common Reload Settings")]
     [SerializeField] private GameObject commonReloadPrompt;
@@ -36,9 +37,12 @@ public class WeaponInventoryHUD : MonoBehaviour
         UpdateCommonReloadPrompt();
     }
 
-    private void UpdateSlot(int index, RectTransform rect, Image icon, Text ammoText)
+    // 매개변수 타입을 TextMeshProUGUI로 수정
+    private void UpdateSlot(int index, RectTransform rect, Image icon, TextMeshProUGUI ammoText)
     {
-        GameObject slotObj = controller.Slots[index];
+        if (rect == null) return;
+
+        GameObject slotObj = (index < controller.Slots.Length) ? controller.Slots[index] : null;
         bool isActive = controller.CurrentIndex == index;
 
         if (slotObj == null)
@@ -50,17 +54,25 @@ public class WeaponInventoryHUD : MonoBehaviour
         rect.gameObject.SetActive(true);
         WeaponShooting shooting = slotObj.GetComponent<WeaponShooting>();
         WeaponAmmo ammo = slotObj.GetComponent<WeaponAmmo>();
+
+        if (shooting == null || ammo == null) return;
+
         WeaponData data = shooting.GetWeaponData();
 
         rect.sizeDelta = Vector2.Lerp(rect.sizeDelta, isActive ? activeSize : inactiveSize, Time.deltaTime * lerpSpeed);
 
-        icon.sprite = data.weaponIcon;
-        icon.color = Color.Lerp(icon.color, isActive ? activeColor : inactiveColor, Time.deltaTime * lerpSpeed);
+        if (icon != null && data != null)
+        {
+            icon.sprite = data.weaponIcon;
+            icon.color = Color.Lerp(icon.color, isActive ? activeColor : inactiveColor, Time.deltaTime * lerpSpeed);
+        }
 
         if (ammoText != null)
         {
             if (isActive)
             {
+                ammoText.overflowMode = TextOverflowModes.Overflow;
+
                 ammoText.text = $"{ammo.CurrentAmmo} / {data.magSize}";
                 rect.SetAsLastSibling();
             }
@@ -76,6 +88,8 @@ public class WeaponInventoryHUD : MonoBehaviour
         if (commonReloadPrompt == null) return;
 
         int currentIndex = controller.CurrentIndex;
+        if (currentIndex < 0 || currentIndex >= controller.Slots.Length) return;
+
         GameObject activeWeapon = controller.Slots[currentIndex];
 
         if (activeWeapon == null)

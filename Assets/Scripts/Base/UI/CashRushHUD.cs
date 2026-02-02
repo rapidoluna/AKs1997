@@ -1,15 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class CashRushHUD : MonoBehaviour
 {
     public static CashRushHUD Instance;
 
-    [SerializeField] private Text scoreText;//플레이어 점수
-    [SerializeField] private Text timerText;//캐시러시 완료까지 남은 시간
-    [SerializeField] private Text payoutText;//캐시러시를 통해 추가될 점수
-    [SerializeField] private Text notifyText;//알림
+    [SerializeField] private TextMeshProUGUI scoreText;//플레이어 점수
+    [SerializeField] private TextMeshProUGUI timerText;//캐시러시 완료까지 남은 시간
+    [SerializeField] private TextMeshProUGUI payoutText;//캐시러시를 통해 추가될 점수
+    [SerializeField] private TextMeshProUGUI notifyText;//알림
     [SerializeField] private GameObject notifyPanel;//알림 패널
     [SerializeField] private GameObject timerPanel;//캐시러시 동안 표시될 패널
 

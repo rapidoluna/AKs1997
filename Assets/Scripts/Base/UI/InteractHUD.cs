@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ public class InteractHUD : MonoBehaviour
     public static InteractHUD Instance;
 
     [SerializeField] private GameObject interactPanel;
-    [SerializeField] private Text interactText;
+    [SerializeField] private TextMeshProUGUI interactText;
     [SerializeField] private GameObject interactProgressRoot;
     [SerializeField] private Image progressFillImage;
 

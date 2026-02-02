@@ -32,9 +32,6 @@ public class WeaponData : ScriptableObject
     public GameObject weaponPrefab;//무기 모델링
     public GameObject bulletPrefab;//탄환 프리팹
     public Sprite weaponIcon;//무기 아이콘
-    public GameObject casingPrefab;//탄피
-    public bool ejectCasing = true;//탄피 배출 여부
-    public float ejectionForce = 5f;//탄피 배출력(튀어나가는 힘)
 
     //장탄 수, 대미지, 유효 사거리, 탄속, 연사력
     //탄속과 연사력은 모두 분당 계산임.

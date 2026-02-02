@@ -14,7 +14,6 @@ public class WeaponShooting : MonoBehaviour
 
     [SerializeField] private WeaponRecoilCamera recoilCamera;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private Transform[] shellEjectPoints;
     [SerializeField] private float baseSpread = 2.0f;
 
     private float _currentCharge = 0f;
@@ -200,7 +199,6 @@ public class WeaponShooting : MonoBehaviour
         if (_data.Firing[0] == FiringType.Burst) StartCoroutine(BurstRoutine());
         else if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
         {
-            for (int i = 0; i < _data.usingBullet; i++) EjectCasing(i);
             Fire();
         }
     }
@@ -211,8 +209,6 @@ public class WeaponShooting : MonoBehaviour
         float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
         if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
         {
-            for (int i = 0; i < _data.usingBullet; i++) EjectCasing(i);
-
             float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
             if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult * (1f + chargeRatio));
 
@@ -256,7 +252,6 @@ public class WeaponShooting : MonoBehaviour
             if (_ammo != null && _ammo.IsEmpty) break;
             if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
             {
-                for (int j = 0; j < _data.usingBullet; j++) EjectCasing(j);
                 if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
                 GenerateProjectile(speed, spread, finalDamage);
             }
@@ -278,27 +273,5 @@ public class WeaponShooting : MonoBehaviour
 
         Projectile p = bullet.GetComponent<Projectile>();
         if (p != null) p.Init(speed, damage, _data.effectiveRange, transform.root.gameObject);
-    }
-
-    private void EjectCasing(int index)
-    {
-        if (_data == null || !_data.ejectCasing || _data.casingPrefab == null || shellEjectPoints == null || shellEjectPoints.Length == 0) return;
-
-        Transform targetPoint = shellEjectPoints[index % shellEjectPoints.Length];
-        GameObject casing = Instantiate(_data.casingPrefab, targetPoint.position, targetPoint.rotation);
-        Rigidbody rb = casing.GetComponent<Rigidbody>();
-
-        if (rb != null)
-        {
-            float sideForce = UnityEngine.Random.Range(0.9f, 1.1f);
-            float upForce = UnityEngine.Random.Range(0.6f, 0.9f);
-            float forwardForce = UnityEngine.Random.Range(-0.1f, 0.1f);
-
-            Vector3 ejectDir = (targetPoint.right * sideForce + targetPoint.up * upForce + targetPoint.forward * forwardForce).normalized;
-
-            rb.AddForce(ejectDir * _data.ejectionForce, ForceMode.Impulse);
-            rb.AddTorque(UnityEngine.Random.insideUnitSphere * 15f, ForceMode.Impulse);
-        }
-        Destroy(casing, 2f);
     }
 }

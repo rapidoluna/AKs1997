@@ -15,8 +15,8 @@ public class PlayerCameraEffects : MonoBehaviour
     [SerializeField] private float crouchBobAmount = 0.03f;
 
     [Header("Landing Impact")]
-    [SerializeField] private float landAmount = 0.05f;
-    [SerializeField] private float landDuration = 0.05f;
+    [SerializeField] private float landAmount = 0.025f;
+    [SerializeField] private float landDuration = 0.025f;
 
     private float defaultY;
     private float timer;

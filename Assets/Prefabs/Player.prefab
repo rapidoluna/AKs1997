@@ -226,8 +226,8 @@ MonoBehaviour:
   runBobAmount: 0.065
   crouchBobSpeed: 7
   crouchBobAmount: 0.03
-  landAmount: 0.05
-  landDuration: 0.05
+  landAmount: 0.025
+  landDuration: 0.025
 --- !u!114 &843905735666036510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +402,7 @@ GameObject:
   - component: {fileID: 6004719572005106953}
   - component: {fileID: 5842246085799575771}
   - component: {fileID: 7326960581296985013}
+  - component: {fileID: 8052993675261965047}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -580,7 +581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0402003c21eadde44a281dbe2065d875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
+  characterData: {fileID: 11400000, guid: 13985f0e755138f49b5090b01226a266, type: 2}
   characterController: {fileID: 7498905321667918934}
   scriptsToDisable:
   - {fileID: 2186220335113528223}
@@ -613,7 +614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e367c1a82ad1db14285a6be6827aa85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
+  characterData: {fileID: 11400000, guid: 13985f0e755138f49b5090b01226a266, type: 2}
   weaponHoldPoint: {fileID: 2815454732221533248}
 --- !u!114 &7326960581296985013
 MonoBehaviour:
@@ -630,6 +631,19 @@ MonoBehaviour:
   healDuration: 1
   healAmount: 30
   maxMedkits: 5
+--- !u!114 &8052993675261965047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8913491952459388385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 851ed1a9723b48d43b5fc605378cf599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entryDuration: 2.5
 --- !u!1001 &1234667107454676844
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -46,14 +46,20 @@ public class WeaponReloading : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R) && !_ammo.IsFull)
         {
-            StartCoroutine(ReloadRoutine());
+            if (_shooting == null || _shooting.CanReload)
+            {
+                StartCoroutine(ReloadRoutine());
+            }
         }
     }
 
     public void TryStartReload()
     {
         if (_isReloading || _ammo.IsFull) return;
-        StartCoroutine(ReloadRoutine());
+        if (_shooting == null || _shooting.CanReload)
+        {
+            StartCoroutine(ReloadRoutine());
+        }
     }
 
     private IEnumerator ReloadRoutine()

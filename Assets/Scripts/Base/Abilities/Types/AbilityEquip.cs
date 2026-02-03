@@ -23,11 +23,32 @@ public class AbilityEquip : AbilityBase
         _previousSlot = _weaponController.CurrentIndex;
         _weaponController.SetAbilityWeapon(abilityData.rewardWeapon);
         _weaponController.SwitchToSlot(2, true);
+
+        GameObject skillWeapon = _weaponController.Slots[2];
+        if (skillWeapon != null)
+        {
+            WeaponShooting shooting = skillWeapon.GetComponent<WeaponShooting>();
+            if (shooting != null)
+            {
+                if (abilityData.useReloadLimit)
+                {
+                    shooting.SetReloadLimit(abilityData.maxReloadCount);
+                    shooting.OnResourceExhausted += HandleResourceExhausted;
+                }
+            }
+        }
     }
 
     public override void StopAbility()
     {
         if (_weaponController == null) return;
+
+        GameObject skillWeapon = _weaponController.Slots[2];
+        if (skillWeapon != null)
+        {
+            WeaponShooting shooting = skillWeapon.GetComponent<WeaponShooting>();
+            if (shooting != null) shooting.OnResourceExhausted -= HandleResourceExhausted;
+        }
 
         _weaponController.UnlockWeapon();
         _weaponController.SwitchToSlot(_previousSlot);
@@ -43,6 +64,13 @@ public class AbilityEquip : AbilityBase
 
     private void HandleResourceExhausted()
     {
+        StartCoroutine(DelayedStop());
+    }
+
+    private IEnumerator DelayedStop()
+    {
+        yield return new WaitForSeconds(0.5f);
+
         if (abilityData.type == AbilityType.Speciality && _specialityProcessor != null)
             _specialityProcessor.StopEffect();
         else if (abilityData.type == AbilityType.Ultimate && _ultimateProcessor != null)

@@ -25,6 +25,7 @@ public class WeaponShooting : MonoBehaviour
 
     public bool IsShooting { get; private set; }
     public Transform FirePoint => firePoint;
+    public bool CanReload => _remainingReloads != 0;
 
     private void Awake()
     {

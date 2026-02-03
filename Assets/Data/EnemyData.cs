@@ -8,7 +8,14 @@ public struct DropItem//드랍할 아이템 구조
     [Range(0, 100)] public float dropRate;//드랍 확률
 }
 
-public enum EnemyPattern { Basic, Agile, Tactical, Tanker }//적 공격 유형
+//적 공격 유형
+public enum EnemyPattern
+{ 
+    Basic, 
+    Agile, 
+    Tactical, 
+    Tanker
+}
 
 [CreateAssetMenu(fileName = "EnemyData", menuName = "AKs97/EnemyData")]
 public class EnemyData : ScriptableObject

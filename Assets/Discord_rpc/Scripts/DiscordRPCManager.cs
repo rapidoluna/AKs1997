@@ -4,9 +4,23 @@ using UnityEngine.SceneManagement;
 
 public class DiscordRPCManager : MonoBehaviour
 {
+    //디스코드 RPC 매니저, 무조건 MainScene에만 프리팹을 배치할 것.
     public long applicationId = 123456789012345678;
     private Discord.Discord discord;
     private ActivityManager activityManager;
+
+    private void Awake()
+    {
+        var existingManagers = Object.FindObjectsByType<DiscordRPCManager>(FindObjectsSortMode.None);
+
+        if (existingManagers.Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {

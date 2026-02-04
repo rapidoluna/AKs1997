@@ -414,7 +414,7 @@ MonoBehaviour:
   killsText: {fileID: 1883324341}
   scoreText: {fileID: 1796113830}
   damageText: {fileID: 1622080639}
-  timeText: {fileID: 0}
+  timeText: {fileID: 1165322973}
   operatorData: {fileID: 11400000, guid: b0f5faffc80b8d248ad8148db81ad6fc, type: 2}
   countDuration: 2
 --- !u!1 &964738397

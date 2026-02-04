@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
@@ -35,6 +36,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         if (IsDead) return;
+
+        if (GameSessionManager.Instance != null)
+        {
+            GameSessionManager.Instance.damageTaken += damage;
+        }
 
         float remainingDamage = damage;
 
@@ -79,9 +85,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         if (IsDead) return;
         IsDead = true;
+
+        if (GameSessionManager.Instance != null)
+        {
+            GameSessionManager.Instance.isExtracted = false;
+        }
+
         foreach (var script in scriptsToDisable) if (script != null) script.enabled = false;
         if (characterController != null) characterController.enabled = false;
         if (PlayerDeathCamera.Instance != null) PlayerDeathCamera.Instance.PlayDeathAnimation();
+
+        Invoke("LoadResultScene", 3f);
     }
 
     public void ApplyHealthBuff(float healthBonus)
@@ -94,5 +108,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         _bonusMaxHealth = 0f;
         _currentBonusHealth = 0f;
+    }
+
+    private void LoadResultScene()
+    {
+        SceneManager.LoadScene("ResultScene");
     }
 }

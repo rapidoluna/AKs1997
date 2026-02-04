@@ -13,6 +13,17 @@ public class STSNGStation : MonoBehaviour
 
     public bool IsProcessing => _isProcessing;
 
+    public void AddStoredCashFromEnemy(int amount)
+    {
+        _storedCash += amount;
+
+        if (CashRushHUD.Instance != null)
+        {
+            CashRushHUD.Instance.AddScore(_storedCash);
+            CashRushHUD.Instance.ShowNotification("Àû Ã³Ä¡");
+        }
+    }
+
     public bool CanAcceptItems(int count)
     {
         bool isEscapeReady = GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady;
@@ -65,6 +76,12 @@ public class STSNGStation : MonoBehaviour
     private void CompleteCashRush()
     {
         _isProcessing = false;
+
+        if (GameSessionManager.Instance != null)
+        {
+            GameSessionManager.Instance.AddScore(_storedCash);
+        }
+
         if (CashRushHUD.Instance != null)
         {
             CashRushHUD.Instance.AddScore(_storedCash);
@@ -73,5 +90,13 @@ public class STSNGStation : MonoBehaviour
         }
         _storedCash = 0;
         _currentDepositCount = 0;
+    }
+    public void FinalizeRemainingCash()
+    {
+        if (_storedCash > 0 && GameSessionManager.Instance != null)
+        {
+            GameSessionManager.Instance.AddScore(_storedCash);
+            _storedCash = 0;
+        }
     }
 }

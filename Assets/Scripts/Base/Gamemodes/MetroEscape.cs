@@ -20,12 +20,12 @@ public class MetroEscape : MonoBehaviour
         _isExiting = true;
 
         ExtractionCameraEffect effect = Camera.main.GetComponent<ExtractionCameraEffect>();
-        if (effect != null) effect.Play(5.0f);
+        if (effect != null) effect.Play(3f);
 
         if (CashRushHUD.Instance != null)
             CashRushHUD.Instance.ShowNotification("≈ª√‚ ¡ﬂ...");
 
-        yield return new WaitForSeconds(4.95f);
+        yield return new WaitForSeconds(3.5f);
 
         SceneManager.LoadScene("ResultScene");
     }

@@ -377,6 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overlayImage: {fileID: 0}
+  fadeGroup: {fileID: 0}
   targetPitch: -65
   liftHeight: 3
   fovIncrease: 60
@@ -644,6 +645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entryDuration: 2.5
+  fadeGroup: {fileID: 0}
 --- !u!1001 &1234667107454676844
 PrefabInstance:
   m_ObjectHideFlags: 0

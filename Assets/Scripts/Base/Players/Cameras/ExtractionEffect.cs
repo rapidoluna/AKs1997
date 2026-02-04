@@ -1,16 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
-public class EnteringEffect : MonoBehaviour
+public class ExtractionEffect : MonoBehaviour
 {
-    [SerializeField] private float entryDuration = 2.5f;
+    [SerializeField] private float extractionDuration = 0.5f;
     [SerializeField] private CanvasGroup fadeGroup;
 
     private PlayerWalking _walking;
     private PlayerCameraEffects _cameraEffects;
     private WeaponController _weaponController;
     private WeaponAiming _aiming;
+    private ExtractionCameraEffect _camEffect;
 
     private void Awake()
     {
@@ -18,34 +18,42 @@ public class EnteringEffect : MonoBehaviour
         _cameraEffects = GetComponentInChildren<PlayerCameraEffects>();
         _weaponController = GetComponentInChildren<WeaponController>();
         _aiming = GetComponentInChildren<WeaponAiming>();
+        _camEffect = GetComponentInChildren<ExtractionCameraEffect>();
 
-        if (fadeGroup != null) fadeGroup.alpha = 1f;
+        if (fadeGroup != null) fadeGroup.alpha = 0f;
     }
 
-    private void Start()
+    public void StartExtraction()
     {
-        StartCoroutine(StartEntrySequence());
+        StartCoroutine(ExtractionSequence());
     }
 
-    private IEnumerator StartEntrySequence()
+    private IEnumerator ExtractionSequence()
     {
         SetPlayerControl(false);
 
+        if (_camEffect != null)
+        {
+            _camEffect.Play(extractionDuration);
+        }
+
         float elapsed = 0f;
-        while (elapsed < entryDuration)
+        float fadeStartTime = extractionDuration * 0.5f;
+
+        while (elapsed < extractionDuration)
         {
             elapsed += Time.deltaTime;
 
-            if (fadeGroup != null)
+            if (fadeGroup != null && elapsed >= fadeStartTime)
             {
-                fadeGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / entryDuration);
+                float t = (elapsed - fadeStartTime) / (extractionDuration - fadeStartTime);
+                fadeGroup.alpha = Mathf.Clamp01(t);
             }
 
             yield return null;
         }
 
-        SetPlayerControl(true);
-        if (fadeGroup != null) fadeGroup.alpha = 0f;
+        if (fadeGroup != null) fadeGroup.alpha = 1f;
     }
 
     private void SetPlayerControl(bool state)
@@ -57,12 +65,11 @@ public class EnteringEffect : MonoBehaviour
         if (_weaponController != null)
         {
             _weaponController.enabled = state;
-
             GameObject currentWeapon = _weaponController.Slots[_weaponController.CurrentIndex];
             if (currentWeapon != null)
             {
-                if (currentWeapon.TryGetComponent(out WeaponShooting shooting)) shooting.enabled = state;
-                if (currentWeapon.TryGetComponent(out WeaponReloading reloading)) reloading.enabled = state;
+                if (currentWeapon.TryGetComponent(out WeaponShooting s)) s.enabled = state;
+                if (currentWeapon.TryGetComponent(out WeaponReloading r)) r.enabled = state;
             }
         }
     }

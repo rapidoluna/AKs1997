@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0402003c21eadde44a281dbe2065d875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 13985f0e755138f49b5090b01226a266, type: 2}
+  characterData: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
   characterController: {fileID: 7498905321667918934}
   scriptsToDisable:
   - {fileID: 2186220335113528223}
@@ -611,7 +611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e367c1a82ad1db14285a6be6827aa85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 13985f0e755138f49b5090b01226a266, type: 2}
+  characterData: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
   weaponHoldPoint: {fileID: 2815454732221533248}
 --- !u!114 &7326960581296985013
 MonoBehaviour:
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryDuration: 2.5
   fadeGroup: {fileID: 0}
-  modeData: {fileID: 11400000, guid: 72c56badccbb2714ea5f691a52962835, type: 2}
+  modeData: {fileID: 11400000, guid: 8af92fea030ccda498ff8cebdb82bd40, type: 2}
   introUI: {fileID: 0}
 --- !u!1001 &1234667107454676844
 PrefabInstance:

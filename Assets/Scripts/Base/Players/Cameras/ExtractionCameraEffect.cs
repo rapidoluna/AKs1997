@@ -43,7 +43,7 @@ public class ExtractionCameraEffect : MonoBehaviour
         SetPlayerControl(false);
 
         float elapsed = 0f;
-        float fadeStartTime = duration * 0.5f;
+        float fadeStartTime = 2.5f;
 
         while (elapsed < duration)
         {
@@ -53,7 +53,7 @@ public class ExtractionCameraEffect : MonoBehaviour
             if (overlayImage != null)
             {
                 Color c = overlayImage.color;
-                c.a = Mathf.Clamp01(t);
+                c.a = Mathf.Clamp01(t * 5f);
                 overlayImage.color = c;
             }
 

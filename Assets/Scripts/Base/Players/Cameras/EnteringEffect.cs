@@ -1,11 +1,12 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class EnteringEffect : MonoBehaviour
 {
     [SerializeField] private float entryDuration = 2.5f;
     [SerializeField] private CanvasGroup fadeGroup;
+    [SerializeField] private ModeData modeData;
+    [SerializeField] private MapIntroUI introUI;
 
     private PlayerWalking _walking;
     private PlayerCameraEffects _cameraEffects;
@@ -35,17 +36,21 @@ public class EnteringEffect : MonoBehaviour
         while (elapsed < entryDuration)
         {
             elapsed += Time.deltaTime;
-
             if (fadeGroup != null)
             {
                 fadeGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / entryDuration);
             }
-
             yield return null;
         }
 
-        SetPlayerControl(true);
         if (fadeGroup != null) fadeGroup.alpha = 0f;
+
+        SetPlayerControl(true);
+
+        if (introUI != null && modeData != null)
+        {
+            introUI.ShowIntro(modeData);
+        }
     }
 
     private void SetPlayerControl(bool state)
@@ -57,12 +62,11 @@ public class EnteringEffect : MonoBehaviour
         if (_weaponController != null)
         {
             _weaponController.enabled = state;
-
             GameObject currentWeapon = _weaponController.Slots[_weaponController.CurrentIndex];
             if (currentWeapon != null)
             {
-                if (currentWeapon.TryGetComponent(out WeaponShooting shooting)) shooting.enabled = state;
-                if (currentWeapon.TryGetComponent(out WeaponReloading reloading)) reloading.enabled = state;
+                if (currentWeapon.TryGetComponent(out WeaponShooting s)) s.enabled = state;
+                if (currentWeapon.TryGetComponent(out WeaponReloading r)) r.enabled = state;
             }
         }
     }

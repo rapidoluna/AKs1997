@@ -143,6 +143,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1676415478}
+    - target: {fileID: 5329020822438612894, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -25
+      objectReference: {fileID: 0}
     - target: {fileID: 6022451921185764736, guid: 81a02b77f2a47514490641d254bba922, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -228,6 +232,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+--- !u!114 &270946946 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6674351465903261948, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+  m_PrefabInstance: {fileID: 146810574}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6adbc6bcd2597fd47965b4e819404994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &275207840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -463,6 +478,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8052993675261965047, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: introUI
+      value: 
+      objectReference: {fileID: 270946946}
+    - target: {fileID: 8052993675261965047, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: modeData
+      value: 
+      objectReference: {fileID: 11400000, guid: 72c56badccbb2714ea5f691a52962835, type: 2}
     - target: {fileID: 8052993675261965047, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: fadeGroup
       value: 

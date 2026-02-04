@@ -378,10 +378,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overlayImage: {fileID: 0}
   fadeGroup: {fileID: 0}
-  targetPitch: -65
-  liftHeight: 3
-  fovIncrease: 60
-  shakePower: 0.15
 --- !u!1 &8913491952459388385
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,6 +642,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryDuration: 2.5
   fadeGroup: {fileID: 0}
+  modeData: {fileID: 11400000, guid: 72c56badccbb2714ea5f691a52962835, type: 2}
+  introUI: {fileID: 0}
 --- !u!1001 &1234667107454676844
 PrefabInstance:
   m_ObjectHideFlags: 0

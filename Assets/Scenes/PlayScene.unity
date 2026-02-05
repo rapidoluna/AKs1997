@@ -509,6 +509,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7085546726131970602, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: 'weaponSlots.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085546726131970602, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: 'weaponSlots.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8052993675261965047, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: introUI
       value: 
@@ -520,7 +528,7 @@ PrefabInstance:
     - target: {fileID: 8590870940800165938, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: characterData
       value: 
-      objectReference: {fileID: 11400000, guid: 09ab247e8a0561248959370e390a59bd, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 8720879077362830896, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: glitchOverlay
       value: 
@@ -530,7 +538,9 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2705413580982734328, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+    - {fileID: 5443666614230908247, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}

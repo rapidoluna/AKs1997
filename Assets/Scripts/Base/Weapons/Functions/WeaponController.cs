@@ -11,12 +11,18 @@ public class WeaponController : MonoBehaviour
     public GameObject[] Slots => weaponSlots;
     public int CurrentIndex => _currentWeaponIndex;
 
-    private void Start()
+    public void RegisterWeapon(int slotIndex, GameObject weaponObject)
     {
-        InitializeWeapons();
+        if (slotIndex >= 0 && slotIndex < weaponSlots.Length)
+        {
+            if (weaponSlots[slotIndex] != null) Destroy(weaponSlots[slotIndex]);
+
+            weaponSlots[slotIndex] = weaponObject;
+            weaponObject.SetActive(false);
+        }
     }
 
-    private void InitializeWeapons()
+    public void InitializeWeapons()
     {
         for (int i = 0; i < weaponSlots.Length; i++)
         {
@@ -89,6 +95,8 @@ public class WeaponController : MonoBehaviour
         }
 
         GameObject newWeapon = Instantiate(weaponPrefab, transform);
+        newWeapon.transform.localPosition = Vector3.zero;
+        newWeapon.transform.localRotation = Quaternion.identity;
         newWeapon.SetActive(false);
         weaponSlots[2] = newWeapon;
     }

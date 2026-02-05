@@ -24,45 +24,50 @@ public class AbilityUI : MonoBehaviour
     private Color _inactiveColor = new Color(0.3f, 0.3f, 0.3f, 1f);
 
     private Coroutine _readyTextCoroutine;
+    private bool _isInitialized = false;
 
     private void Start()
     {
-        FindPlayerReferences();
-        InitIcons();
+        StartCoroutine(FindPlayerRoutine());
     }
 
-    private void FindPlayerReferences()
+    private IEnumerator FindPlayerRoutine()
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        while (GameObject.FindGameObjectWithTag("Player") == null)
         {
-            _specialityProcessor = player.GetComponentInChildren<AbilityProcessor>();
-            _ultimateProcessor = player.GetComponentInChildren<UltimateProcessor>();
-
-            if (_ultimateProcessor != null)
-                _ultimateCharge = _ultimateProcessor.GetComponent<UltimateCharge>();
+            yield return null;
         }
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        _specialityProcessor = player.GetComponentInChildren<AbilityProcessor>();
+        _ultimateProcessor = player.GetComponentInChildren<UltimateProcessor>();
+
+        if (_ultimateProcessor != null)
+            _ultimateCharge = _ultimateProcessor.GetComponent<UltimateCharge>();
+
+        yield return new WaitForSeconds(0.1f);
+        InitIcons();
+        _isInitialized = true;
     }
 
     private void InitIcons()
     {
-        var init = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerInitializer>();
-        if (init == null || init.CharacterData == null) return;
+        if (_specialityProcessor != null && _specialityProcessor.GetData() != null)
+        {
+            if (specialityIcon != null)
+                specialityIcon.sprite = _specialityProcessor.GetData().abilityIcon;
+        }
 
-        if (init.CharacterData.characterSpeciality != null && specialityIcon != null)
-            specialityIcon.sprite = init.CharacterData.characterSpeciality.abilityIcon;
-
-        if (init.CharacterData.characterUltimate != null && ultimateIcon != null)
-            ultimateIcon.sprite = init.CharacterData.characterUltimate.abilityIcon;
+        if (_ultimateProcessor != null && _ultimateProcessor.GetData() != null)
+        {
+            if (ultimateIcon != null)
+                ultimateIcon.sprite = _ultimateProcessor.GetData().abilityIcon;
+        }
     }
 
     private void Update()
     {
-        if (_ultimateCharge == null)
-        {
-            FindPlayerReferences();
-            return;
-        }
+        if (!_isInitialized) return;
 
         UpdateSpecialityUI();
         UpdateUltimateUI();
@@ -93,6 +98,8 @@ public class AbilityUI : MonoBehaviour
 
     private void UpdateUltimateUI()
     {
+        if (_ultimateCharge == null) return;
+
         bool isReady = _ultimateCharge.IsReady;
         bool isUsing = _ultimateProcessor != null && _ultimateProcessor.IsActive();
 

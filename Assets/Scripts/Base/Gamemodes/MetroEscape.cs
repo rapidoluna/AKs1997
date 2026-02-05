@@ -35,7 +35,7 @@ public class MetroEscape : MonoBehaviour
             CashRushHUD.Instance.ShowNotification("≈ª√‚ ¡ﬂ...");
         }
 
-        yield return new WaitForSeconds(5.5f);
+        yield return new WaitForSeconds(6.2f);
 
         SceneManager.LoadScene("ResultScene");
     }

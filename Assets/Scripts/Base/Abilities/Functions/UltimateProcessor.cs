@@ -8,23 +8,19 @@ public class UltimateProcessor : MonoBehaviour
     private List<AbilityBase> _abilityEffects = new List<AbilityBase>();
     private UltimateCharge _chargeSystem;
     private bool _isDurationActive = false;
+    private bool _isInitialized = false;
 
-    private void Start()
+    public void Initialize(AbilityData data, PlayerWalking walk, Transform firePoint)
     {
-        PlayerInitializer init = GetComponentInParent<PlayerInitializer>();
-        PlayerWalking walk = GetComponentInParent<PlayerWalking>();
-        Transform firePoint = transform;
+        if (data == null) return;
 
-        if (init != null && init.CharacterData != null)
-        {
-            _abilityData = init.CharacterData.characterUltimate;
-            if (_abilityData != null)
-            {
-                _chargeSystem = gameObject.AddComponent<UltimateCharge>();
-                _chargeSystem.Initialize(_abilityData);
-                CreateEffects(_abilityData, walk, firePoint);
-            }
-        }
+        _abilityData = data;
+
+        _chargeSystem = gameObject.AddComponent<UltimateCharge>();
+        _chargeSystem.Initialize(_abilityData);
+
+        CreateEffects(_abilityData, walk, firePoint);
+        _isInitialized = true;
     }
 
     private void CreateEffects(AbilityData data, PlayerWalking walk, Transform firePoint)
@@ -51,7 +47,7 @@ public class UltimateProcessor : MonoBehaviour
 
     private void Update()
     {
-        if (_abilityData == null || _abilityEffects.Count == 0) return;
+        if (!_isInitialized || _abilityData == null || _abilityEffects.Count == 0) return;
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -103,4 +99,5 @@ public class UltimateProcessor : MonoBehaviour
     }
 
     public bool IsActive() => _isDurationActive;
+    public AbilityData GetData() => _abilityData;
 }

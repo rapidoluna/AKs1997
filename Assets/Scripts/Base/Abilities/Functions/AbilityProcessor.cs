@@ -9,21 +9,15 @@ public class AbilityProcessor : MonoBehaviour
 
     private float _cooldownTimer = 0f;
     private bool _isDurationActive = false;
+    private bool _isInitialized = false;
 
-    private void Start()
+    public void Initialize(AbilityData data, PlayerWalking walk, Transform firePoint)
     {
-        PlayerInitializer init = GetComponentInParent<PlayerInitializer>();
-        PlayerWalking walk = GetComponentInParent<PlayerWalking>();
-        Transform firePoint = transform;
+        if (data == null) return;
 
-        if (init != null && init.CharacterData != null)
-        {
-            _abilityData = init.CharacterData.characterSpeciality;
-            if (_abilityData != null)
-            {
-                CreateEffects(_abilityData, walk, firePoint);
-            }
-        }
+        _abilityData = data;
+        CreateEffects(_abilityData, walk, firePoint);
+        _isInitialized = true;
     }
 
     private void CreateEffects(AbilityData data, PlayerWalking walk, Transform firePoint)
@@ -50,7 +44,7 @@ public class AbilityProcessor : MonoBehaviour
 
     private void Update()
     {
-        if (_abilityData == null || _abilityEffects.Count == 0) return;
+        if (!_isInitialized || _abilityData == null || _abilityEffects.Count == 0) return;
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -115,4 +109,6 @@ public class AbilityProcessor : MonoBehaviour
         float remaining = _cooldownTimer - Time.time;
         return remaining > 0 ? remaining : 0;
     }
+
+    public AbilityData GetData() => _abilityData;
 }

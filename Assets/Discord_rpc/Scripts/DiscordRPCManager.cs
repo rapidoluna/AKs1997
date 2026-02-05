@@ -57,7 +57,7 @@ public class DiscordRPCManager : MonoBehaviour
         }
         else if (currentSceneName == "MenuScene")
         {
-            detailsText = "메인 메뉴";
+            detailsText = "메뉴 화면";
         }
         else if (currentSceneName == "PlayScene")
         {

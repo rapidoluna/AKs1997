@@ -83,10 +83,13 @@ public class WeaponShooting : MonoBehaviour
             return;
         }
 
-        if (_remainingReloads == 0 && _ammo != null && _ammo.IsEmpty && !IsShooting)
+        if (_data.Type != WeaponType.Melee)
         {
-            OnResourceExhausted?.Invoke();
-            _remainingReloads = -1;
+            if (_remainingReloads == 0 && _ammo != null && _ammo.IsEmpty && !IsShooting)
+            {
+                OnResourceExhausted?.Invoke();
+                _remainingReloads = -1;
+            }
         }
 
         HandleFiringMode();
@@ -112,6 +115,9 @@ public class WeaponShooting : MonoBehaviour
             case FiringType.Accelerate:
                 HandleAccelerateMode();
                 break;
+            case FiringType.Swing:
+                if (Input.GetMouseButton(0)) HandleMeleeAttack();
+                break;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -119,6 +125,52 @@ public class WeaponShooting : MonoBehaviour
             _currentCharge = 0f;
             _accelerationTimer = 0f;
             IsShooting = false;
+        }
+    }
+
+    private void HandleMeleeAttack()
+    {
+        if (Time.time < _lastFireTime) return;
+
+        IsShooting = true;
+        float rpm = _data.fireRate;
+        float attackInterval = 60f / rpm;
+        _lastFireTime = Time.time + attackInterval;
+
+        PerformMeleeSwing();
+    }
+
+    private void PerformMeleeSwing()
+    {
+        if (BulletPool.Instance != null && _data.bulletPrefab != null)
+        {
+            GameObject vfx = BulletPool.Instance.GetBullet(_data.bulletPrefab);
+            vfx.transform.position = firePoint.position;
+            vfx.transform.rotation = firePoint.rotation;
+        }
+
+        Vector3 center = transform.position + transform.forward * (_data.effectiveRange * 0.5f);
+        Collider[] hitColliders = Physics.OverlapSphere(center, _data.meleeData.attackRadius, _data.meleeData.hitLayer);
+
+        foreach (var hit in hitColliders)
+        {
+            if (hit.gameObject == transform.root.gameObject) continue;
+
+            IDamageable target = hit.GetComponent<IDamageable>();
+            if (target != null)
+            {
+                int finalDamage = (int)(_data.weaponDamage * _damageMultiplier);
+                target.TakeDamage(finalDamage);
+            }
+        }
+
+        if (_data.meleeData.dashForce > 0)
+        {
+            CharacterController cc = transform.root.GetComponent<CharacterController>();
+            if (cc != null)
+            {
+                cc.Move(transform.forward * _data.meleeData.dashForce * Time.deltaTime);
+            }
         }
     }
 

@@ -6,7 +6,8 @@ public enum WeaponType
     Shotgun,
     Smg,
     Pistol,
-    Special
+    Special,
+    Melee
 }
 
 public enum FiringType
@@ -15,59 +16,65 @@ public enum FiringType
     Full,
     Burst,
     Charge,
-    Accelerate
+    Accelerate,
+    Swing
 }
 
 [CreateAssetMenu(fileName = "WeaponData", menuName = "AKs97/WeaponData")]
 public class WeaponData : ScriptableObject
 {
-    //무기 정보
-    [SerializeField] private WeaponType weapon;//무기군
-    [SerializeField] private FiringType[] firing;//발사 형식
-    [SerializeField] private string weaponName;//이름
-    [SerializeField] private string weaponDescription;//설명
+    [Header("General")]
+    [SerializeField] private WeaponType weapon;
+    [SerializeField] private FiringType[] firing;
+    [SerializeField] private string weaponName;
+    [SerializeField] private string weaponDescription;
 
-    //무기 관련 비주얼 요소
-    //추후에 사운드, 애니메이션 등의 요소도 추가 필요
-    public GameObject weaponPrefab;//무기 모델링
-    public GameObject bulletPrefab;//탄환 프리팹
-    public Sprite weaponIcon;//무기 아이콘
+    [Header("Visuals")]
+    public GameObject weaponPrefab;
+    public GameObject bulletPrefab;
+    public Sprite weaponIcon;
 
-    //장탄 수, 대미지, 유효 사거리, 탄속, 연사력
-    //탄속과 연사력은 모두 분당 계산임.
-    [Min(0)] public int magSize;
+    [Header("Stats")]
     public int weaponDamage;
     public float effectiveRange;
-    public float bulletSpeed;
     [Min(0.01f)] public float fireRate;
 
-    //전술 재장전 시간, 공탄 재장전 시간
+    [Header("Gun Settings")]
+    [Min(0)] public int magSize;
+    public float bulletSpeed;
     public float tacticalReloadTimer;
     public float emptyReloadTimer;
-
-    //표기 상 소모 탄환 수, 실제 발사되는 탄환 수
     public int usingBullet;
     public int firingBullet;
 
-    //점사식 무기 관련
-    //점사 탄환 수, 점사 간격
-    //작성 시 소모 탄환 수와 실제 발사되는 탄환 수는 1로 설정해야함.
+    [Header("Burst Settings")]
     public int burstBullet;
     public float burstInterval;
 
-    //충전식 무기 관련
-    //충전 시간, 최대 충전 정도, 최대 충전 유지 시간
+    [Header("Charge Settings")]
     public float chargeTime;
     public float maxCharge = 100;
     public float maxHold;
 
-    //가속형 무기 관련
-    //가속 시간, 가속 정도, 최대 가속 탄속
+    [Header("Accelerate Settings")]
     public float accelerateTime;
     public float maxAccelerate;
     public float maxAccelerateSpeed;
 
-    //프로퍼티
+    [Header("Melee Settings")]
+    public MeleeData meleeData;
+
     public string WeaponName => weaponName;
     public FiringType[] Firing => firing;
+    public WeaponType Type => weapon;
+}
+
+[System.Serializable]
+public struct MeleeData
+{
+    public float attackRadius;
+    public int maxComboCount;
+    public float comboResetTime;
+    public float dashForce;
+    public LayerMask hitLayer;
 }

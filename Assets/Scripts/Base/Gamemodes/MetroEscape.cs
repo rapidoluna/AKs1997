@@ -27,7 +27,7 @@ public class MetroEscape : MonoBehaviour
         ExtractionCameraEffect effect = Camera.main.GetComponent<ExtractionCameraEffect>();
         if (effect != null)
         {
-            effect.Play(5.0f);
+            effect.Play(6f);
         }
 
         if (CashRushHUD.Instance != null)

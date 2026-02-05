@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class PlayerHealing : MonoBehaviour
 {
-    [SerializeField] private float healDuration = 1.0f;
-    [SerializeField] private float healAmount = 30f;
-    [SerializeField] private int maxMedkits = 5;
+    [SerializeField] private float healDuration = 4.0f;
+    [SerializeField] private float healAmount = 35f;
+    [SerializeField] private int maxMedkits = 2;
 
     private int _currentMedkits;
     private bool _isHealing = false;
@@ -81,10 +81,17 @@ public class PlayerHealing : MonoBehaviour
             StopCoroutine(_healCoroutine);
             _isHealing = false;
 
-            if (_weaponController != null)
-            {
-                _weaponController.UnlockWeapon();
-            }
+            StartCoroutine(DelayedUnlockWeapon(0.5f));
+        }
+    }
+
+    private IEnumerator DelayedUnlockWeapon(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (_weaponController != null)
+        {
+            _weaponController.UnlockWeapon();
         }
     }
 }

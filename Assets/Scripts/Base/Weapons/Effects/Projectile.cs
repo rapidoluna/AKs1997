@@ -53,8 +53,10 @@ public class Projectile : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (_owner == null) return;
-        if (other.gameObject == _owner || other.transform.IsChildOf(_owner.transform)) return;
-        if (other.CompareTag(_owner.tag)) return;
+
+        if (other.gameObject == _owner || other.transform.IsChildOf(_owner.transform) || other.CompareTag(_owner.tag)) return;
+
+        if (other.gameObject.layer == gameObject.layer || other.CompareTag("Projectile")) return;
 
         IDamageable damageable = other.GetComponentInParent<IDamageable>() ?? other.GetComponent<IDamageable>();
         if (damageable != null)

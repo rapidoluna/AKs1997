@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4745610212750287568}
   - component: {fileID: 2498592154886814454}
   - component: {fileID: 4108871063766512996}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Winch Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerWalking : MonoBehaviour
 {
@@ -13,23 +14,15 @@ public class PlayerWalking : MonoBehaviour
     private float currentSpeed;
     private float overrideSpeed = -1f;
     private Vector3 velocity;
+    private Vector3 _impactVelocity;
+    private bool _isStunned = false;
 
     private WeaponAiming _weaponAiming;
     private WeaponShooting _weaponShooting;
 
     public float BaseSpeed => baseSpeed;
-
-    public float MoveSpeed
-    {
-        get => currentSpeed;
-        set => overrideSpeed = value;
-    }
-
-    public float VerticalVelocity
-    {
-        get => velocity.y;
-        set => velocity.y = value;
-    }
+    public float MoveSpeed { get => currentSpeed; set => overrideSpeed = value; }
+    public float VerticalVelocity { get => velocity.y; set => velocity.y = value; }
 
     void Awake()
     {
@@ -45,42 +38,32 @@ public class PlayerWalking : MonoBehaviour
             _weaponShooting = GetComponentInChildren<WeaponShooting>();
         }
 
+        if (_isStunned)
+        {
+            ProcessImpact();
+            return;
+        }
+
         HandleMovement();
+        ProcessImpact();
     }
 
     private void HandleMovement()
     {
-        if (controller.isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f;
-        }
+        if (controller.isGrounded && velocity.y < 0) velocity.y = -2f;
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        float targetSpeed = (overrideSpeed > 0) ? overrideSpeed : baseSpeed;
 
-        float targetSpeed;
-
-        if (overrideSpeed > 0)
-        {
-            targetSpeed = overrideSpeed;
-            overrideSpeed = -1f;
-        }
+        if (overrideSpeed > 0) overrideSpeed = -1f;
         else
         {
-            targetSpeed = baseSpeed;
-
-            if (_weaponAiming != null && _weaponAiming.IsAiming)
-            {
-                targetSpeed *= adsSpeedMultiplier;
-            }
-            else if (_weaponShooting != null && _weaponShooting.IsShooting)
-            {
-                targetSpeed *= shootingSpeedMultiplier;
-            }
+            if (_weaponAiming != null && _weaponAiming.IsAiming) targetSpeed *= adsSpeedMultiplier;
+            else if (_weaponShooting != null && _weaponShooting.IsShooting) targetSpeed *= shootingSpeedMultiplier;
         }
 
         targetSpeed *= _abilitySpeedMultiplier;
-
         currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 10f);
 
         Vector3 move = transform.right * x + transform.forward * z;
@@ -90,15 +73,45 @@ public class PlayerWalking : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
+    private void ProcessImpact()
+    {
+        if (_impactVelocity.magnitude > 0.2f)
+        {
+            controller.Move(_impactVelocity * Time.deltaTime);
+        }
+        _impactVelocity = Vector3.Lerp(_impactVelocity, Vector3.zero, Time.deltaTime * 5f);
+
+        if (_isStunned)
+        {
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+        }
+    }
+
+    public void ApplyStun(float duration)
+    {
+        StartCoroutine(StunRoutine(duration));
+    }
+
+    private IEnumerator StunRoutine(float duration)
+    {
+        _isStunned = true;
+        yield return new WaitForSeconds(duration);
+        _isStunned = false;
+    }
+
+    public void ApplyKnockback(Vector3 force)
+    {
+        _impactVelocity += force;
+    }
+
     public void ApplyAbilitySpeed(float multiplier)
     {
         _abilitySpeedMultiplier = multiplier;
-        Debug.Log($"[PlayerWalking] 배율 적용: {multiplier} / 최종 타겟 속도: {baseSpeed * multiplier}");
     }
 
     public void ResetSpeed()
     {
         _abilitySpeedMultiplier = 1f;
-        Debug.Log("[PlayerWalking] 배율 초기화");
     }
 }

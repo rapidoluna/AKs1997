@@ -2,18 +2,17 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [System.Serializable]
-public struct DropItem//드랍할 아이템 구조
+public struct DropItem
 {
-    public GameObject itemPrefab;//아이템 프리팹
-    [Range(0, 100)] public float dropRate;//드랍 확률
+    public GameObject itemPrefab;
+    [Range(0, 100)] public float dropRate;
 }
 
-//적 공격 유형
 public enum EnemyPattern
-{ 
-    Basic, 
-    Agile, 
-    Tactical, 
+{
+    Basic,
+    Agile,
+    Tactical,
     Tanker
 }
 
@@ -29,6 +28,7 @@ public class EnemyData : ScriptableObject
 
     public float detectRange;
     public float attackRange;
+    public float shareRange = 20f;
     public int attackDamage;
     public float attackCooldown;
 

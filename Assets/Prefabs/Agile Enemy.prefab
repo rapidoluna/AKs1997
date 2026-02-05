@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 9031425461348426681}
   - component: {fileID: 7995758507658134210}
   - component: {fileID: 4033765231326324397}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Agile Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewAngle: 85
+  chaseMaintainDistance: 20
 --- !u!114 &8998689053060765044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e2d92742650e24f86420637a35eba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropPodPrefab: {fileID: 0}
 --- !u!114 &4033765231326324397
 MonoBehaviour:
   m_ObjectHideFlags: 0

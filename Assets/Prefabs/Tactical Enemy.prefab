@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 9031425461348426681}
   - component: {fileID: 7995758507658134210}
   - component: {fileID: 2544408207640891861}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tactical Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}

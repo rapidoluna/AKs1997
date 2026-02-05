@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewAngle: 90
+  chaseMaintainDistance: 20
 --- !u!114 &8998689053060765044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e2d92742650e24f86420637a35eba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropPodPrefab: {fileID: 6722854175357444687, guid: d87df9ff26f239f409c94f28cac7fbbe, type: 3}
 --- !u!114 &2544408207640891861
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,11 +1,14 @@
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance;
 
     [SerializeField] private int targetScore = 50000;
+    [SerializeField] private GameObject dropPodPrefab;
+    [SerializeField] private float spawnRadius = 15f;
     private bool _isEscapeReady = false;
 
     public bool IsEscapeReady => _isEscapeReady;
@@ -16,16 +19,13 @@ public class GameStateManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Update()
+    public void CheckScore(int currentScore)
     {
         if (_isEscapeReady) return;
 
-        if (CashRushHUD.Instance != null)
+        if (currentScore >= targetScore)
         {
-            if (CashRushHUD.Instance.CurrentScore >= targetScore)
-            {
-                ActivateEscape();
-            }
+            ActivateEscape();
         }
     }
 
@@ -36,7 +36,35 @@ public class GameStateManager : MonoBehaviour
 
         if (CashRushHUD.Instance != null)
             CashRushHUD.Instance.ShowNotification("≈ª√‚ ∞°¥…");
+    }
 
-        Debug.Log("≈ª√‚ ¡∂∞« √Ê¡∑");
+    public void TriggerCashRushArrival(Vector3 stationPos)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            StartCoroutine(DelayedCall(stationPos, i * 1.2f));
+        }
+    }
+
+    private IEnumerator DelayedCall(Vector3 stationPos, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        CallRandomDropPod(stationPos);
+    }
+
+    private void CallRandomDropPod(Vector3 centerPos)
+    {
+        Vector2 randomPoint = UnityEngine.Random.insideUnitCircle.normalized * UnityEngine.Random.Range(8f, spawnRadius);
+        Vector3 spawnPos = centerPos + new Vector3(randomPoint.x, 0, randomPoint.y);
+
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPos + Vector3.up * 20f, Vector3.down, out hit, 40f))
+        {
+            spawnPos = hit.point;
+        }
+
+        GameObject podObj = Instantiate(dropPodPrefab, spawnPos, Quaternion.identity);
+        DropPod pod = podObj.GetComponent<DropPod>();
+        if (pod != null) pod.Init(spawnPos, null);
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class EnemyPatternController : MonoBehaviour
 {
     private EnemyController _controller;
+    [SerializeField] private GameObject dropPodPrefab;
     private bool _isDodging = false;
     private bool _calledBackup = false;
     private bool _isCovering = false;
@@ -124,20 +125,22 @@ public class EnemyPatternController : MonoBehaviour
     private void CallBackup()
     {
         _calledBackup = true;
-        EnemySpawn[] spawners = FindObjectsByType<EnemySpawn>(FindObjectsSortMode.None);
-        Vector3 callPosition = transform.position;
 
-        foreach (var spawner in spawners)
+        Vector2 randomCircle = Random.insideUnitCircle.normalized * Random.Range(5f, 10f);
+        Vector3 spawnPos = transform.position + new Vector3(randomCircle.x, 0, randomCircle.y);
+
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPos + Vector3.up * 20f, Vector3.down, out hit, 40f))
         {
-            GameObject spawnedEnemy = spawner.SpawnEnemyExplicitly();
-            if (spawnedEnemy != null)
-            {
-                EnemyController ec = spawnedEnemy.GetComponent<EnemyController>();
-                if (ec != null && ec.agent != null)
-                {
-                    ec.agent.SetDestination(callPosition);
-                }
-            }
+            spawnPos = hit.point;
+        }
+
+        GameObject podObj = Instantiate(dropPodPrefab, spawnPos, Quaternion.identity);
+        DropPod pod = podObj.GetComponent<DropPod>();
+
+        if (pod != null)
+        {
+            pod.Init(spawnPos, null);
         }
     }
 }

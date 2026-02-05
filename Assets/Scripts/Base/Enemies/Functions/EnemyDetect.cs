@@ -8,7 +8,6 @@ public class EnemyDetect : MonoBehaviour
     private EnemyWalking _walking;
     private bool _isForceTracking = false;
     private Coroutine _forceTrackCoroutine;
-    private bool _isSearching = false;
 
     [SerializeField] private float viewAngle = 90f;
     [SerializeField] private float chaseMaintainDistance = 20f;
@@ -63,7 +62,6 @@ public class EnemyDetect : MonoBehaviour
 
     private void StartCombat(float distance)
     {
-        _isSearching = false;
         _running.enabled = true;
         _walking.enabled = false;
         _controller.agent.SetDestination(_controller.player.position);
@@ -77,7 +75,6 @@ public class EnemyDetect : MonoBehaviour
     private void EnterPatrolMode()
     {
         StopForceTracking();
-        _isSearching = false;
         if (_running) _running.enabled = false;
         if (_walking) _walking.enabled = true;
         if (_controller.agent.hasPath) _controller.agent.ResetPath();

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private int maxEnemies = 10;
+    [SerializeField] private GameObject dropPodPrefab;
+    [SerializeField] private int maxEnemies = 3;
 
     private int _currentEnemyCount;
 
@@ -11,19 +11,20 @@ public class EnemySpawn : MonoBehaviour
     {
         if (_currentEnemyCount >= maxEnemies) return null;
 
-        GameObject enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-        RegisterEnemy(enemy);
-        _currentEnemyCount++;
-        return enemy;
+        GameObject podObj = Instantiate(dropPodPrefab, transform.position, Quaternion.identity);
+        DropPod pod = podObj.GetComponent<DropPod>();
+
+        if (pod != null)
+        {
+            pod.Init(transform.position, this);
+        }
+
+        return podObj;
     }
 
-    private void RegisterEnemy(GameObject enemy)
+    public void AddEnemyCount(int count)
     {
-        EnemyHealth health = enemy.GetComponent<EnemyHealth>();
-        if (health != null)
-        {
-            health.SetSpawner(this);
-        }
+        _currentEnemyCount += count;
     }
 
     public void OnEnemyDestroyed()

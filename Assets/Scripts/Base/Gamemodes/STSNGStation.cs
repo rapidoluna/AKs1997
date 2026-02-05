@@ -23,6 +23,7 @@ public class STSNGStation : MonoBehaviour
     {
         if (_isProcessing || items.Count > maxCapacity) return;
 
+        _isProcessing = true;
         _currentTimer = _maxTimer;
         int totalValue = 0;
         _currentDepositCount = items.Count;
@@ -38,8 +39,6 @@ public class STSNGStation : MonoBehaviour
 
     private IEnumerator CashRushRoutine()
     {
-        _isProcessing = true;
-
         if (ItemInventoryUI.Instance != null)
             ItemInventoryUI.Instance.ClearIcons();
 
@@ -48,6 +47,8 @@ public class STSNGStation : MonoBehaviour
             CashRushHUD.Instance.ShowNotification("캐시러시 시작");
             CashRushHUD.Instance.SetTimerActive(true, _storedCash);
         }
+
+        StartCoroutine(DelayedDropPodCall(2f));
 
         while (_currentTimer > 0)
         {
@@ -62,10 +63,17 @@ public class STSNGStation : MonoBehaviour
         CompleteCashRush();
     }
 
+    private IEnumerator DelayedDropPodCall(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (GameStateManager.Instance != null)
+        {
+            GameStateManager.Instance.TriggerCashRushArrival(transform.position);
+        }
+    }
+
     private void CompleteCashRush()
     {
-        _isProcessing = false;
-
         if (GameSessionManager.Instance != null)
         {
             GameSessionManager.Instance.AddDepositScore(_storedCash);
@@ -74,9 +82,14 @@ public class STSNGStation : MonoBehaviour
         if (CashRushHUD.Instance != null)
         {
             CashRushHUD.Instance.AddScore(_storedCash);
+            if (GameStateManager.Instance != null)
+            {
+                GameStateManager.Instance.CheckScore(CashRushHUD.Instance.CurrentScore);
+            }
             CashRushHUD.Instance.ShowNotification("캐시러시 완료");
             CashRushHUD.Instance.SetTimerActive(false);
         }
         _storedCash = 0;
+        _isProcessing = false;
     }
 }

@@ -22,11 +22,13 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (pattern != null) pattern.TryDodge();
 
         EnemyDetect detector = GetComponent<EnemyDetect>();
-        if (detector != null)
+        EnemyController controller = GetComponent<EnemyController>();
+
+        if (detector != null && controller != null && controller.player != null)
         {
-            detector.StartForceTracking(10f);
-            EnemyController controller = GetComponent<EnemyController>();
-            if (controller != null && controller.player != null && EnemyGroup.Instance != null)
+            detector.OnProjectileDetected(controller.player.position);
+
+            if (EnemyGroup.Instance != null)
             {
                 EnemyGroup.Instance.ReportTarget(controller.player.position, detector);
             }

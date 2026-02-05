@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 278112460306124028}
   - component: {fileID: 9031425461348426681}
   - component: {fileID: 7995758507658134210}
+  - component: {fileID: 3131206842868445161}
   m_Layer: 0
   m_Name: Tanker Enemy
   m_TagString: Enemy
@@ -113,6 +114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ba7782134837d4d98fc265289fdb1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  burstCount: 3
+  burstInterval: 0.12
 --- !u!114 &8557596745384366606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,3 +191,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30e2d92742650e24f86420637a35eba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3131206842868445161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5016186127453854959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353d7d8452efba140885aec33db36469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spreadAngle: 3.5

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1624312060665954158}
   - component: {fileID: 7147551410398436305}
   - component: {fileID: 3266273237462983679}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Bullet Prefab
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -135,10 +135,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!114 &3266273237462983679
 MonoBehaviour:
   m_ObjectHideFlags: 0

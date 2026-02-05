@@ -11,10 +11,7 @@ public class ExplosiveProjectile : Projectile
     protected override void OnTriggerEnter(Collider other)
     {
         if (_owner == null) return;
-
         if (other.gameObject == _owner || other.transform.IsChildOf(_owner.transform) || other.CompareTag(_owner.tag)) return;
-
-        if (other.gameObject.layer == gameObject.layer || other.CompareTag("Projectile")) return;
 
         IDamageable directTarget = other.GetComponentInParent<IDamageable>() ?? other.GetComponent<IDamageable>();
 
@@ -31,6 +28,8 @@ public class ExplosiveProjectile : Projectile
 
     private void Explode(IDamageable excludeTarget)
     {
+        ToggleVisibility(false);
+
         if (explosionVFX != null)
             Instantiate(explosionVFX, transform.position, Quaternion.identity);
 
@@ -41,8 +40,6 @@ public class ExplosiveProjectile : Projectile
 
         foreach (var hit in hitColliders)
         {
-            if (hit.gameObject.layer == gameObject.layer || hit.CompareTag("Projectile")) continue;
-
             Rigidbody rb = hit.GetComponentInParent<Rigidbody>() ?? hit.GetComponent<Rigidbody>();
             if (rb != null)
             {
@@ -63,6 +60,7 @@ public class ExplosiveProjectile : Projectile
                 damagedEntities.Add(damageable);
             }
         }
-        DisableProjectile();
+
+        gameObject.SetActive(false);
     }
 }

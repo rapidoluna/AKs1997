@@ -17,6 +17,13 @@ public class Projectile : MonoBehaviour
         _range = range;
         _owner = owner;
         _startPosition = transform.position;
+
+        ToggleVisibility(true);
+    }
+
+    protected virtual void OnEnable()
+    {
+        ToggleVisibility(true);
     }
 
     protected virtual void Update()
@@ -53,10 +60,7 @@ public class Projectile : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (_owner == null) return;
-
         if (other.gameObject == _owner || other.transform.IsChildOf(_owner.transform) || other.CompareTag(_owner.tag)) return;
-
-        if (other.gameObject.layer == gameObject.layer || other.CompareTag("Projectile")) return;
 
         IDamageable damageable = other.GetComponentInParent<IDamageable>() ?? other.GetComponent<IDamageable>();
         if (damageable != null)
@@ -70,8 +74,24 @@ public class Projectile : MonoBehaviour
         }
     }
 
+    protected void ToggleVisibility(bool visible)
+    {
+        if (TryGetComponent<Renderer>(out var r)) r.enabled = visible;
+        if (TryGetComponent<Collider>(out var c)) c.enabled = visible;
+
+        foreach (var childRenderer in GetComponentsInChildren<Renderer>())
+            childRenderer.enabled = visible;
+
+        foreach (var trail in GetComponentsInChildren<TrailRenderer>())
+        {
+            if (visible) trail.Clear();
+            trail.enabled = visible;
+        }
+    }
+
     protected void DisableProjectile()
     {
+        ToggleVisibility(false);
         gameObject.SetActive(false);
     }
 }

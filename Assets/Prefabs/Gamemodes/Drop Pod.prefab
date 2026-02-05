@@ -51,8 +51,6 @@ MonoBehaviour:
   weightedEnemies:
   - enemyPrefab: {fileID: 5016186127453854959, guid: ef1c92737bef3ba4fa42f9b65b642a51, type: 3}
     weight: 100
-  - enemyPrefab: {fileID: 5016186127453854959, guid: 87f5f9cfca052cb498cadd8c1533e194, type: 3}
-    weight: 50
   - enemyPrefab: {fileID: 5016186127453854959, guid: 66ccb939bd44aff46ba253405aef6acf, type: 3}
     weight: 25
   spawnPoints:

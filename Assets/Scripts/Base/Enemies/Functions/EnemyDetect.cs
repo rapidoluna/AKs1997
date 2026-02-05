@@ -51,6 +51,12 @@ public class EnemyDetect : MonoBehaviour
             {
                 _controller.agent.SetDestination(_controller.player.position);
             }
+
+            if (CanSeePlayer())
+            {
+                StopForceTracking();
+                StartCombat(distance);
+            }
             return;
         }
 
@@ -103,7 +109,7 @@ public class EnemyDetect : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, origin) > chaseMaintainDistance) return;
 
-        StartForceTracking(origin, 5f);
+        StartForceTracking(origin, 7f);
     }
 
     public void StartForceTracking(Vector3 targetPos, float duration)
@@ -120,7 +126,23 @@ public class EnemyDetect : MonoBehaviour
 
         _controller.agent.SetDestination(targetPos);
 
-        yield return new WaitForSeconds(duration);
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            if (Vector3.Distance(transform.position, targetPos) < 1.5f)
+            {
+                transform.Rotate(Vector3.up, 360f * Time.deltaTime);
+
+                if (CanSeePlayer())
+                {
+                    _isForceTracking = false;
+                    StartCombat(Vector3.Distance(transform.position, _controller.player.position));
+                    yield break;
+                }
+            }
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
 
         _isForceTracking = false;
     }

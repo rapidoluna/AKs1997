@@ -51,7 +51,6 @@ public class DropPod : MonoBehaviour
             if (selectedPrefab != null)
             {
                 GameObject enemy = Instantiate(selectedPrefab, spawnPoints[i].position, Quaternion.identity);
-
                 StartCoroutine(DelayedAIActivation(enemy));
 
                 EnemyHealth health = enemy.GetComponent<EnemyHealth>();
@@ -80,7 +79,11 @@ public class DropPod : MonoBehaviour
         if (controller != null) controller.enabled = true;
         if (detect != null) detect.enabled = true;
 
-        if (detect != null) detect.OnProjectileDetected(transform.position);
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null && detect != null)
+        {
+            detect.OnProjectileDetected(player.transform.position);
+        }
     }
 
     private GameObject GetWeightedRandomEnemy()

@@ -25,13 +25,16 @@ public class GameStateManager : MonoBehaviour
 
         if (currentScore >= targetScore)
         {
-            ActivateEscape();
+            StartCoroutine(DelayedEscapeActivation());
         }
     }
 
-    private void ActivateEscape()
+    private IEnumerator DelayedEscapeActivation()
     {
         _isEscapeReady = true;
+
+        yield return new WaitForSeconds(2f);
+
         OnEscapeAvailable?.Invoke();
 
         if (CashRushHUD.Instance != null)

@@ -19,18 +19,19 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (_isDead) return;
 
         EnemyPatternController pattern = GetComponent<EnemyPatternController>();
-        if (pattern != null) pattern.TryDodge();
+        if (pattern != null && pattern.enabled) pattern.TryDodge();
 
         EnemyDetect detector = GetComponent<EnemyDetect>();
-        EnemyController controller = GetComponent<EnemyController>();
-
-        if (detector != null && controller != null && controller.player != null)
+        if (detector != null && detector.enabled)
         {
-            detector.OnProjectileDetected(controller.player.position);
-
-            if (EnemyGroup.Instance != null)
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
             {
-                EnemyGroup.Instance.ReportTarget(controller.player.position, detector);
+                detector.OnProjectileDetected(player.transform.position);
+                if (EnemyGroup.Instance != null)
+                {
+                    EnemyGroup.Instance.ReportTarget(player.transform.position, detector);
+                }
             }
         }
 
@@ -50,13 +51,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             GameSessionManager.Instance.AddInstantScore(killScore);
 
             if (CashRushHUD.Instance != null)
-            {
                 CashRushHUD.Instance.AddScore(killScore);
-            }
         }
 
-        if (_mySpawner != null) _mySpawner.OnEnemyDestroyed();
         DropItems();
+
+        if (_mySpawner != null) _mySpawner.OnEnemyDestroyed();
         Destroy(gameObject);
     }
 
@@ -66,7 +66,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         foreach (var drop in data.dropTable)
         {
             if (Random.Range(0f, 100f) <= drop.dropRate)
+            {
                 Instantiate(drop.itemPrefab, transform.position, Quaternion.identity);
+            }
         }
     }
 }

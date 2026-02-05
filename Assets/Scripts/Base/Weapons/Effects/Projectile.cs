@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private float _speed;
-    private int _damage;
-    private float _range;
-    private GameObject _owner;
-    private Vector3 _startPosition;
+    protected float _speed;
+    protected int _damage;
+    protected float _range;
+    protected GameObject _owner;
+    protected Vector3 _startPosition;
 
-    [SerializeField] private float soundRadius = 5f;
+    [SerializeField] protected float soundRadius = 5f;
 
-    public void Init(float speed, int damage, float range, GameObject owner)
+    public virtual void Init(float speed, int damage, float range, GameObject owner)
     {
         _speed = speed;
         _damage = damage;
@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
         _startPosition = transform.position;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         transform.Translate(Vector3.forward * _speed * Time.deltaTime);
 
@@ -30,11 +30,11 @@ public class Projectile : MonoBehaviour
 
         if (Vector3.Distance(_startPosition, transform.position) >= _range)
         {
-            gameObject.SetActive(false);
+            DisableProjectile();
         }
     }
 
-    private void DetectNearbyEnemies()
+    protected virtual void DetectNearbyEnemies()
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, soundRadius);
         foreach (var hitCollider in hitColliders)
@@ -50,7 +50,7 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (_owner == null) return;
 
@@ -61,11 +61,16 @@ public class Projectile : MonoBehaviour
         if (other.TryGetComponent<IDamageable>(out var damageable))
         {
             damageable.TakeDamage(_damage);
-            gameObject.SetActive(false);
+            DisableProjectile();
         }
         else if (!other.isTrigger)
         {
-            gameObject.SetActive(false);
+            DisableProjectile();
         }
+    }
+
+    protected void DisableProjectile()
+    {
+        gameObject.SetActive(false);
     }
 }

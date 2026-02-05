@@ -267,7 +267,7 @@ public class WeaponShooting : MonoBehaviour
     private void GenerateProjectile(float speed, float spreadRange, int damage)
     {
         if (BulletPool.Instance == null) return;
-        GameObject bullet = BulletPool.Instance.GetBullet();
+        GameObject bullet = BulletPool.Instance.GetBullet(_data.bulletPrefab);
         Ray ray = _mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, _data.effectiveRange) ? hit.point : ray.GetPoint(_data.effectiveRange);
 

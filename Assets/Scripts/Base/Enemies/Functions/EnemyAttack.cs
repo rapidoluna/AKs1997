@@ -89,7 +89,7 @@ public class EnemyAttack : MonoBehaviour
     private void LaunchProjectile()
     {
         if (BulletPool.Instance == null || _firePoint == null) return;
-        GameObject bullet = BulletPool.Instance.GetBullet();
+        GameObject bullet = BulletPool.Instance.GetBullet(_controller.data.bulletPrefab);
         bullet.transform.position = _firePoint.position;
         Vector3 direction = (_controller.player.position - _firePoint.position).normalized;
         bullet.transform.rotation = _accuracy != null ? _accuracy.GetSpreadRotation(direction) : Quaternion.LookRotation(direction);

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8925136709926610807}
-  - component: {fileID: 6612932236854553051}
+  - component: {fileID: 707562787778483744}
   m_Layer: 0
   m_Name: Bullet Pool
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6612932236854553051
+--- !u!114 &707562787778483744
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,5 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5737898bcaea8e4c9192f48de0e3e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
-  poolSize: 100
+  poolItems:
+  - prefab: {fileID: 6533520068286845153, guid: 6969496909357a141bc14155b5e5f21e, type: 3}
+    initialSize: 100
+  - prefab: {fileID: 6533520068286845153, guid: 71c59a5ce3a184541806b93abfe8b1d2, type: 3}
+    initialSize: 25

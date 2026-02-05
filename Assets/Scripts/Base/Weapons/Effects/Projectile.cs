@@ -41,7 +41,7 @@ public class Projectile : MonoBehaviour
         {
             if (hitCollider.CompareTag("Enemy"))
             {
-                EnemyDetect detector = hitCollider.GetComponent<EnemyDetect>();
+                EnemyDetect detector = hitCollider.GetComponentInParent<EnemyDetect>();
                 if (detector != null)
                 {
                     detector.OnProjectileDetected(_owner.transform.position);
@@ -53,12 +53,11 @@ public class Projectile : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (_owner == null) return;
-
         if (other.gameObject == _owner || other.transform.IsChildOf(_owner.transform)) return;
-
         if (other.CompareTag(_owner.tag)) return;
 
-        if (other.TryGetComponent<IDamageable>(out var damageable))
+        IDamageable damageable = other.GetComponentInParent<IDamageable>() ?? other.GetComponent<IDamageable>();
+        if (damageable != null)
         {
             damageable.TakeDamage(_damage);
             DisableProjectile();

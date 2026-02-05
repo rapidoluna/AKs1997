@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4758882604713634491}
   - component: {fileID: 1143649589396620079}
   - component: {fileID: 1624312060665954158}
-  - component: {fileID: 4344637772795733334}
   - component: {fileID: 7147551410398436305}
+  - component: {fileID: 4344637772795733334}
   m_Layer: 0
   m_Name: E prefabs
   m_TagString: Untagged
@@ -112,24 +112,6 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4344637772795733334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6533520068286845153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7df0065db5ae2944f80548ec94e282a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explosionRadius: 5
-  soundRadius: 5
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  explosionVFX: {fileID: 0}
 --- !u!54 &7147551410398436305
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -157,3 +139,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &4344637772795733334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6533520068286845153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df0065db5ae2944f80548ec94e282a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundRadius: 5
+  explosionRadius: 5
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  explosionVFX: {fileID: 0}

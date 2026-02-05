@@ -17,6 +17,21 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         if (_isDead) return;
+
+        EnemyPatternController pattern = GetComponent<EnemyPatternController>();
+        if (pattern != null) pattern.TryDodge();
+
+        EnemyDetect detector = GetComponent<EnemyDetect>();
+        if (detector != null)
+        {
+            detector.StartForceTracking(10f);
+            EnemyController controller = GetComponent<EnemyController>();
+            if (controller != null && controller.player != null && EnemyGroup.Instance != null)
+            {
+                EnemyGroup.Instance.ReportTarget(controller.player.position, detector);
+            }
+        }
+
         _currentHealth -= damage;
         if (_currentHealth <= 0) Die();
     }
@@ -26,12 +41,16 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (_isDead) return;
         _isDead = true;
 
-        if (GameSessionManager.Instance != null) GameSessionManager.Instance.kills++;
-
-        STSNGStation station = Object.FindAnyObjectByType<STSNGStation>();
-        if (station != null)
+        if (GameSessionManager.Instance != null && data != null)
         {
-            station.AddStoredCashFromEnemy(data.maxHealth * 10);
+            int killScore = data.maxHealth * 10;
+            GameSessionManager.Instance.kills++;
+            GameSessionManager.Instance.AddInstantScore(killScore);
+
+            if (CashRushHUD.Instance != null)
+            {
+                CashRushHUD.Instance.AddScore(killScore);
+            }
         }
 
         if (_mySpawner != null) _mySpawner.OnEnemyDestroyed();

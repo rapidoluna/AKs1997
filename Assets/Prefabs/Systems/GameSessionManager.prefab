@@ -48,3 +48,4 @@ MonoBehaviour:
   score: 0
   damageTaken: 0
   isExtracted: 0
+  playTime: 0

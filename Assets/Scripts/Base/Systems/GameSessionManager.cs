@@ -5,7 +5,7 @@ public class GameSessionManager : MonoBehaviour
     public static GameSessionManager Instance;
 
     public int kills;
-    public int score;
+    public int score; // 최종 합산 점수
     public int damageTaken;
     public bool isExtracted;
     public float playTime;
@@ -24,10 +24,7 @@ public class GameSessionManager : MonoBehaviour
 
     private void Update()
     {
-        if (_isTimerRunning)
-        {
-            playTime += Time.deltaTime;
-        }
+        if (_isTimerRunning) playTime += Time.deltaTime;
     }
 
     public void StartSession()
@@ -36,22 +33,18 @@ public class GameSessionManager : MonoBehaviour
         _isTimerRunning = true;
     }
 
-    public void StopSession()
-    {
-        _isTimerRunning = false;
-    }
+    public void StopSession() => _isTimerRunning = false;
 
     public void ResetSession()
     {
-        kills = 0;
-        score = 0;
-        damageTaken = 0;
-        playTime = 0f;
-        isExtracted = false;
+        kills = 0; score = 0; damageTaken = 0;
+        playTime = 0f; isExtracted = false;
         _isTimerRunning = false;
     }
 
-    public void AddScore(int amount) => score += amount;
+    public void AddInstantScore(int amount) => score += amount;
+
+    public void AddDepositScore(int amount) => score += amount;
 
     public string GetFormattedTime()
     {

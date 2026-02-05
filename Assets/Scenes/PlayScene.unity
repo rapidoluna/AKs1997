@@ -465,10 +465,6 @@ PrefabInstance:
       propertyPath: overlayImage
       value: 
       objectReference: {fileID: 1600854248}
-    - target: {fileID: 5842246085799575771, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: characterData
-      value: 
-      objectReference: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
     - target: {fileID: 6736942281001848004, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -514,17 +510,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 630821824}
     - target: {fileID: 8052993675261965047, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: modeData
-      value: 
-      objectReference: {fileID: 11400000, guid: 8af92fea030ccda498ff8cebdb82bd40, type: 2}
-    - target: {fileID: 8052993675261965047, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: fadeGroup
       value: 
       objectReference: {fileID: 1140434315}
-    - target: {fileID: 8590870940800165938, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: characterData
-      value: 
-      objectReference: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
     - target: {fileID: 8720879077362830896, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: glitchOverlay
       value: 

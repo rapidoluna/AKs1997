@@ -11,7 +11,10 @@ public class GameStateManager : MonoBehaviour
     public bool IsEscapeReady => _isEscapeReady;
     public event Action OnEscapeAvailable;
 
-    private void Awake() => Instance = this;
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Update()
     {

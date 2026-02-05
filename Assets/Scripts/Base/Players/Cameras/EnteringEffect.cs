@@ -30,6 +30,11 @@ public class EnteringEffect : MonoBehaviour
 
     private IEnumerator StartEntrySequence()
     {
+        if (GameSessionManager.Instance != null)
+        {
+            GameSessionManager.Instance.StartSession();
+        }
+
         SetPlayerControl(false);
 
         float elapsed = 0f;

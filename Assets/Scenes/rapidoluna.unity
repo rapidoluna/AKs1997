@@ -127,6 +127,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 48923364382607739, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 48923364382607739, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+      propertyPath: m_TextWrappingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 197488186311848565, guid: 81a02b77f2a47514490641d254bba922, type: 3}
       propertyPath: playerCamera
       value: 
@@ -139,14 +147,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 5019041019297751692, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+      propertyPath: _ultimateCharge
+      value: 
+      objectReference: {fileID: 1114542775}
     - target: {fileID: 5113411408562834800, guid: 81a02b77f2a47514490641d254bba922, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1676415478}
-    - target: {fileID: 5329020822438612894, guid: 81a02b77f2a47514490641d254bba922, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -25
-      objectReference: {fileID: 0}
     - target: {fileID: 6022451921185764736, guid: 81a02b77f2a47514490641d254bba922, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -430,10 +438,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4788874534789682042, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-      propertyPath: fadeGroup
+    - target: {fileID: 315380270363290852, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: _chargeSystem
       value: 
-      objectReference: {fileID: 1831087051}
+      objectReference: {fileID: 1114542775}
+    - target: {fileID: 2734756762361554303, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: ultText
+      value: 
+      objectReference: {fileID: 893697789}
     - target: {fileID: 4788874534789682042, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: overlayImage
       value: 
@@ -490,6 +502,10 @@ PrefabInstance:
       propertyPath: fadeGroup
       value: 
       objectReference: {fileID: 1831087051}
+    - target: {fileID: 8590870940800165938, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: characterData
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8720879077362830896, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: glitchOverlay
       value: 
@@ -514,6 +530,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2cc899c8b9f8ae4eb45b18d2f48d5c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &893697789 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 48923364382607739, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+  m_PrefabInstance: {fileID: 146810574}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &922085540 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9099508028723441256, guid: 81a02b77f2a47514490641d254bba922, type: 3}
@@ -534,6 +561,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1114542775 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2734756762361554303, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+  m_PrefabInstance: {fileID: 747358430}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66b141c715f3bfc4dbee852280e0ea08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1248829233

@@ -1,15 +1,18 @@
+using TMPro;
 using UnityEngine;
 
 public class UltimateCharge : MonoBehaviour
 {
-    private float _currentGauge = 0f;
+    [SerializeField]private float _currentGauge = 0f;
     private const float MaxGauge = 100f;
     private AbilityData _ultimateData;
     private bool _isLocked = false;
+    public TextMeshProUGUI ultText;
 
     public float CurrentGauge => _currentGauge;
     public float GaugeRatio => _currentGauge / MaxGauge;
     public bool IsReady => _currentGauge >= MaxGauge;
+
 
     public void Initialize(AbilityData data)
     {
@@ -26,8 +29,6 @@ public class UltimateCharge : MonoBehaviour
 
     private void Update()
     {
-        if (_ultimateData == null || IsReady || _isLocked) return;
-
         AddGauge(_ultimateData.ultimateChargeSpeed * Time.deltaTime);
     }
 

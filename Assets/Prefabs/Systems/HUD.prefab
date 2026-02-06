@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ready
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d6a42532b95831a4088b5fd8b840f114, type: 2}
   m_sharedMaterial: {fileID: 2404064726897398521, guid: d6a42532b95831a4088b5fd8b840f114, type: 2}
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -2964,6 +2964,8 @@ MonoBehaviour:
   ultimateDarkOverlay: {fileID: 0}
   ultimateGaugeFill: {fileID: 0}
   ultimateReadyText: {fileID: 48923364382607739}
+  _ultimateCharge: {fileID: 0}
+  a: 0
 --- !u!1 &6936471334791573863
 GameObject:
   m_ObjectHideFlags: 0

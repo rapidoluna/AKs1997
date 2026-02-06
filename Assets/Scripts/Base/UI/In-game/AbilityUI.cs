@@ -17,13 +17,13 @@ public class AbilityUI : MonoBehaviour
 
     private AbilityProcessor _specialityProcessor;
     private UltimateProcessor _ultimateProcessor;
-    private UltimateCharge _ultimateCharge;
+    public UltimateCharge _ultimateCharge;
+    public float a;
 
     private float _lerpSpeed = 5f;
     private Color _activeColor = Color.white;
     private Color _inactiveColor = new Color(0.3f, 0.3f, 0.3f, 1f);
 
-    private Coroutine _readyTextCoroutine;
     private bool _isInitialized = false;
 
     private void Start()
@@ -116,34 +116,19 @@ public class AbilityUI : MonoBehaviour
         {
             if (isUsing)
             {
-                if (_readyTextCoroutine != null)
-                {
-                    StopCoroutine(_readyTextCoroutine);
-                    _readyTextCoroutine = null;
-                }
                 ultimateReadyText.gameObject.SetActive(false);
             }
             else if (isReady)
             {
-                if (_readyTextCoroutine == null)
-                {
-                    _readyTextCoroutine = StartCoroutine(ReadyTextSequence());
-                }
-            }
-            else
-            {
-                if (_readyTextCoroutine != null)
-                {
-                    StopCoroutine(_readyTextCoroutine);
-                    _readyTextCoroutine = null;
-                }
 
-                Color c = ultimateReadyText.color;
+                    StartCoroutine(ReadyTextSequence());
+            }
+            ultimateReadyText.text = Mathf.FloorToInt(_ultimateCharge.CurrentGauge).ToString();
+            Color c = ultimateReadyText.color;
                 c.a = 1f;
                 ultimateReadyText.color = c;
-                ultimateReadyText.text = Mathf.FloorToInt(_ultimateCharge.CurrentGauge).ToString();
+
                 ultimateReadyText.gameObject.SetActive(true);
-            }
         }
     }
 

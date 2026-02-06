@@ -6,7 +6,7 @@ public class UltimateProcessor : MonoBehaviour
 {
     private AbilityData _abilityData;
     private List<AbilityBase> _abilityEffects = new List<AbilityBase>();
-    private UltimateCharge _chargeSystem;
+    public UltimateCharge _chargeSystem;
     private bool _isDurationActive = false;
     private bool _isInitialized = false;
 
@@ -16,7 +16,6 @@ public class UltimateProcessor : MonoBehaviour
 
         _abilityData = data;
 
-        _chargeSystem = gameObject.AddComponent<UltimateCharge>();
         _chargeSystem.Initialize(_abilityData);
 
         CreateEffects(_abilityData, walk, firePoint);

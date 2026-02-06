@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7449395157772840678}
   - component: {fileID: 1162082548279593935}
   - component: {fileID: 315380270363290852}
+  - component: {fileID: 2734756762361554303}
   m_Layer: 0
   m_Name: Ability Holder
   m_TagString: Untagged
@@ -57,6 +58,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd8e7f1b699636478f43fea239c1ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _chargeSystem: {fileID: 2734756762361554303}
+--- !u!114 &2734756762361554303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188881520401524993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66b141c715f3bfc4dbee852280e0ea08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentGauge: 0
+  ultText: {fileID: 0}
 --- !u!1 &742535977893216238
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,7 +594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0402003c21eadde44a281dbe2065d875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 13985f0e755138f49b5090b01226a266, type: 2}
+  characterData: {fileID: 0}
   characterController: {fileID: 7498905321667918934}
   scriptsToDisable:
   - {fileID: 2186220335113528223}
@@ -611,7 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e367c1a82ad1db14285a6be6827aa85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterData: {fileID: 11400000, guid: 13985f0e755138f49b5090b01226a266, type: 2}
+  debugCharacterData: {fileID: 0}
   weaponHoldPoint: {fileID: 2815454732221533248}
 --- !u!114 &7326960581296985013
 MonoBehaviour:
@@ -642,7 +658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entryDuration: 2.5
   fadeGroup: {fileID: 0}
-  modeData: {fileID: 11400000, guid: 8af92fea030ccda498ff8cebdb82bd40, type: 2}
+  modeData: {fileID: 11400000, guid: 72c56badccbb2714ea5f691a52962835, type: 2}
   introUI: {fileID: 0}
 --- !u!1001 &1234667107454676844
 PrefabInstance:

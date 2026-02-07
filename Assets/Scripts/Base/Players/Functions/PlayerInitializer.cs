@@ -5,72 +5,78 @@ public class PlayerInitializer : MonoBehaviour
     [SerializeField] private CharacterData debugCharacterData;
     [SerializeField] private Transform weaponHoldPoint;
 
-    private CharacterData _activeCharacterData;
+    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private PlayerWalking playerWalking;
+    [SerializeField] private AbilityProcessor abilityProcessor;
+    [SerializeField] private UltimateProcessor ultimateProcessor;
 
-    public CharacterData ActiveCharacterData => _activeCharacterData;
+    public CharacterData CharacterData { get; private set; }
+
+    private void Awake()
+    {
+        if (playerHealth == null) playerHealth = GetComponent<PlayerHealth>();
+        if (playerWalking == null) playerWalking = GetComponent<PlayerWalking>();
+        if (abilityProcessor == null) abilityProcessor = GetComponentInChildren<AbilityProcessor>();
+        if (ultimateProcessor == null) ultimateProcessor = GetComponentInChildren<UltimateProcessor>();
+    }
 
     private void Start()
     {
-        InitializeCharacter();
-        InitializeWeapons();
+        InitCharacter();
+        InitWeapons();
     }
 
-    private void InitializeCharacter()
+    private void InitCharacter()
     {
         if (GlobalSelectionManager.Instance != null && GlobalSelectionManager.Instance.selectedCharacterData != null)
-        {
-            _activeCharacterData = GlobalSelectionManager.Instance.selectedCharacterData;
-        }
+            CharacterData = GlobalSelectionManager.Instance.selectedCharacterData;
         else
-        {
-            _activeCharacterData = debugCharacterData;
-        }
+            CharacterData = debugCharacterData;
 
-        if (_activeCharacterData == null) return;
+        if (CharacterData == null) return;
 
-        if (_activeCharacterData.characterPrefab != null)
+        if (CharacterData.characterPrefab != null)
         {
-            GameObject model = Instantiate(_activeCharacterData.characterPrefab, transform);
+            foreach (Transform child in transform)
+                if (child.name.Contains("Model")) Destroy(child.gameObject);
+
+            GameObject model = Instantiate(CharacterData.characterPrefab, transform);
             model.transform.localPosition = Vector3.zero;
             model.transform.localRotation = Quaternion.identity;
+            model.name = "PlayerModel";
         }
 
-        PlayerHealth health = GetComponent<PlayerHealth>();
-        if (health != null) health.SetData(_activeCharacterData);
+        if (playerHealth != null)
+            playerHealth.SetData(CharacterData);
 
-        var abilityProcessor = GetComponentInChildren<AbilityProcessor>();
-        var ultimateProcessor = GetComponentInChildren<UltimateProcessor>();
-        var playerWalking = GetComponent<PlayerWalking>();
+        Transform firePoint = weaponHoldPoint != null ? weaponHoldPoint : transform;
 
         if (abilityProcessor != null)
-            abilityProcessor.Initialize(_activeCharacterData.characterSpeciality, playerWalking, transform);
+            abilityProcessor.Initialize(CharacterData.characterSpeciality, playerWalking, firePoint);
 
         if (ultimateProcessor != null)
-            ultimateProcessor.Initialize(_activeCharacterData.characterUltimate, playerWalking, transform);
+            ultimateProcessor.Initialize(CharacterData.characterUltimate, playerWalking, firePoint);
     }
 
-    private void InitializeWeapons()
+    private void InitWeapons()
     {
-        if (GlobalSelectionManager.Instance == null) return;
-        if (weaponHoldPoint == null) return;
+        if (GlobalSelectionManager.Instance == null || weaponHoldPoint == null) return;
 
-        WeaponController weaponController = weaponHoldPoint.GetComponent<WeaponController>();
-        if (weaponController == null) return;
+        WeaponController controller = weaponHoldPoint.GetComponent<WeaponController>();
+        if (controller == null) return;
 
         for (int i = 0; i < 2; i++)
         {
-            GameObject weaponPrefab = GlobalSelectionManager.Instance.selectedWeaponPrefabs[i];
-            if (weaponPrefab != null)
+            GameObject prefab = GlobalSelectionManager.Instance.selectedWeaponPrefabs[i];
+            if (prefab != null)
             {
-                GameObject weaponInstance = Instantiate(weaponPrefab, weaponHoldPoint);
-                weaponInstance.transform.localPosition = Vector3.zero;
-                weaponInstance.transform.localRotation = Quaternion.identity;
-                weaponInstance.name = weaponPrefab.name;
-
-                weaponController.RegisterWeapon(i, weaponInstance);
+                GameObject weaponObj = Instantiate(prefab, weaponHoldPoint);
+                weaponObj.transform.localPosition = Vector3.zero;
+                weaponObj.transform.localRotation = Quaternion.identity;
+                controller.RegisterWeapon(i, weaponObj);
             }
         }
 
-        weaponController.InitializeWeapons();
+        controller.InitializeWeapons();
     }
 }

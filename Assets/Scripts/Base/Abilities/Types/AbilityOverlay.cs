@@ -1,36 +1,60 @@
 using UnityEngine;
+using System.Collections;
 
 public class AbilityOverlay : AbilityBase
 {
-    private GameObject _spawnedOverlayWeapon;
+    private GameObject _akimboWeaponInstance;
+    private WeaponShooting _akimboShooting;
 
-    public override void Execute()
+    public override void Initialize(AbilityData data, PlayerWalking move, Transform point, MonoBehaviour runnerScript)
     {
-        if (abilityData != null && abilityData.rewardWeapon != null)
+        base.Initialize(data, move, point, runnerScript);
+
+        if (data.rewardWeapon != null && _akimboWeaponInstance == null)
         {
-            Transform weaponHolder = transform.root.GetComponentInChildren<PlayerWalking>()?.transform.Find("Weapon Holder");
+            _akimboWeaponInstance = Object.Instantiate(data.rewardWeapon, point);
 
-            Transform targetParent = weaponHolder != null ? weaponHolder : firePoint;
+            // 왼손 위치 등으로 오프셋 조정 필요 (임시 좌표)
+            _akimboWeaponInstance.transform.localPosition = new Vector3(-0.5f, 0f, 0.5f);
+            _akimboWeaponInstance.transform.localRotation = Quaternion.identity;
 
-            _spawnedOverlayWeapon = Instantiate(abilityData.rewardWeapon, targetParent);
-
-            _spawnedOverlayWeapon.transform.localPosition = abilityData.rewardWeapon.transform.localPosition;
-            _spawnedOverlayWeapon.transform.localRotation = abilityData.rewardWeapon.transform.localRotation;
-
-            Debug.Log($"[AbilityOverlay] {abilityData.rewardWeapon.name} 장착 완료 (부모: {targetParent.name})");
+            _akimboShooting = _akimboWeaponInstance.GetComponent<WeaponShooting>();
+            _akimboWeaponInstance.SetActive(false);
         }
-        else
+    }
+
+    public override void Execute(KeyCode inputKey)
+    {
+        if (_akimboWeaponInstance == null) return;
+
+        _akimboWeaponInstance.SetActive(true);
+
+        if (runner != null)
+            runner.StartCoroutine(AkimboFireRoutine());
+    }
+
+    private IEnumerator AkimboFireRoutine()
+    {
+        float duration = abilityData.abilityDuration > 0 ? abilityData.abilityDuration : 5f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
         {
-            Debug.LogWarning("[AbilityOverlay] rewardWeapon이 설정되지 않았습니다.");
+            if (Input.GetMouseButton(0) && _akimboShooting != null)
+            {
+                _akimboShooting.Shoot();
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
         }
+
+        StopAbility();
     }
 
     public override void StopAbility()
     {
-        if (_spawnedOverlayWeapon != null)
-        {
-            Destroy(_spawnedOverlayWeapon);
-            Debug.Log("[AbilityOverlay] 오버레이 무기 해제");
-        }
+        if (_akimboWeaponInstance != null)
+            _akimboWeaponInstance.SetActive(false);
     }
 }

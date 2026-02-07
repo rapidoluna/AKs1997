@@ -22,21 +22,22 @@ public class AbilityProcessor : MonoBehaviour
 
     private void CreateEffects(AbilityData data, PlayerWalking walk, Transform firePoint)
     {
+        _abilityEffects.Clear();
         foreach (var type in data.activeTypes)
         {
             AbilityBase effect = type switch
             {
-                AbilityActiveType.Buff => gameObject.AddComponent<AbilityBuff>(),
-                AbilityActiveType.Equip => gameObject.AddComponent<AbilityEquip>(),
-                AbilityActiveType.Overlay => gameObject.AddComponent<AbilityOverlay>(),
-                AbilityActiveType.Charge => gameObject.AddComponent<AbilityCharge>(),
-                AbilityActiveType.Instant => gameObject.AddComponent<AbilityInstant>(),
+                AbilityActiveType.Buff => new AbilityBuff(),
+                AbilityActiveType.Equip => new AbilityEquip(),
+                AbilityActiveType.Overlay => new AbilityOverlay(),
+                AbilityActiveType.Charge => new AbilityCharge(),
+                AbilityActiveType.Instant => new AbilityInstant(),
                 _ => null
             };
 
             if (effect != null)
             {
-                effect.Initialize(data, walk, firePoint);
+                effect.Initialize(data, walk, firePoint, this);
                 _abilityEffects.Add(effect);
             }
         }
@@ -44,7 +45,7 @@ public class AbilityProcessor : MonoBehaviour
 
     private void Update()
     {
-        if (!_isInitialized || _abilityData == null || _abilityEffects.Count == 0) return;
+        if (!_isInitialized) return;
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -65,7 +66,7 @@ public class AbilityProcessor : MonoBehaviour
 
         foreach (var effect in _abilityEffects)
         {
-            effect.Execute();
+            effect.Execute(KeyCode.Q);
         }
 
         if (_abilityData.abilityDuration > 0)
@@ -94,12 +95,14 @@ public class AbilityProcessor : MonoBehaviour
     }
 
     public bool IsActive() => _isDurationActive;
+    public AbilityData GetData() => _abilityData;
 
     public float GetCooldownRatio()
     {
         if (_isDurationActive) return 0f;
         float totalCd = _abilityData.abilityCooltime;
         if (totalCd <= 0) return 1f;
+
         float elapsed = Time.time - (_cooldownTimer - totalCd);
         return Mathf.Clamp01(elapsed / totalCd);
     }
@@ -109,6 +112,4 @@ public class AbilityProcessor : MonoBehaviour
         float remaining = _cooldownTimer - Time.time;
         return remaining > 0 ? remaining : 0;
     }
-
-    public AbilityData GetData() => _abilityData;
 }

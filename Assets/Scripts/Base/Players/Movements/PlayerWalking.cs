@@ -1,42 +1,117 @@
 using UnityEngine;
+using System.Collections;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerWalking : MonoBehaviour
 {
-    [SerializeField] private float walkSpeed = 5f;
-    [SerializeField] private float gravity = -9.81f;
+    private CharacterController controller;
 
-    private CharacterController _controller;
-    private Transform _transform;
-    private Vector3 _velocity;
-    private float _speedMultiplier = 1f;
+    [SerializeField] private float baseSpeed = 5f;
+    [SerializeField] private float gravity = -19.62f;
+    [SerializeField] private float adsSpeedMultiplier = 0.6f;
+    [SerializeField] private float shootingSpeedMultiplier = 0.8f;
+    private float _abilitySpeedMultiplier = 1f;
 
-    private void Awake()
+    private float currentSpeed;
+    private float overrideSpeed = -1f;
+    private Vector3 velocity;
+    private Vector3 _impactVelocity;
+    private bool _isStunned = false;
+
+    private WeaponAiming _weaponAiming;
+    private WeaponShooting _weaponShooting;
+
+    public float BaseSpeed => baseSpeed;
+    public float MoveSpeed { get => currentSpeed; set => overrideSpeed = value; }
+    public float VerticalVelocity { get => velocity.y; set => velocity.y = value; }
+
+    void Awake()
     {
-        _controller = GetComponent<CharacterController>();
-        _transform = transform;
+        controller = GetComponent<CharacterController>();
+        currentSpeed = baseSpeed;
     }
 
-    private void Update()
+    void Update()
     {
-        if (PlayerHealth.IsDead) return;
+        if (_weaponAiming == null || _weaponShooting == null)
+        {
+            _weaponAiming = GetComponentInChildren<WeaponAiming>();
+            _weaponShooting = GetComponentInChildren<WeaponShooting>();
+        }
 
-        bool isGrounded = _controller.isGrounded;
-        if (isGrounded && _velocity.y < 0) _velocity.y = -2f;
+        if (_isStunned)
+        {
+            ProcessImpact();
+            return;
+        }
+
+        HandleMovement();
+        ProcessImpact();
+    }
+
+    private void HandleMovement()
+    {
+        if (controller.isGrounded && velocity.y < 0) velocity.y = -2f;
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        float targetSpeed = (overrideSpeed > 0) ? overrideSpeed : baseSpeed;
 
-        if (x != 0 || z != 0)
+        if (overrideSpeed > 0) overrideSpeed = -1f;
+        else
         {
-            Vector3 move = _transform.right * x + _transform.forward * z;
-            if (move.magnitude > 1f) move.Normalize();
-            _controller.Move(move * (walkSpeed * _speedMultiplier) * Time.deltaTime);
+            if (_weaponAiming != null && _weaponAiming.IsAiming) targetSpeed *= adsSpeedMultiplier;
+            else if (_weaponShooting != null && _weaponShooting.IsShooting) targetSpeed *= shootingSpeedMultiplier;
         }
 
-        _velocity.y += gravity * Time.deltaTime;
-        _controller.Move(_velocity * Time.deltaTime);
+        targetSpeed *= _abilitySpeedMultiplier;
+        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, Time.deltaTime * 10f);
+
+        Vector3 move = transform.right * x + transform.forward * z;
+        controller.Move(move * currentSpeed * Time.deltaTime);
+
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
     }
 
-    public void SetSpeedMultiplier(float multi) => _speedMultiplier = multi;
+    private void ProcessImpact()
+    {
+        if (_impactVelocity.magnitude > 0.2f)
+        {
+            controller.Move(_impactVelocity * Time.deltaTime);
+        }
+        _impactVelocity = Vector3.Lerp(_impactVelocity, Vector3.zero, Time.deltaTime * 5f);
+
+        if (_isStunned)
+        {
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+        }
+    }
+
+    public void ApplyStun(float duration)
+    {
+        StartCoroutine(StunRoutine(duration));
+    }
+
+    private IEnumerator StunRoutine(float duration)
+    {
+        _isStunned = true;
+        yield return new WaitForSeconds(duration);
+        _isStunned = false;
+    }
+
+    public void ApplyKnockback(Vector3 force)
+    {
+        _impactVelocity += force;
+    }
+
+    public void ApplyAbilitySpeed(float multiplier)
+    {
+        _abilitySpeedMultiplier = multiplier;
+    }
+
+    public void ResetSpeed()
+    {
+        _abilitySpeedMultiplier = 1f;
+    }
 }

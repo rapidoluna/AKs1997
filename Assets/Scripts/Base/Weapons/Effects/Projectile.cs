@@ -2,46 +2,96 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    private float _speed;
-    private float _damage;
-    private Vector3 _direction;
-    private float _lifeTime = 3f;
-    private float _spawnTime;
+    protected float _speed;
+    protected int _damage;
+    protected float _range;
+    protected GameObject _owner;
+    protected Vector3 _startPosition;
 
-    public void Initialize(Vector3 direction, float damage, float speed)
+    [SerializeField] protected float soundRadius = 5f;
+
+    public virtual void Init(float speed, int damage, float range, GameObject owner)
     {
-        _direction = direction;
-        _damage = damage;
         _speed = speed;
-        _spawnTime = Time.time;
+        _damage = damage;
+        _range = range;
+        _owner = owner;
+        _startPosition = transform.position;
+
+        ToggleVisibility(true);
     }
 
-    private void Update()
+    protected virtual void OnEnable()
     {
-        transform.position += _direction * _speed * Time.deltaTime;
+        ToggleVisibility(true);
+    }
 
-        if (Time.time - _spawnTime >= _lifeTime)
+    protected virtual void Update()
+    {
+        transform.Translate(Vector3.forward * _speed * Time.deltaTime);
+
+        if (_owner != null && _owner.CompareTag("Player"))
         {
-            DisableBullet();
+            DetectNearbyEnemies();
+        }
+
+        if (Vector3.Distance(_startPosition, transform.position) >= _range)
+        {
+            DisableProjectile();
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void DetectNearbyEnemies()
     {
-        IDamageable target = other.GetComponent<IDamageable>();
-        if (target != null)
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, soundRadius);
+        foreach (var hitCollider in hitColliders)
         {
-            target.TakeDamage((int)_damage);
+            if (hitCollider.CompareTag("Enemy"))
+            {
+                EnemyDetect detector = hitCollider.GetComponentInParent<EnemyDetect>();
+                if (detector != null)
+                {
+                    detector.OnProjectileDetected(_owner.transform.position);
+                }
+            }
         }
-
-        DisableBullet();
     }
 
-    private void DisableBullet()
+    protected virtual void OnTriggerEnter(Collider other)
     {
-        if (BulletPool.Instance != null)
-            BulletPool.Instance.ReturnBullet(gameObject);
-        else
-            Destroy(gameObject);
+        if (_owner == null) return;
+        if (other.gameObject == _owner || other.transform.IsChildOf(_owner.transform) || other.CompareTag(_owner.tag)) return;
+
+        IDamageable damageable = other.GetComponentInParent<IDamageable>() ?? other.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            damageable.TakeDamage(_damage);
+            DisableProjectile();
+        }
+        else if (!other.isTrigger)
+        {
+            DisableProjectile();
+        }
+    }
+
+    protected void ToggleVisibility(bool visible)
+    {
+        if (TryGetComponent<Renderer>(out var r)) r.enabled = visible;
+        if (TryGetComponent<Collider>(out var c)) c.enabled = visible;
+
+        foreach (var childRenderer in GetComponentsInChildren<Renderer>())
+            childRenderer.enabled = visible;
+
+        foreach (var trail in GetComponentsInChildren<TrailRenderer>())
+        {
+            if (visible) trail.Clear();
+            trail.enabled = visible;
+        }
+    }
+
+    protected void DisableProjectile()
+    {
+        ToggleVisibility(false);
+        gameObject.SetActive(false);
     }
 }

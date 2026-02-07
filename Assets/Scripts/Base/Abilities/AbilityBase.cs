@@ -1,20 +1,21 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public abstract class AbilityBase
+public abstract class AbilityBase : MonoBehaviour
 {
     protected AbilityData abilityData;
-    protected PlayerWalking playerMove;
+    protected PlayerWalking movement;
     protected Transform firePoint;
-    protected MonoBehaviour runner;
 
-    public virtual void Initialize(AbilityData data, PlayerWalking move, Transform point, MonoBehaviour runnerScript)
+    public virtual void Initialize(AbilityData data, PlayerWalking walk, Transform fp)
     {
         abilityData = data;
-        playerMove = move;
-        firePoint = point;
-        runner = runnerScript;
+        movement = walk;
+        firePoint = fp;
     }
 
-    public abstract void Execute(KeyCode inputKey);
+    public abstract void Execute();
+    public virtual void OnChargeStart() { }
+    public virtual void OnChargeRelease(List<GameObject> targets) { }
     public virtual void StopAbility() { }
 }

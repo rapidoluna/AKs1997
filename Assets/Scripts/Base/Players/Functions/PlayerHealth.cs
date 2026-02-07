@@ -3,44 +3,32 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
-    public static PlayerHealth Instance { get; private set; }
     public static bool IsDead { get; private set; }
 
     [SerializeField] private CharacterData characterData;
+    private float currentHealth;
+    private float _bonusMaxHealth;
+    private float _currentBonusHealth;
 
     [SerializeField] private CharacterController characterController;
     [SerializeField] private MonoBehaviour[] scriptsToDisable;
 
-    private float _currentHealth;
-    private float _bonusMaxHealth;
-    private float _currentBonusHealth;
-
-    public float CurrentHealth => _currentHealth;
+    public float CurrentHealth => currentHealth;
+    public float CurrentBonusHealth => _currentBonusHealth;
     public float BaseMaxHealth => characterData != null ? characterData.MaxHealth : 100f;
+    public float BonusMaxHealth => _bonusMaxHealth;
 
-    private void Awake()
+    void Awake()
     {
-        Instance = this;
         IsDead = false;
-
-        if (characterController == null)
-            characterController = GetComponent<CharacterController>();
-    }
-
-    private void Start()
-    {
-        if (characterData != null) InitHealth();
+        if (characterData != null) currentHealth = BaseMaxHealth;
+        if (characterController == null) characterController = GetComponent<CharacterController>();
     }
 
     public void SetData(CharacterData data)
     {
         characterData = data;
-        InitHealth();
-    }
-
-    private void InitHealth()
-    {
-        _currentHealth = BaseMaxHealth;
+        currentHealth = BaseMaxHealth;
         _bonusMaxHealth = 0f;
         _currentBonusHealth = 0f;
     }
@@ -50,31 +38,34 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (IsDead) return;
 
         if (GameSessionManager.Instance != null)
+        {
             GameSessionManager.Instance.damageTaken += damage;
+        }
 
-        float remaining = damage;
+        float remainingDamage = damage;
+
         if (_currentBonusHealth > 0)
         {
-            if (_currentBonusHealth >= remaining)
+            if (_currentBonusHealth >= remainingDamage)
             {
-                _currentBonusHealth -= remaining;
-                remaining = 0;
+                _currentBonusHealth -= remainingDamage;
+                remainingDamage = 0;
             }
             else
             {
-                remaining -= _currentBonusHealth;
+                remainingDamage -= _currentBonusHealth;
                 _currentBonusHealth = 0;
             }
         }
 
-        _currentHealth -= remaining;
+        currentHealth -= remainingDamage;
 
         if (PlayerDamageEffect.Instance != null)
             PlayerDamageEffect.Instance.OnHit();
 
-        if (_currentHealth <= 0)
+        if (currentHealth <= 0)
         {
-            _currentHealth = 0;
+            currentHealth = 0;
             Die();
         }
     }
@@ -82,13 +73,12 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void Heal(float amount)
     {
         if (IsDead) return;
-        _currentHealth = Mathf.Min(_currentHealth + amount, BaseMaxHealth);
+        currentHealth = Mathf.Min(currentHealth + amount, BaseMaxHealth);
     }
 
-    public void ApplyHealthBuff(float bonus)
+    public bool IsFullHealth()
     {
-        _bonusMaxHealth = bonus;
-        _currentBonusHealth = bonus;
+        return currentHealth >= BaseMaxHealth;
     }
 
     private void Die()
@@ -97,18 +87,27 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         IsDead = true;
 
         if (GameSessionManager.Instance != null)
+        {
             GameSessionManager.Instance.isExtracted = false;
+        }
 
-        foreach (var script in scriptsToDisable)
-            if (script != null) script.enabled = false;
+        foreach (var script in scriptsToDisable) if (script != null) script.enabled = false;
+        if (characterController != null) characterController.enabled = false;
+        if (PlayerDeathCamera.Instance != null) PlayerDeathCamera.Instance.PlayDeathAnimation();
 
-        if (characterController != null)
-            characterController.enabled = false;
+        Invoke("LoadResultScene", 3f);
+    }
 
-        if (PlayerDeathCamera.Instance != null)
-            PlayerDeathCamera.Instance.PlayDeathAnimation();
+    public void ApplyHealthBuff(float healthBonus)
+    {
+        _bonusMaxHealth = healthBonus;
+        _currentBonusHealth = healthBonus;
+    }
 
-        Invoke(nameof(LoadResultScene), 3f);
+    public void ResetHealthBuff()
+    {
+        _bonusMaxHealth = 0f;
+        _currentBonusHealth = 0f;
     }
 
     private void LoadResultScene()

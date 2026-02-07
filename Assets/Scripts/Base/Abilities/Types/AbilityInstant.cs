@@ -2,41 +2,57 @@ using UnityEngine;
 
 public class AbilityInstant : AbilityBase
 {
-    public override void Execute(KeyCode inputKey)
-    {
-        if (abilityData.maxHealthBonus > 0 && PlayerHealth.Instance != null)
-        {
-            PlayerHealth.Instance.Heal(abilityData.maxHealthBonus);
-        }
+    private Vector3 _lastCenter;
+    private Vector3 _lastSize;
+    private Quaternion _lastRotation = Quaternion.identity;
+    private bool _hasExecuted = false;
 
-        if (abilityData.areaSize != Vector3.zero)
-        {
-            HitArea();
-        }
+    private AbilityProcessor _specialityProcessor;
+    private UltimateProcessor _ultimateProcessor;
+
+    private void Awake()
+    {
+        _specialityProcessor = GetComponent<AbilityProcessor>();
+        _ultimateProcessor = GetComponent<UltimateProcessor>();
     }
 
-    private void HitArea()
+    public override void Execute()
     {
-        if (firePoint == null) return;
+        _lastCenter = firePoint.position + firePoint.forward * abilityData.abilityRange;
+        _lastRotation = firePoint.rotation;
+        _lastSize = abilityData.areaSize;
+        _hasExecuted = true;
 
-        Collider[] hitColliders = Physics.OverlapBox(firePoint.position + firePoint.forward * (abilityData.areaSize.z / 2), abilityData.areaSize / 2, firePoint.rotation);
-
-        foreach (var hit in hitColliders)
+        if (abilityData.abilityPrefab != null)
         {
-            if (hit.transform.root == firePoint.root) continue;
+            Instantiate(abilityData.abilityPrefab, _lastCenter, _lastRotation);
+        }
 
-            IDamageable target = hit.GetComponent<IDamageable>();
-            if (target != null)
-            {
-                target.TakeDamage((int)abilityData.abilityDamage);
-            }
+        Collider[] colliders = Physics.OverlapBox(_lastCenter, _lastSize * 0.5f, _lastRotation);
 
-            Rigidbody rb = hit.GetComponent<Rigidbody>();
-            if (rb != null)
+        foreach (Collider col in colliders)
+        {
+            if (col.CompareTag("Enemy"))
             {
-                Vector3 direction = (hit.transform.position - firePoint.position).normalized;
-                rb.AddForce(direction * 500f, ForceMode.Impulse);
+                col.SendMessage("TakeDamage", (int)abilityData.abilityDamage, SendMessageOptions.DontRequireReceiver);
             }
         }
+
+        if (abilityData.type == AbilityType.Speciality && _specialityProcessor != null)
+            _specialityProcessor.StopEffect();
+        else if (abilityData.type == AbilityType.Ultimate && _ultimateProcessor != null)
+            _ultimateProcessor.StopUltimate();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!_hasExecuted) return;
+        Gizmos.color = Color.red;
+        Gizmos.matrix = Matrix4x4.TRS(_lastCenter, _lastRotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, _lastSize);
+    }
+
+    public override void StopAbility()
+    {
     }
 }

@@ -2,45 +2,43 @@ using UnityEngine;
 
 public class AbilityBuff : AbilityBase
 {
-    private bool _isBuffActive = false;
-
-    public override void Execute(KeyCode key)
+    public override void Execute()
     {
-        if (abilityData == null || _isBuffActive) return;
-
-        // 1. 체력 관련 버프
-        if (PlayerHealth.Instance != null)
+        if (movement != null)
         {
-            if (abilityData.maxHealthBonus > 0)
-            {
-                PlayerHealth.Instance.ApplyHealthBuff(abilityData.maxHealthBonus);
-                PlayerHealth.Instance.Heal(abilityData.maxHealthBonus);
-            }
+            movement.ApplyAbilitySpeed(abilityData.moveSpeedMultiplier);
         }
 
-        // 2. 이동 속도 버프
-        if (playerMove != null && abilityData.moveSpeedMultiplier > 1f)
+        WeaponShooting[] shooters = transform.root.GetComponentsInChildren<WeaponShooting>();
+        foreach (var shooter in shooters)
         {
-            playerMove.SetSpeedMultiplier(abilityData.moveSpeedMultiplier);
+            shooter.SetDamageMultiplier(abilityData.damageMultiplier);
         }
 
-        _isBuffActive = true;
+        PlayerHealth health = transform.root.GetComponent<PlayerHealth>();
+        if (health != null)
+        {
+            health.ApplyHealthBuff(abilityData.maxHealthBonus);
+        }
     }
 
     public override void StopAbility()
     {
-        if (!_isBuffActive) return;
-
-        if (PlayerHealth.Instance != null)
+        if (movement != null)
         {
-            PlayerHealth.Instance.ApplyHealthBuff(0);
+            movement.ResetSpeed();
         }
 
-        if (playerMove != null)
+        WeaponShooting[] shooters = transform.root.GetComponentsInChildren<WeaponShooting>();
+        foreach (var shooter in shooters)
         {
-            playerMove.SetSpeedMultiplier(1f);
+            shooter.SetDamageMultiplier(1f);
         }
 
-        _isBuffActive = false;
+        PlayerHealth health = transform.root.GetComponent<PlayerHealth>();
+        if (health != null)
+        {
+            health.ResetHealthBuff();
+        }
     }
 }

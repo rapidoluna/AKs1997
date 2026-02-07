@@ -1,35 +1,52 @@
 using UnityEngine;
+using System;
 
 public class WeaponAmmo : MonoBehaviour
 {
-    [SerializeField] private int maxAmmo = 30;
+    private WeaponData _data;
     private int _currentAmmo;
-    private bool _isReloading = false;
 
-    public int CurrentAmmo => _currentAmmo;
+    public event Action<int, int> OnAmmoChanged;
+
+    public int CurrentAmmo
+    {
+        get => _currentAmmo;
+        private set
+        {
+            if (_data == null) return;
+            _currentAmmo = Mathf.Clamp(value, 0, _data.magSize);
+            OnAmmoChanged?.Invoke(_currentAmmo, _data.magSize);
+        }
+    }
+
+    public bool IsEmpty => _currentAmmo <= 0;
+    public bool IsFull => _data != null && _currentAmmo >= _data.magSize;
 
     private void Start()
     {
-        _currentAmmo = maxAmmo;
+        if (_data == null)
+        {
+            WeaponShooting shooting = GetComponent<WeaponShooting>();
+            if (shooting != null) Init(shooting.GetWeaponData());
+        }
     }
 
-    public bool ConsumeAmmo()
+    public void Init(WeaponData data)
     {
-        if (_isReloading || _currentAmmo <= 0) return false;
+        if (data == null) return;
+        _data = data;
+        CurrentAmmo = _data.magSize;
+    }
 
-        _currentAmmo--;
+    public bool ConsumeAmmo(int amount)
+    {
+        if (_data == null || IsEmpty) return false;
+        CurrentAmmo -= amount;
         return true;
     }
 
-    public void Reload()
+    public void Refill()
     {
-        _isReloading = true;
-        Invoke(nameof(FinishReload), 1.5f);
-    }
-
-    private void FinishReload()
-    {
-        _currentAmmo = maxAmmo;
-        _isReloading = false;
+        if (_data != null) CurrentAmmo = _data.magSize;
     }
 }

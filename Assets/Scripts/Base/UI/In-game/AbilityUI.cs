@@ -25,6 +25,7 @@ public class AbilityUI : MonoBehaviour
     private Color _inactiveColor = new Color(0.3f, 0.3f, 0.3f, 1f);
 
     private bool _isInitialized = false;
+    private bool _wasReady = false;
 
     private void Start()
     {
@@ -117,18 +118,26 @@ public class AbilityUI : MonoBehaviour
             if (isUsing)
             {
                 ultimateReadyText.gameObject.SetActive(false);
+                _wasReady = false;
             }
             else if (isReady)
             {
-
+                if (!_wasReady)
+                {
                     StartCoroutine(ReadyTextSequence());
+                    _wasReady = true;
+                }
             }
-            ultimateReadyText.text = Mathf.FloorToInt(_ultimateCharge.CurrentGauge).ToString();
-            Color c = ultimateReadyText.color;
+            else
+            {
+                ultimateReadyText.text = Mathf.FloorToInt(_ultimateCharge.CurrentGauge).ToString();
+                Color c = ultimateReadyText.color;
                 c.a = 1f;
                 ultimateReadyText.color = c;
 
                 ultimateReadyText.gameObject.SetActive(true);
+                _wasReady = false;
+            }
         }
     }
 

@@ -8,9 +8,27 @@ public class AbilityOverlay : AbilityBase
     {
         if (abilityData != null && abilityData.rewardWeapon != null)
         {
-            Transform weaponHolder = transform.root.GetComponentInChildren<PlayerWalking>()?.transform.Find("Weapon Holder");
+            Transform targetParent = null;
 
-            Transform targetParent = weaponHolder != null ? weaponHolder : firePoint;
+            if (movement != null)
+            {
+                WeaponController weaponCtrl = movement.GetComponentInChildren<WeaponController>();
+                if (weaponCtrl != null)
+                {
+                    targetParent = weaponCtrl.transform;
+                }
+            }
+
+            if (targetParent == null)
+            {
+                Transform searchRoot = movement != null ? movement.transform : transform.root;
+                targetParent = FindChildRecursive(searchRoot, "Weapon Holder");
+            }
+
+            if (targetParent == null)
+            {
+                targetParent = firePoint;
+            }
 
             _spawnedOverlayWeapon = Instantiate(abilityData.rewardWeapon, targetParent);
 
@@ -32,5 +50,16 @@ public class AbilityOverlay : AbilityBase
             Destroy(_spawnedOverlayWeapon);
             Debug.Log("[AbilityOverlay] 오버레이 무기 해제");
         }
+    }
+
+    private Transform FindChildRecursive(Transform parent, string name)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == name) return child;
+            Transform result = FindChildRecursive(child, name);
+            if (result != null) return result;
+        }
+        return null;
     }
 }

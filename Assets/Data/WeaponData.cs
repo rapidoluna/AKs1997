@@ -65,6 +65,7 @@ public class WeaponData : ScriptableObject
     public MeleeData meleeData;
 
     public string WeaponName => weaponName;
+    public string WeaponDescription => weaponDescription;
     public FiringType[] Firing => firing;
     public WeaponType Type => weapon;
 }

@@ -7,28 +7,51 @@ public class CashRushHUD : MonoBehaviour
 {
     public static CashRushHUD Instance;
 
-    [SerializeField] private TextMeshProUGUI scoreText;//플레이어 점수
-    [SerializeField] private TextMeshProUGUI timerText;//캐시러시 완료까지 남은 시간
-    [SerializeField] private TextMeshProUGUI payoutText;//캐시러시를 통해 추가될 점수
-    [SerializeField] private TextMeshProUGUI notifyText;//알림
-    [SerializeField] private GameObject notifyPanel;//알림 패널
-    [SerializeField] private GameObject timerPanel;//캐시러시 동안 표시될 패널
+    [Header("Score UI")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private Image scoreGaugeImage;
+    [SerializeField] private float targetScore = 50000f;
+    [SerializeField] private float gaugeSpeed = 5f;
 
-    private int _totalScore = 0;//플레이어 총 점수
+    [Header("Timer UI")]
+    [SerializeField] private GameObject timerPanel;
+    [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI payoutText;
+
+    [Header("Notification UI")]
+    [SerializeField] private GameObject notifyPanel;
+    [SerializeField] private TextMeshProUGUI notifyText;
+
+    private int _totalScore = 0;
+    private float _currentGaugeFill = 0f;
 
     public int CurrentScore => _totalScore;
 
     private void Awake()
     {
         Instance = this;
+
         if (notifyPanel != null) notifyPanel.SetActive(false);
         if (timerPanel != null) timerPanel.SetActive(false);
-        UpdateScoreUI();
+
+        UpdateScoreText();
+        if (scoreGaugeImage != null) scoreGaugeImage.fillAmount = 0f;
+    }
+
+    private void Update()
+    {
+        if (scoreGaugeImage != null)
+        {
+            float targetFill = Mathf.Clamp01((float)_totalScore / targetScore);
+            _currentGaugeFill = Mathf.Lerp(_currentGaugeFill, targetFill, Time.deltaTime * gaugeSpeed);
+            scoreGaugeImage.fillAmount = _currentGaugeFill;
+        }
     }
 
     public void SetTimerActive(bool active, int potentialAmount = 0)
     {
-        if (timerPanel != null) timerPanel.SetActive(active);
+        if (timerPanel != null)
+            timerPanel.SetActive(active);
 
         if (active && payoutText != null)
         {
@@ -45,10 +68,10 @@ public class CashRushHUD : MonoBehaviour
     public void AddScore(int amount)
     {
         _totalScore += amount;
-        UpdateScoreUI();
+        UpdateScoreText();
     }
 
-    private void UpdateScoreUI()
+    private void UpdateScoreText()
     {
         if (scoreText != null)
             scoreText.text = $"{_totalScore:N0}";
@@ -57,15 +80,18 @@ public class CashRushHUD : MonoBehaviour
     public void ShowNotification(string message)
     {
         if (notifyText == null || notifyPanel == null) return;
+
         notifyText.text = message;
+        notifyPanel.SetActive(true);
+
         StopAllCoroutines();
-        StartCoroutine(NotifyRoutine());
+        StartCoroutine(HideNotificationRoutine());
     }
 
-    private IEnumerator NotifyRoutine()
+    private IEnumerator HideNotificationRoutine()
     {
-        notifyPanel.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        notifyPanel.SetActive(false);
+        yield return new WaitForSeconds(2.0f);
+        if (notifyPanel != null)
+            notifyPanel.SetActive(false);
     }
 }

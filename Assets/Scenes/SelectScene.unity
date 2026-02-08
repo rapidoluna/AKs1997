@@ -915,7 +915,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 1
   m_CellSize: {x: 167, y: 167}
-  m_Spacing: {x: 50, y: 0}
+  m_Spacing: {x: 125, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &630521061
@@ -1167,7 +1167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -815, y: 75}
+  m_AnchoredPosition: {x: -815, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &663617220
@@ -1758,7 +1758,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 13985f0e755138f49b5090b01226a266, type: 2}
   - {fileID: 11400000, guid: 09ab247e8a0561248959370e390a59bd, type: 2}
   - {fileID: 11400000, guid: 1016d0dc7b0089642b5810d08d6d9b0b, type: 2}
-  - {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
   characterListParent: {fileID: 609408569}
   characterButtonPrefab: {fileID: 1156198798304758675, guid: 9566811f56b94174c99944819529a327, type: 3}
   characterBannerImage: {fileID: 442432544}

@@ -13,6 +13,7 @@ public class PlayerHealing : MonoBehaviour
 
     private PlayerHealth _health;
     private WeaponController _weaponController;
+    public int CurrentMedkits => _currentMedkits;
 
     public bool IsHealing => _isHealing;
     public float HealDuration => healDuration;

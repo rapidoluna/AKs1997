@@ -5,46 +5,84 @@ using TMPro;
 public class HealingHUD : MonoBehaviour
 {
     [SerializeField] private PlayerHealing playerHealing;
-    [SerializeField] private GameObject healingStatusPanel;
-    [SerializeField] private Slider healingProgressBar;
-    [SerializeField] private TextMeshProUGUI timeText;
-    [SerializeField] private TextMeshProUGUI statusText;
 
-    private float _localTimer;
+    [Header("Healing Status UI")]
+    [SerializeField] private GameObject healingPanel;
+    [SerializeField] private Slider healingSlider;
+    [SerializeField] private TextMeshProUGUI timeText;
+
+    [Header("Medkit Info UI")]
+    [SerializeField] private GameObject[] medkitCells;
+    [SerializeField] private Image medkitIcon;
+    [SerializeField] private Color normalColor = Color.white;
+    [SerializeField] private Color emptyColor = new Color(0.4f, 0.4f, 0.4f, 1f);
+
+    private float _timer;
 
     private void Update()
     {
         if (playerHealing == null) return;
 
+        UpdateHealingStatus();
+        UpdateMedkitInfo();
+    }
+
+    private void UpdateHealingStatus()
+    {
         if (playerHealing.IsHealing)
         {
-            if (!healingStatusPanel.activeSelf)
+            if (healingPanel != null && !healingPanel.activeSelf)
             {
-                healingStatusPanel.SetActive(true);
-                _localTimer = 0f;
+                healingPanel.SetActive(true);
+                _timer = 0f;
             }
 
-            _localTimer += Time.deltaTime;
+            _timer += Time.deltaTime;
 
-            float duration = playerHealing.HealDuration;
-            float progress = Mathf.Clamp01(_localTimer / duration);
-
-            if (healingProgressBar != null)
-                healingProgressBar.value = progress;
+            if (healingSlider != null)
+            {
+                healingSlider.value = Mathf.Clamp01(_timer / playerHealing.HealDuration);
+            }
 
             if (timeText != null)
             {
-                float remaining = Mathf.Max(0f, duration - _localTimer);
+                float remaining = Mathf.Max(0f, playerHealing.HealDuration - _timer);
                 timeText.text = $"{remaining:F1}s";
             }
         }
         else
         {
-            if (healingStatusPanel.activeSelf)
+            if (healingPanel != null && healingPanel.activeSelf)
             {
-                healingStatusPanel.SetActive(false);
-                _localTimer = 0f;
+                healingPanel.SetActive(false);
+                _timer = 0f;
             }
+        }
+    }
+
+    private void UpdateMedkitInfo()
+    {
+        int currentCount = playerHealing.CurrentMedkits;
+
+        if (medkitCells != null)
+        {
+            for (int i = 0; i < medkitCells.Length; i++)
+            {
+                if (medkitCells[i] != null)
+                {
+                    bool shouldBeActive = i < currentCount;
+                    if (medkitCells[i].activeSelf != shouldBeActive)
+                    {
+                        medkitCells[i].SetActive(shouldBeActive);
+                    }
+                }
+            }
+        }
+
+        if (medkitIcon != null)
+        {
+            bool isAvailable = currentCount > 0 && !playerHealing.IsHealing;
+            medkitIcon.color = isAvailable ? normalColor : emptyColor;
         }
     }
 }

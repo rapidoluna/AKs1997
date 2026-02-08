@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.lachee.discordrpc": "https://github.com/Lachee/discord-rpc-unity.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.10",
     "com.unity.collab-proxy": "2.10.2",

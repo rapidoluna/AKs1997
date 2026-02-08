@@ -59,6 +59,10 @@ public class DiscordRPCManager : MonoBehaviour
         {
             detailsText = "메뉴 화면";
         }
+        else if (currentSceneName == "SelectScene")
+        {
+            detailsText = "캐릭터 및 무기 선택 중";
+        }
         else if (currentSceneName == "PlayScene")
         {
             detailsText = "캐시러시 플레이 중";

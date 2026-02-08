@@ -437,22 +437,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5277564295222089372, guid: 81a02b77f2a47514490641d254bba922, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 175
-      objectReference: {fileID: 0}
-    - target: {fileID: 5277564295222089372, guid: 81a02b77f2a47514490641d254bba922, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 825
-      objectReference: {fileID: 0}
-    - target: {fileID: 5277564295222089372, guid: 81a02b77f2a47514490641d254bba922, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 405
-      objectReference: {fileID: 0}
     - target: {fileID: 5378675297811911417, guid: 81a02b77f2a47514490641d254bba922, type: 3}
       propertyPath: weaponController
       value: 
       objectReference: {fileID: 1401114245}
+    - target: {fileID: 5475978938173610743, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5629631021446643515, guid: 81a02b77f2a47514490641d254bba922, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -75
+      objectReference: {fileID: 0}
     - target: {fileID: 6022451921185764736, guid: 81a02b77f2a47514490641d254bba922, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -596,7 +592,7 @@ PrefabInstance:
     - target: {fileID: 5842246085799575771, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: debugCharacterData
       value: 
-      objectReference: {fileID: 11400000, guid: 09ab247e8a0561248959370e390a59bd, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6736942281001848004, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

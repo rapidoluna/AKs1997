@@ -151,15 +151,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2674833711001409478, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.9424953
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2674833711001409478, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.05000019
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 2674833711001409478, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.8928394
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2674833711001409478, guid: dc81c57c23983cc44ae9a2a62c5f2483, type: 3}
       propertyPath: m_LocalRotation.w
@@ -408,7 +408,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8727159523695679128, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.863281
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 8727159523695679128, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -416,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8727159523695679128, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.6640244
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8727159523695679128, guid: 5c89d102648b5b94e9c434491f2af66f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -914,13 +914,13 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1805992961}
+  - {fileID: 7560542726740857801}
+  - {fileID: 1192083536}
   - {fileID: 1514817662}
   - {fileID: 1677866657}
-  - {fileID: 1192083536}
+  - {fileID: 499940470}
+  - {fileID: 892842342}
   - {fileID: 1810037429}
   - {fileID: 1363977036}
   - {fileID: 705132459}
-  - {fileID: 1805992961}
-  - {fileID: 7560542726740857801}
-  - {fileID: 499940470}
-  - {fileID: 892842342}

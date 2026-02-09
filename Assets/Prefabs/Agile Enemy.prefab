@@ -129,6 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 9e7818ad2fc4a96429f902580be6f7e0, type: 2}
+  detector: {fileID: 1822592982025962138}
+  pattern: {fileID: 7995758507658134210}
 --- !u!114 &1822592982025962138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +143,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb003ae2f29d5749ac6fc263daabb18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controller: {fileID: 5067076912077707103}
+  _running: {fileID: 278112460306124028}
+  _walking: {fileID: 8998689053060765044}
   viewAngle: 85
   chaseMaintainDistance: 20
 --- !u!114 &8998689053060765044

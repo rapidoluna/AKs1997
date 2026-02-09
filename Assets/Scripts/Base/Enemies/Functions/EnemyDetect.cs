@@ -3,20 +3,21 @@ using System.Collections;
 
 public class EnemyDetect : MonoBehaviour
 {
-    private EnemyController _controller;
-    private EnemyRunning _running;
-    private EnemyWalking _walking;
-    private bool _isForceTracking = false;
-    private Coroutine _forceTrackCoroutine;
+    [SerializeField] private EnemyController _controller;
+    [SerializeField] private EnemyRunning _running;
+    [SerializeField] private EnemyWalking _walking;
 
     [SerializeField] private float viewAngle = 90f;
     [SerializeField] private float chaseMaintainDistance = 20f;
 
+    private bool _isForceTracking = false;
+    private Coroutine _forceTrackCoroutine;
+
     private void Awake()
     {
-        _controller = GetComponent<EnemyController>();
-        _running = GetComponent<EnemyRunning>();
-        _walking = GetComponent<EnemyWalking>();
+        if (_controller == null) _controller = GetComponent<EnemyController>();
+        if (_running == null) _running = GetComponent<EnemyRunning>();
+        if (_walking == null) _walking = GetComponent<EnemyWalking>();
     }
 
     private void Start()
@@ -28,6 +29,8 @@ public class EnemyDetect : MonoBehaviour
     {
         if (EnemyGroup.Instance != null) EnemyGroup.Instance.UnregisterEnemy(this);
     }
+
+    public Transform GetPlayerTransform() => _controller.player;
 
     private void Update()
     {
@@ -108,7 +111,6 @@ public class EnemyDetect : MonoBehaviour
     public void OnProjectileDetected(Vector3 origin)
     {
         if (Vector3.Distance(transform.position, origin) > chaseMaintainDistance) return;
-
         StartForceTracking(origin, 7f);
     }
 

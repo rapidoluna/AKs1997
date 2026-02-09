@@ -3,6 +3,9 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private EnemyData data;
+    [SerializeField] private EnemyDetect detector;
+    [SerializeField] private EnemyPatternController pattern;
+
     private int _currentHealth;
     private bool _isDead = false;
     private EnemySpawn _mySpawner;
@@ -10,6 +13,9 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void Awake()
     {
         if (data != null) _currentHealth = data.maxHealth;
+
+        if (detector == null) detector = GetComponent<EnemyDetect>();
+        if (pattern == null) pattern = GetComponent<EnemyPatternController>();
     }
 
     public void SetSpawner(EnemySpawn spawner) => _mySpawner = spawner;
@@ -18,19 +24,18 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         if (_isDead) return;
 
-        EnemyPatternController pattern = GetComponent<EnemyPatternController>();
         if (pattern != null && pattern.enabled) pattern.TryDodge();
 
-        EnemyDetect detector = GetComponent<EnemyDetect>();
         if (detector != null && detector.enabled)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
+            Transform playerTransform = detector.GetPlayerTransform();
+            if (playerTransform != null)
             {
-                detector.OnProjectileDetected(player.transform.position);
+                detector.OnProjectileDetected(playerTransform.position);
+
                 if (EnemyGroup.Instance != null)
                 {
-                    EnemyGroup.Instance.ReportTarget(player.transform.position, detector);
+                    EnemyGroup.Instance.ReportTarget(playerTransform.position, detector);
                 }
             }
         }

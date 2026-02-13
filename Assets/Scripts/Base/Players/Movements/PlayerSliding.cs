@@ -2,70 +2,70 @@ using UnityEngine;
 
 public class PlayerSliding : MonoBehaviour
 {
-    private CharacterController controller;
-    private PlayerWalking walking;
+    public CharacterController controller;
+    public MonoBehaviour[] scriptsToDisable;
 
-    [SerializeField] private float slideSpeedMultiplier = 2f;
-    [SerializeField] private float slideDuration = 0.7f;
-    [SerializeField] private float slideHeight = 1.6f;
-    [SerializeField] private float normalHeight = 2f;
-    [SerializeField] private float lerpSpeed = 25f;
+    public float initialSlideSpeed = 18f;
+    public float slideFriction = 7f;
+    public float minSlideSpeed = 6f;
+    public float slideHeight = 0.5f;
+    public float defaultGravity = -19.62f;
 
-    private bool isSliding;
-    private float slideTimer;
+    public bool IsSliding { get; private set; }
 
-    public bool IsSliding => isSliding;
+    private float currentSpeed;
+    private float originalHeight;
+    private Vector3 slideDirection;
 
-    void Awake()
+    private void Start()
     {
-        controller = GetComponent<CharacterController>();
-        walking = GetComponent<PlayerWalking>();
+        if (controller != null) originalHeight = controller.height;
     }
 
-    void Update()
+    private void Update()
     {
-        bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetAxis("Vertical") > 0;
-
-        if (isRunning && Input.GetKeyDown(KeyCode.LeftControl) && !isSliding)
+        if (Input.GetKeyDown(KeyCode.LeftControl) && controller.isGrounded && !IsSliding)
         {
             StartSlide();
         }
 
-        if (isSliding)
+        if (IsSliding)
         {
-            SlideUpdate();
-        }
-        else if (isSliding == false && controller.height < normalHeight - 0.01f && !Input.GetKey(KeyCode.LeftControl))
-        {
-            ResetHeight();
+            currentSpeed -= slideFriction * Time.deltaTime;
+
+            Vector3 moveVelocity = slideDirection * currentSpeed;
+            moveVelocity.y = defaultGravity;
+
+            controller.Move(moveVelocity * Time.deltaTime);
+
+            if (Input.GetKeyUp(KeyCode.LeftControl) || currentSpeed <= minSlideSpeed)
+            {
+                StopSlide();
+            }
         }
     }
 
     private void StartSlide()
     {
-        isSliding = true;
-        slideTimer = slideDuration;
-        walking.MoveSpeed = walking.BaseSpeed * slideSpeedMultiplier;
-    }
+        IsSliding = true;
+        currentSpeed = initialSlideSpeed;
+        slideDirection = transform.forward;
+        controller.height = slideHeight;
 
-    private void SlideUpdate()
-    {
-        slideTimer -= Time.deltaTime;
-
-        float lastHeight = controller.height;
-        controller.height = Mathf.Lerp(controller.height, slideHeight, lerpSpeed * Time.deltaTime);
-        controller.center += new Vector3(0, (lastHeight - controller.height) / 2, 0);
-
-        if (slideTimer <= 0)
+        foreach (var script in scriptsToDisable)
         {
-            isSliding = false;
+            if (script != null) script.enabled = false;
         }
     }
 
-    private void ResetHeight()
+    private void StopSlide()
     {
-        float lastHeight = controller.height;
-        controller.height = Mathf.Lerp(controller.height, normalHeight, lerpSpeed * Time.deltaTime);
-        controller.center += new Vector3(0, (lastHeight - controller.height) / 2, 0);
+        IsSliding = false;
+        controller.height = originalHeight;
+
+        foreach (var script in scriptsToDisable)
+        {
+            if (script != null) script.enabled = true;
+        }
     }
 }

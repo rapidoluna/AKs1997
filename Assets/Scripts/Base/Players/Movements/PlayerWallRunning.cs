@@ -4,18 +4,19 @@ using UnityEngine;
 public class PlayerWallRunning : MonoBehaviour
 {
     public LayerMask wallLayer;
-    public float wallRunSpeed = 14f;
+    public float wallCheckDistance = 1.0f;
+    public float stickToWallForce = 3f;
     public float wallJumpUpForce = 7f;
     public float wallJumpSideForce = 12f;
+    public float maxWallRunTime = 2.5f;
 
     public bool IsWallRunning { get; private set; }
-    public bool IsWallLeft { get; private set; }
-    public bool IsWallRight { get; private set; }
 
     private CharacterController controller;
-    private Vector3 moveVelocity;
-    private Vector3 wallNormal;
+    private Vector3 currentVelocity;
+    private Vector3 lastWallNormal;
     private float wallRunTimer;
+    private float wallJumpCooldown;
 
     private void Start()
     {
@@ -24,59 +25,98 @@ public class PlayerWallRunning : MonoBehaviour
 
     private void Update()
     {
-        CheckWall();
-
-        if (!controller.isGrounded && (IsWallLeft || IsWallRight) && Input.GetAxisRaw("Vertical") > 0)
+        if (wallJumpCooldown > 0f)
         {
-            if (!IsWallRunning) StartWallRun();
-            WallRunMovement();
+            wallJumpCooldown -= Time.deltaTime;
         }
-        else if (IsWallRunning)
+
+        CheckForWallRun();
+
+        if (IsWallRunning)
         {
-            StopWallRun();
+            ExecuteWallRun();
         }
     }
 
-    private void CheckWall()
+    private void CheckForWallRun()
     {
-        float checkDist = controller.radius + 0.5f;
-        IsWallRight = Physics.Raycast(transform.position, transform.right, out RaycastHit rightHit, checkDist, wallLayer);
-        IsWallLeft = Physics.Raycast(transform.position, -transform.right, out RaycastHit leftHit, checkDist, wallLayer);
+        bool hasWallLeft = Physics.Raycast(transform.position, -transform.right, out RaycastHit leftHit, wallCheckDistance, wallLayer);
+        bool hasWallRight = Physics.Raycast(transform.position, transform.right, out RaycastHit rightHit, wallCheckDistance, wallLayer);
 
-        if (IsWallRight) wallNormal = rightHit.normal;
-        else if (IsWallLeft) wallNormal = leftHit.normal;
+        bool isTryingToWallRun = !controller.isGrounded && Input.GetAxisRaw("Vertical") > 0;
+
+        if (isTryingToWallRun && (hasWallLeft || hasWallRight))
+        {
+            Vector3 wallNormal = hasWallLeft ? leftHit.normal : rightHit.normal;
+
+            if (wallJumpCooldown > 0f && Vector3.Dot(wallNormal, lastWallNormal) > 0.9f)
+            {
+                return;
+            }
+
+            if (!IsWallRunning)
+            {
+                StartWallRun(wallNormal);
+            }
+        }
+        else
+        {
+            if (IsWallRunning)
+            {
+                StopWallRun();
+            }
+        }
     }
 
-    private void StartWallRun()
+    private void StartWallRun(Vector3 wallNormal)
     {
         IsWallRunning = true;
+        lastWallNormal = wallNormal;
         wallRunTimer = 0f;
-        moveVelocity.y = 0f;
+
+        currentVelocity = controller.velocity;
+        currentVelocity.y = 0f;
     }
 
-    private void WallRunMovement()
+    private void ExecuteWallRun()
     {
-        Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up);
+        wallRunTimer += Time.deltaTime;
+
+        Vector3 wallForward = Vector3.Cross(lastWallNormal, Vector3.up);
+
         if (Vector3.Dot(transform.forward, wallForward) < 0)
         {
             wallForward = -wallForward;
         }
 
-        wallRunTimer += Time.deltaTime;
+        float currentHorizontalSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude;
+        currentVelocity = wallForward * currentHorizontalSpeed;
 
-        moveVelocity = wallForward * wallRunSpeed;
+        currentVelocity -= lastWallNormal * stickToWallForce;
 
-        moveVelocity += -wallNormal * 4f;
-
-        moveVelocity.y -= (wallRunTimer * 3f) * Time.deltaTime;
+        if (wallRunTimer > maxWallRunTime * 0.5f)
+        {
+            currentVelocity.y -= (wallRunTimer * 4f) * Time.deltaTime;
+        }
 
         if (Input.GetButtonDown("Jump"))
         {
-            moveVelocity = wallNormal * wallJumpSideForce + Vector3.up * wallJumpUpForce + transform.forward * (wallRunSpeed * 0.5f);
-            StopWallRun();
+            WallJump();
+            return;
         }
 
-        controller.Move(moveVelocity * Time.deltaTime);
+        controller.Move(currentVelocity * Time.deltaTime);
+    }
+
+    private void WallJump()
+    {
+        IsWallRunning = false;
+        wallJumpCooldown = 0.25f;
+
+        float currentSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude;
+        currentVelocity = (lastWallNormal * wallJumpSideForce) + (Vector3.up * wallJumpUpForce) + (transform.forward * currentSpeed * 0.5f);
+
+        controller.Move(currentVelocity * Time.deltaTime);
     }
 
     private void StopWallRun()

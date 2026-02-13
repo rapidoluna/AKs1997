@@ -592,7 +592,7 @@ PrefabInstance:
     - target: {fileID: 5842246085799575771, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: debugCharacterData
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
     - target: {fileID: 6736942281001848004, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -665,6 +665,10 @@ PrefabInstance:
       propertyPath: fadeGroup
       value: 
       objectReference: {fileID: 1140434315}
+    - target: {fileID: 8590870940800165938, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
+      propertyPath: characterData
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8720879077362830896, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
       propertyPath: glitchOverlay
       value: 
@@ -698,58 +702,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70b6d3c71dfc72349b5b8381623b38d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1677866671}
-  scriptsToDisable:
-  - {fileID: 1677866669}
-  - {fileID: 1677866668}
-  - {fileID: 1677866666}
-  playerCamera: {fileID: 828621067}
   wallLayer:
     serializedVersion: 2
     m_Bits: 64
   wallCheckDistance: 1
-  wallRunSpeed: 15
-  stickToWallForce: 5
-  maxWallRunTime: 2.5
-  initialGravity: 0
-  endGravity: -10
+  stickToWallForce: 3
   wallJumpUpForce: 7
   wallJumpSideForce: 10
-  tiltAngle: 15
-  tiltSpeed: 10
---- !u!114 &1677866666 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5184617360178082787, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-  m_PrefabInstance: {fileID: 1677866657}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677866658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9f42561257df5d43b734b455477cecb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1677866668 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6928534576826016796, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-  m_PrefabInstance: {fileID: 1677866657}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677866658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99bdd6bd7ed0f6c4aa70dc5bffb59473, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1677866669 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2186220335113528223, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}
-  m_PrefabInstance: {fileID: 1677866657}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1677866658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42e26244e309103479f2ad0c51c38681, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  maxWallRunTime: 2.5
 --- !u!143 &1677866671 stripped
 CharacterController:
   m_CorrespondingSourceObject: {fileID: 7498905321667918934, guid: f597e17cdb0c88f438503e11eec70cde, type: 3}

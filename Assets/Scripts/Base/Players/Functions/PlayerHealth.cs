@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private float currentHealth;
     private float _bonusMaxHealth;
     private float _currentBonusHealth;
+
+    public event Action<Vector3> OnDamageTaken;
 
     [SerializeField] private CharacterController characterController;
     [SerializeField] private MonoBehaviour[] scriptsToDisable;
@@ -35,6 +38,16 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(int damage)
     {
+        ProcessDamage(damage, transform.position - transform.forward);
+    }
+
+    public void TakeDamage(int damage, Vector3 attackerPosition)
+    {
+        ProcessDamage(damage, attackerPosition);
+    }
+
+    private void ProcessDamage(int damage, Vector3 attackerPosition)
+    {
         if (IsDead) return;
 
         if (GameSessionManager.Instance != null)
@@ -42,7 +55,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             GameSessionManager.Instance.damageTaken += damage;
         }
 
-        float remainingDamage = damage;
+        OnDamageTaken?.Invoke(attackerPosition);
+
+        float remainingDamage = (float)damage;
 
         if (_currentBonusHealth > 0)
         {
@@ -112,6 +127,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void LoadResultScene()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene("ResultScene");
     }
 }

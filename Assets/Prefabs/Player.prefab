@@ -557,11 +557,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a0564b2cfbd1c840a2d5b9ff4a5f2da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slideSpeedMultiplier: 2
-  slideDuration: 0.7
-  slideHeight: 1.6
-  normalHeight: 2
-  lerpSpeed: 25
+  controller: {fileID: 7498905321667918934}
+  scriptsToDisable: []
+  initialSlideSpeed: 14
+  slideFriction: 6
+  minSlideSpeed: 7
+  slideHeight: 1.7
+  defaultGravity: -19.62
 --- !u!114 &6985183320646983470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,7 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e367c1a82ad1db14285a6be6827aa85d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugCharacterData: {fileID: 0}
+  debugCharacterData: {fileID: 11400000, guid: 853fbe2b4f4d3284190221d7a412e1af, type: 2}
   weaponHoldPoint: {fileID: 2815454732221533248}
 --- !u!114 &7326960581296985013
 MonoBehaviour:

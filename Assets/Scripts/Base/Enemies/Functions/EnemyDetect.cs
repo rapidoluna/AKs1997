@@ -10,6 +10,13 @@ public class EnemyDetect : MonoBehaviour
     [SerializeField] private float viewAngle = 90f;
     [SerializeField] private float chaseMaintainDistance = 20f;
 
+    [Header("Detection Settings")]
+    [SerializeField] private float detectionGauge = 0f;
+    [SerializeField] private float detectionThreshold = 100f;
+    [SerializeField] private float detectionIncreaseRate = 50f;
+    [SerializeField] private float detectionDecreaseRate = 20f;
+    [SerializeField] private float suspectThreshold = 30f;
+
     private bool _isForceTracking = false;
     private Coroutine _forceTrackCoroutine;
 
@@ -36,82 +43,135 @@ public class EnemyDetect : MonoBehaviour
     {
         if (_controller.player == null || PlayerHealth.IsDead)
         {
+            detectionGauge = 0f;
             EnterPatrolMode();
             return;
         }
 
         float distance = Vector3.Distance(transform.position, _controller.player.position);
+        bool canSee = CanSeePlayer();
+
+        if (canSee)
+        {
+            float distanceFactor = 1f - Mathf.Clamp01(distance / chaseMaintainDistance);
+            detectionGauge += detectionIncreaseRate * distanceFactor * Time.deltaTime;
+
+            if (detectionGauge >= detectionThreshold)
+            {
+                if (!_running.enabled && !_isForceTracking)
+                {
+                    StartCombat(distance);
+                }
+            }
+            else if (detectionGauge >= suspectThreshold)
+            {
+                if (!_isForceTracking)
+                {
+                    StartForceTracking(_controller.player.position, 3f);
+                }
+            }
+        }
+        else
+        {
+            if (!_running.enabled && !_isForceTracking)
+            {
+                detectionGauge = Mathf.Max(0, detectionGauge - detectionDecreaseRate * Time.deltaTime);
+            }
+        }
 
         if (_running.enabled || _isForceTracking)
         {
-            if (distance > chaseMaintainDistance)
+            if (distance > chaseMaintainDistance && !_isForceTracking)
             {
+                detectionGauge = 0f;
                 EnterPatrolMode();
-                return;
             }
-
-            if (!_isForceTracking)
-            {
-                _controller.agent.SetDestination(_controller.player.position);
-            }
-
-            if (CanSeePlayer())
-            {
-                StopForceTracking();
-                StartCombat(distance);
-            }
-            return;
-        }
-
-        if (CanSeePlayer())
-        {
-            StartCombat(distance);
         }
     }
 
-    private void StartCombat(float distance)
+    public bool CanSeePlayer()
     {
-        _running.enabled = true;
-        _walking.enabled = false;
-        _controller.agent.SetDestination(_controller.player.position);
+        Vector3 directionToPlayer = (_controller.player.position - transform.position).normalized;
+        float angle = Vector3.Angle(transform.forward, directionToPlayer);
 
-        if (_controller.data.pattern == EnemyPattern.Tactical && EnemyGroup.Instance != null)
+        if (angle < viewAngle * 0.5f)
         {
-            EnemyGroup.Instance.ReportTarget(_controller.player.position, this);
-        }
-    }
-
-    private void EnterPatrolMode()
-    {
-        StopForceTracking();
-        if (_running) _running.enabled = false;
-        if (_walking) _walking.enabled = true;
-        if (_controller.agent.hasPath) _controller.agent.ResetPath();
-    }
-
-    private bool CanSeePlayer()
-    {
-        float distance = Vector3.Distance(transform.position, _controller.player.position);
-        if (distance > _controller.data.detectRange) return false;
-
-        Vector3 dir = (_controller.player.position - transform.position).normalized;
-        if (Vector3.Angle(transform.forward, dir) <= viewAngle * 0.5f)
-        {
-            RaycastHit hit;
-            Vector3 eye = transform.position + Vector3.up * 1.5f;
-            Vector3 target = _controller.player.position + Vector3.up * 1.5f;
-            if (Physics.Raycast(eye, (target - eye).normalized, out hit, _controller.data.detectRange))
+            if (Physics.Raycast(transform.position + Vector3.up, directionToPlayer, out RaycastHit hit, chaseMaintainDistance))
             {
-                if (hit.collider.CompareTag("Player")) return true;
+                if (hit.transform.CompareTag("Player"))
+                {
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    public void OnProjectileDetected(Vector3 origin)
+    private void EnterPatrolMode()
     {
-        if (Vector3.Distance(transform.position, origin) > chaseMaintainDistance) return;
-        StartForceTracking(origin, 7f);
+        _running.enabled = false;
+        _walking.enabled = true;
+    }
+
+    private void StartCombat(float distance)
+    {
+        _isForceTracking = false;
+        if (_forceTrackCoroutine != null) StopCoroutine(_forceTrackCoroutine);
+
+        _running.enabled = true;
+        _walking.enabled = false;
+
+        if (EnemyGroup.Instance != null)
+        {
+            EnemyGroup.Instance.ReportTarget(_controller.player.position, this);
+        }
+    }
+
+    public void OnProjectileDetected(Vector3 targetPosition)
+    {
+        detectionGauge += 40f;
+        if (detectionGauge >= detectionThreshold)
+        {
+            StartCombat(Vector3.Distance(transform.position, targetPosition));
+        }
+        else
+        {
+            StartForceTracking(targetPosition, 5f);
+        }
+    }
+
+    public void OnDamageTaken(Vector3 origin)
+    {
+        detectionGauge = detectionThreshold;
+        if (EnemyGroup.Instance != null)
+        {
+            EnemyGroup.Instance.ReportTarget(origin, this);
+        }
+        StartCombat(Vector3.Distance(transform.position, origin));
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Projectile"))
+        {
+            Vector3 sourcePos = other.transform.position - other.transform.forward * 2f;
+            OnProjectileDetected(sourcePos);
+        }
+    }
+
+    public void OnSoundHeard(Vector3 origin, float volume)
+    {
+        float distance = Vector3.Distance(transform.position, origin);
+        if (distance <= volume)
+        {
+            float noiseImpact = (1f - (distance / volume)) * 50f;
+            detectionGauge += noiseImpact;
+
+            if (!_running.enabled)
+            {
+                StartForceTracking(origin, 5f);
+            }
+        }
     }
 
     public void StartForceTracking(Vector3 targetPos, float duration)
@@ -137,6 +197,7 @@ public class EnemyDetect : MonoBehaviour
 
                 if (CanSeePlayer())
                 {
+                    detectionGauge = detectionThreshold;
                     _isForceTracking = false;
                     StartCombat(Vector3.Distance(transform.position, _controller.player.position));
                     yield break;
@@ -147,15 +208,13 @@ public class EnemyDetect : MonoBehaviour
         }
 
         _isForceTracking = false;
+        if (detectionGauge < detectionThreshold) EnterPatrolMode();
     }
 
     public void StopForceTracking()
     {
         _isForceTracking = false;
-        if (_forceTrackCoroutine != null)
-        {
-            StopCoroutine(_forceTrackCoroutine);
-            _forceTrackCoroutine = null;
-        }
+        if (_forceTrackCoroutine != null) StopCoroutine(_forceTrackCoroutine);
+        EnterPatrolMode();
     }
 }

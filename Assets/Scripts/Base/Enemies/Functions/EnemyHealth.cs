@@ -13,7 +13,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     private void Awake()
     {
         if (data != null) _currentHealth = data.maxHealth;
-
         if (detector == null) detector = GetComponent<EnemyDetect>();
         if (pattern == null) pattern = GetComponent<EnemyPatternController>();
     }
@@ -22,6 +21,16 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(int damage)
     {
+        HandleDamage(damage, Vector3.zero);
+    }
+
+    public void TakeDamage(int damage, Vector3 attackerPosition)
+    {
+        HandleDamage(damage, attackerPosition);
+    }
+
+    private void HandleDamage(int damage, Vector3 attackerPosition)
+    {
         if (_isDead) return;
 
         if (pattern != null && pattern.enabled) pattern.TryDodge();
@@ -29,13 +38,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         if (detector != null && detector.enabled)
         {
             Transform playerTransform = detector.GetPlayerTransform();
-            if (playerTransform != null)
-            {
-                detector.OnProjectileDetected(playerTransform.position);
+            Vector3 targetPos = (attackerPosition != Vector3.zero) ? attackerPosition : (playerTransform != null ? playerTransform.position : Vector3.zero);
 
+            if (targetPos != Vector3.zero)
+            {
+                detector.OnProjectileDetected(targetPos);
                 if (EnemyGroup.Instance != null)
                 {
-                    EnemyGroup.Instance.ReportTarget(playerTransform.position, detector);
+                    EnemyGroup.Instance.ReportTarget(targetPos, detector);
                 }
             }
         }
@@ -72,7 +82,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         {
             if (Random.Range(0f, 100f) <= drop.dropRate)
             {
-                Instantiate(drop.itemPrefab, transform.position, Quaternion.identity);
+                if (drop.itemPrefab != null)
+                    Instantiate(drop.itemPrefab, transform.position, Quaternion.identity);
             }
         }
     }

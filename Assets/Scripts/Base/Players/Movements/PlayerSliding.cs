@@ -5,10 +5,10 @@ public class PlayerSliding : MonoBehaviour
     public CharacterController controller;
     public MonoBehaviour[] scriptsToDisable;
 
-    public float initialSlideSpeed = 18f;
-    public float slideFriction = 7f;
-    public float minSlideSpeed = 6f;
-    public float slideHeight = 0.5f;
+    public float initialSlideSpeed = 14f;
+    public float slideFriction = 6f;
+    public float minSlideSpeed = 7f;
+    public float slideHeight = 1.7f;
     public float defaultGravity = -19.62f;
 
     public bool IsSliding { get; private set; }
@@ -16,6 +16,12 @@ public class PlayerSliding : MonoBehaviour
     private float currentSpeed;
     private float originalHeight;
     private Vector3 slideDirection;
+    private PlayerWalking walking;
+
+    private void Awake()
+    {
+        walking = GetComponent<PlayerWalking>();
+    }
 
     private void Start()
     {
@@ -24,9 +30,15 @@ public class PlayerSliding : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && controller.isGrounded && !IsSliding)
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 inputDir = (transform.right * horizontal + transform.forward * vertical).normalized;
+
+        bool isRunning = Input.GetKey(KeyCode.LeftShift) && vertical > 0;
+
+        if (Input.GetKeyDown(KeyCode.LeftControl) && controller.isGrounded && !IsSliding && isRunning && inputDir.magnitude > 0.1f)
         {
-            StartSlide();
+            StartSlide(inputDir);
         }
 
         if (IsSliding)
@@ -34,7 +46,7 @@ public class PlayerSliding : MonoBehaviour
             currentSpeed -= slideFriction * Time.deltaTime;
 
             Vector3 moveVelocity = slideDirection * currentSpeed;
-            moveVelocity.y = defaultGravity;
+            moveVelocity.y += defaultGravity * Time.deltaTime;
 
             controller.Move(moveVelocity * Time.deltaTime);
 
@@ -45,12 +57,14 @@ public class PlayerSliding : MonoBehaviour
         }
     }
 
-    private void StartSlide()
+    private void StartSlide(Vector3 direction)
     {
         IsSliding = true;
         currentSpeed = initialSlideSpeed;
-        slideDirection = transform.forward;
+        slideDirection = direction;
         controller.height = slideHeight;
+
+        if (walking != null) walking.MoveSpeed = 0;
 
         foreach (var script in scriptsToDisable)
         {
@@ -62,6 +76,12 @@ public class PlayerSliding : MonoBehaviour
     {
         IsSliding = false;
         controller.height = originalHeight;
+
+        if (walking != null)
+        {
+            bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetAxisRaw("Vertical") > 0;
+            walking.MoveSpeed = isRunning ? walking.BaseSpeed * 1.6f : walking.BaseSpeed;
+        }
 
         foreach (var script in scriptsToDisable)
         {

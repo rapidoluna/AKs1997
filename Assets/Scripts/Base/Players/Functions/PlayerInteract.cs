@@ -22,7 +22,15 @@ public class PlayerInteract : MonoBehaviour
 
     private void CheckForInteractable()
     {
-        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        Camera mainCamera = Camera.main;
+        InteractHUD hud = InteractHUD.Instance;
+        if (mainCamera == null)
+        {
+            if (hud != null) hud.HidePrompt();
+            return;
+        }
+
+        Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange))
         {
             GameObject hitObject = hit.collider.gameObject;
@@ -33,10 +41,13 @@ public class PlayerInteract : MonoBehaviour
                 _currentInteractTarget = hitObject;
                 _lastDisplayedMessage = newMessage;
 
-                if (!string.IsNullOrEmpty(newMessage))
-                    InteractHUD.Instance.ShowPrompt(newMessage);
-                else
-                    InteractHUD.Instance.HidePrompt();
+                if (hud != null)
+                {
+                    if (!string.IsNullOrEmpty(newMessage))
+                        hud.ShowPrompt(newMessage);
+                    else
+                        hud.HidePrompt();
+                }
             }
         }
         else
@@ -45,29 +56,31 @@ public class PlayerInteract : MonoBehaviour
             {
                 _currentInteractTarget = null;
                 _lastDisplayedMessage = "";
-                InteractHUD.Instance.HidePrompt();
+                if (hud != null) hud.HidePrompt();
             }
         }
     }
 
     private string GetInteractMessage(GameObject obj)
     {
+        bool isEscapeReady = GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady;
+
         if (obj.CompareTag("Station"))
         {
             STSNGStation station = obj.GetComponent<STSNGStation>();
             if (station != null)
             {
-                if (GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady)
+                if (isEscapeReady)
                 {
-                    return "Àü¼ÛÀÌ ºñÈ°¼ºÈ­µÊ";
+                    return "íƒˆì¶œì´ í™œì„±í™”ë˜ì—ˆìŠµë‹ˆë‹¤";
                 }
 
                 if (station.IsProcessing)
                 {
-                    return "Ä³½Ã·¯½Ã ÁøÇà Áß";
+                    return "ìºì‹œëŸ¬ì‹œ ì§„í–‰ ì¤‘";
                 }
 
-                return _inventory.Count > 0 ? "[F] STS//NG¿¡ ¹°ÀÚ Àü¼Û" : "Àü¼ÛÇÒ ¹°ÀÚ°¡ ¾øÀ½";
+                return _inventory.Count > 0 ? "[F] STS//NGì— ì•„ì´í…œ ë§¡ê¸°ê¸°" : "ì†Œì§€í•œ ì•„ì´í…œì´ ì—†ìŒ";
             }
         }
 
@@ -76,7 +89,7 @@ public class PlayerInteract : MonoBehaviour
             CashItem item = obj.GetComponent<CashItem>();
             if (item != null)
             {
-                return _inventory.Count < maxInventorySize ? $"[F] {item.Data.itemName} È¹µæ" : "ÀÎº¥Åä¸®°¡ °¡µæ Âü";
+                return _inventory.Count < maxInventorySize ? $"[F] {item.Data.itemName} íšë“" : "ì¸ë²¤í† ë¦¬ê°€ ê°€ë“ ì°¸";
             }
         }
 
@@ -85,7 +98,7 @@ public class PlayerInteract : MonoBehaviour
             MetroEscape metro = obj.GetComponentInParent<MetroEscape>();
             if (metro != null)
             {
-                return GameStateManager.Instance.IsEscapeReady ? "[È¦µå F] Å»Ãâ" : "Å»ÃâÀÌ ºñÈ°¼ºÈ­µÊ";
+                return isEscapeReady ? "[ê¸¸ê²Œ F] íƒˆì¶œ" : "íƒˆì¶œì´ ë¹„í™œì„±í™”ë˜ì—ˆìŠµë‹ˆë‹¤";
             }
         }
 
@@ -94,15 +107,18 @@ public class PlayerInteract : MonoBehaviour
 
     private void HandleHoldInteraction()
     {
+        bool isEscapeReady = GameStateManager.Instance != null && GameStateManager.Instance.IsEscapeReady;
+        InteractHUD hud = InteractHUD.Instance;
+
         if (_currentInteractTarget != null)
         {
             MetroEscape metro = _currentInteractTarget.GetComponentInParent<MetroEscape>();
-            if (metro != null && GameStateManager.Instance.IsEscapeReady && Input.GetKey(KeyCode.F))
+            if (metro != null && isEscapeReady && Input.GetKey(KeyCode.F))
             {
                 _isHolding = true;
                 _holdTimer += Time.deltaTime;
                 float progress = Mathf.Clamp01(_holdTimer / holdRequiredTime);
-                InteractHUD.Instance.UpdateInteractProgress(progress);
+                if (hud != null) hud.UpdateInteractProgress(progress);
 
                 if (_holdTimer >= holdRequiredTime)
                 {
@@ -116,7 +132,7 @@ public class PlayerInteract : MonoBehaviour
                     if (move != null) move.enabled = false;
 
                     ResetHold();
-                    InteractHUD.Instance.HidePrompt();
+                    if (hud != null) hud.HidePrompt();
                     _currentInteractTarget = null;
                     _lastDisplayedMessage = "";
                     this.enabled = false;
@@ -137,7 +153,10 @@ public class PlayerInteract : MonoBehaviour
 
     private void TrySingleInteract()
     {
-        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        Camera mainCamera = Camera.main;
+        if (mainCamera == null) return;
+
+        Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange))
         {
             CashItem itemScript = hit.collider.GetComponent<CashItem>();
@@ -145,7 +164,7 @@ public class PlayerInteract : MonoBehaviour
             {
                 _inventory.Add(itemScript.Data);
                 if (ItemInventoryUI.Instance != null) ItemInventoryUI.Instance.AddItemIcon(itemScript.Data.itemIcon);
-                if (CashRushHUD.Instance != null) CashRushHUD.Instance.ShowNotification($"{itemScript.Data.itemName} È¹µæ");
+                if (CashRushHUD.Instance != null) CashRushHUD.Instance.ShowNotification($"{itemScript.Data.itemName} íšë“");
                 itemScript.Collect();
                 return;
             }

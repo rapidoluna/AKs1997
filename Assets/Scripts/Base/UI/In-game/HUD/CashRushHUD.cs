@@ -62,7 +62,7 @@ public class CashRushHUD : MonoBehaviour
     public void UpdateTimer(float time)
     {
         if (timerText != null)
-            timerText.text = $"Ä³½Ã·¯½Ã ¿Ï·á±îÁö : {Mathf.CeilToInt(time)}s";
+            timerText.text = $"ìºì‹œëŸ¬ì‹œ ì™„ë£Œê¹Œì§€ : {Mathf.CeilToInt(time)}s";
     }
 
     public void AddScore(int amount)

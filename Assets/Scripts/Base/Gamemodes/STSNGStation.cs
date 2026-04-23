@@ -44,7 +44,7 @@ public class STSNGStation : MonoBehaviour
 
         if (CashRushHUD.Instance != null)
         {
-            CashRushHUD.Instance.ShowNotification("Ä³½Ã·¯½Ã ½ÃÀÛ");
+            CashRushHUD.Instance.ShowNotification("ìºì‹œëŸ¬ì‹œ ì‹œì‘");
             CashRushHUD.Instance.SetTimerActive(true, _storedCash);
         }
 
@@ -86,7 +86,7 @@ public class STSNGStation : MonoBehaviour
             {
                 GameStateManager.Instance.CheckScore(CashRushHUD.Instance.CurrentScore);
             }
-            CashRushHUD.Instance.ShowNotification("Ä³½Ã·¯½Ã ¿Ï·á");
+            CashRushHUD.Instance.ShowNotification("ìºì‹œëŸ¬ì‹œ ì™„ë£Œ");
             CashRushHUD.Instance.SetTimerActive(false);
         }
         _storedCash = 0;

@@ -23,12 +23,13 @@ public class UltimateCharge : MonoBehaviour
     public void SetLock(bool lockStatus)
     {
         _isLocked = lockStatus;
-        if (lockStatus) Debug.Log("[UltimateCharge] °ÔÀÌÁö ÃæÀü ÀÏ½Ã Á¤Áö (±Ã±Ø±â È°¼ºÈ­)");
-        else Debug.Log("[UltimateCharge] °ÔÀÌÁö ÃæÀü Àç°³");
+        if (lockStatus) Debug.Log("[UltimateCharge] ê²Œì´ì§€ ì¶©ì „ ì¼ì‹œ ì¤‘ì§€ (ê¶ê·¹ê¸° í™œì„±í™”)");
+        else Debug.Log("[UltimateCharge] ê²Œì´ì§€ ì¶©ì „ ì¬ê°œ");
     }
 
     private void Update()
     {
+        if (_ultimateData == null) return;
         AddGauge(_ultimateData.ultimateChargeSpeed * Time.deltaTime);
     }
 

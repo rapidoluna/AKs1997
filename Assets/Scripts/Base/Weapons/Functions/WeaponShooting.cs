@@ -97,7 +97,12 @@ public class WeaponShooting : MonoBehaviour
 
     private void HandleFiringMode()
     {
-        FiringType primaryMode = _data.Firing[0];
+        if (!TryGetPrimaryFiringMode(out FiringType primaryMode))
+        {
+            IsShooting = false;
+            return;
+        }
+
         switch (primaryMode)
         {
             case FiringType.Semi:
@@ -142,11 +147,13 @@ public class WeaponShooting : MonoBehaviour
 
     private void PerformMeleeSwing()
     {
+        Transform projectileOrigin = firePoint != null ? firePoint : transform;
+
         if (BulletPool.Instance != null && _data.bulletPrefab != null)
         {
             GameObject vfx = BulletPool.Instance.GetBullet(_data.bulletPrefab);
-            vfx.transform.position = firePoint.position;
-            vfx.transform.rotation = firePoint.rotation;
+            vfx.transform.position = projectileOrigin.position;
+            vfx.transform.rotation = projectileOrigin.rotation;
         }
 
         Vector3 center = transform.position + transform.forward * (_data.effectiveRange * 0.5f);
@@ -176,8 +183,8 @@ public class WeaponShooting : MonoBehaviour
 
     private void HandleChargeMode()
     {
-        bool isFullAutoCharge = _data.Firing.Contains(FiringType.Full);
-        bool isBurstCharge = _data.Firing.Contains(FiringType.Burst);
+        bool isFullAutoCharge = HasFiringMode(FiringType.Full);
+        bool isBurstCharge = HasFiringMode(FiringType.Burst);
 
         if (Input.GetMouseButton(0))
         {
@@ -188,7 +195,7 @@ public class WeaponShooting : MonoBehaviour
             {
                 if (isBurstCharge)
                 {
-                    if (Time.time >= _lastFireTime && !_ammo.IsEmpty) StartCoroutine(BurstRoutine());
+                    if (Time.time >= _lastFireTime && (_ammo == null || !_ammo.IsEmpty)) StartCoroutine(BurstRoutine());
                 }
                 else FireChargeSingle();
 
@@ -213,7 +220,7 @@ public class WeaponShooting : MonoBehaviour
             {
                 if (isBurstCharge)
                 {
-                    if (_currentCharge >= _data.chargeTime * 0.5f && Time.time >= _lastFireTime && !_ammo.IsEmpty) StartCoroutine(BurstRoutine());
+                    if (_currentCharge >= _data.chargeTime * 0.5f && Time.time >= _lastFireTime && (_ammo == null || !_ammo.IsEmpty)) StartCoroutine(BurstRoutine());
                 }
                 else if (!isFullAutoCharge && !isBurstCharge && _currentCharge >= 0.1f) FireChargeSingle();
             }
@@ -242,9 +249,10 @@ public class WeaponShooting : MonoBehaviour
     private void TryFire()
     {
         if (Time.time < _lastFireTime || (_ammo != null && _ammo.IsEmpty)) return;
+        if (!TryGetPrimaryFiringMode(out FiringType primaryMode)) return;
 
         float rpm = _data.fireRate;
-        if (_data.Firing[0] == FiringType.Accelerate)
+        if (primaryMode == FiringType.Accelerate)
         {
             float t = Mathf.Clamp01(_accelerationTimer / _data.accelerateTime);
             rpm = Mathf.Lerp(_data.fireRate, _data.maxAccelerate, t);
@@ -253,8 +261,8 @@ public class WeaponShooting : MonoBehaviour
         float fireInterval = 60f / rpm;
         _lastFireTime = Time.time + fireInterval;
 
-        if (_data.Firing[0] == FiringType.Burst) StartCoroutine(BurstRoutine());
-        else if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
+        if (primaryMode == FiringType.Burst) StartCoroutine(BurstRoutine());
+        else if (_ammo == null || _ammo.ConsumeAmmo(_data.usingBullet))
         {
             Fire();
         }
@@ -262,23 +270,26 @@ public class WeaponShooting : MonoBehaviour
 
     private void FireChargeSingle()
     {
-        if (_ammo != null && _ammo.IsEmpty) return;
-        float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
-        if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
+        if (_ammo != null)
         {
-            float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
-            if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult * (1f + chargeRatio));
-
-            float speed = _data.bulletSpeed / 60f;
-            int finalDamage = (int)(_data.weaponDamage * (1f + chargeRatio * 2f) * _damageMultiplier);
-            GenerateProjectile(speed, baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f), finalDamage);
+            if (_ammo.IsEmpty || !_ammo.ConsumeAmmo(_data.usingBullet)) return;
         }
+
+        float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
+        float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
+        if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult * (1f + chargeRatio));
+
+        float speed = _data.bulletSpeed / 60f;
+        int finalDamage = (int)(_data.weaponDamage * (1f + chargeRatio * 2f) * _damageMultiplier);
+        GenerateProjectile(speed, baseSpread * (_aiming != null ? _aiming.SpreadMultiplier : 1f), finalDamage);
     }
 
     private void Fire()
     {
+        if (!TryGetPrimaryFiringMode(out FiringType primaryMode)) return;
+
         float speed = _data.bulletSpeed / 60f;
-        if (_data.Firing[0] == FiringType.Accelerate)
+        if (primaryMode == FiringType.Accelerate)
         {
             float t = Mathf.Clamp01(_accelerationTimer / _data.accelerateTime);
             speed = Mathf.Lerp(_data.bulletSpeed, _data.maxAccelerateSpeed, t) / 60f;
@@ -307,7 +318,7 @@ public class WeaponShooting : MonoBehaviour
         for (int i = 0; i < _data.burstBullet; i++)
         {
             if (_ammo != null && _ammo.IsEmpty) break;
-            if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
+            if (_ammo == null || _ammo.ConsumeAmmo(_data.usingBullet))
             {
                 if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
                 GenerateProjectile(speed, spread, finalDamage);
@@ -318,9 +329,13 @@ public class WeaponShooting : MonoBehaviour
 
     private void GenerateProjectile(float speed, float spreadRange, int damage)
     {
-        if (BulletPool.Instance == null) return;
+        if (BulletPool.Instance == null || _data == null || _data.bulletPrefab == null || firePoint == null) return;
+
+        Camera activeCamera = _mainCamera != null ? _mainCamera : Camera.main;
+        if (activeCamera == null) return;
+
         GameObject bullet = BulletPool.Instance.GetBullet(_data.bulletPrefab);
-        Ray ray = _mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray = activeCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         Vector3 targetPoint = Physics.Raycast(ray, out RaycastHit hit, _data.effectiveRange) ? hit.point : ray.GetPoint(_data.effectiveRange);
 
         bullet.transform.position = firePoint.position;
@@ -330,5 +345,19 @@ public class WeaponShooting : MonoBehaviour
 
         Projectile p = bullet.GetComponent<Projectile>();
         if (p != null) p.Init(speed, damage, _data.effectiveRange, transform.root.gameObject);
+    }
+
+    private bool TryGetPrimaryFiringMode(out FiringType primaryMode)
+    {
+        primaryMode = default;
+        if (_data == null || _data.Firing == null || _data.Firing.Length == 0) return false;
+
+        primaryMode = _data.Firing[0];
+        return true;
+    }
+
+    private bool HasFiringMode(FiringType firingType)
+    {
+        return _data != null && _data.Firing != null && _data.Firing.Contains(firingType);
     }
 }

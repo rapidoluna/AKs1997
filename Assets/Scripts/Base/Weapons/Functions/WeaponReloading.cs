@@ -42,7 +42,7 @@ public class WeaponReloading : MonoBehaviour
 
     private void Update()
     {
-        if (_data == null || _isReloading || (_shooting != null && _shooting.IsShooting)) return;
+        if (_data == null || _ammo == null || _isReloading || (_shooting != null && _shooting.IsShooting)) return;
 
         if (Input.GetKeyDown(KeyCode.R) && !_ammo.IsFull)
         {
@@ -55,7 +55,7 @@ public class WeaponReloading : MonoBehaviour
 
     public void TryStartReload()
     {
-        if (_isReloading || _ammo.IsFull) return;
+        if (_ammo == null || _isReloading || _ammo.IsFull) return;
         if (_shooting == null || _shooting.CanReload)
         {
             StartCoroutine(ReloadRoutine());

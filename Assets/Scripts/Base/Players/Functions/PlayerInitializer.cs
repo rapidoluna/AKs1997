@@ -51,15 +51,25 @@ public class PlayerInitializer : MonoBehaviour
 
     private void InitializeWeapons()
     {
-        if (GlobalSelectionManager.Instance == null) return;
         if (weaponHoldPoint == null) return;
+
+        GlobalSelectionManager selectionManager = GlobalSelectionManager.Instance;
+        if (selectionManager == null) return;
 
         WeaponController weaponController = weaponHoldPoint.GetComponent<WeaponController>();
         if (weaponController == null) return;
 
-        for (int i = 0; i < 2; i++)
+        GameObject[] selectedWeaponPrefabs = selectionManager.selectedWeaponPrefabs;
+        if (selectedWeaponPrefabs == null || selectedWeaponPrefabs.Length == 0)
         {
-            GameObject weaponPrefab = GlobalSelectionManager.Instance.selectedWeaponPrefabs[i];
+            weaponController.InitializeWeapons();
+            return;
+        }
+
+        int weaponCount = Mathf.Min(2, selectedWeaponPrefabs.Length, weaponController.Slots.Length);
+        for (int i = 0; i < weaponCount; i++)
+        {
+            GameObject weaponPrefab = selectedWeaponPrefabs[i];
             if (weaponPrefab != null)
             {
                 GameObject weaponInstance = Instantiate(weaponPrefab, weaponHoldPoint);

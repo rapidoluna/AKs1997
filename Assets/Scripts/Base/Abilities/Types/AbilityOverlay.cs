@@ -35,11 +35,11 @@ public class AbilityOverlay : AbilityBase
             _spawnedOverlayWeapon.transform.localPosition = abilityData.rewardWeapon.transform.localPosition;
             _spawnedOverlayWeapon.transform.localRotation = abilityData.rewardWeapon.transform.localRotation;
 
-            Debug.Log($"[AbilityOverlay] {abilityData.rewardWeapon.name} ÀåÂø ¿Ï·á (ºÎ¸ğ: {targetParent.name})");
+            Debug.Log($"[AbilityOverlay] {abilityData.rewardWeapon.name} ì¥ì°© ì™„ë£Œ (ë¶€ëª¨: {targetParent.name})");
         }
         else
         {
-            Debug.LogWarning("[AbilityOverlay] rewardWeaponÀÌ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning("[AbilityOverlay] rewardWeaponì´ ì„¤ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
         }
     }
 
@@ -48,7 +48,7 @@ public class AbilityOverlay : AbilityBase
         if (_spawnedOverlayWeapon != null)
         {
             Destroy(_spawnedOverlayWeapon);
-            Debug.Log("[AbilityOverlay] ¿À¹ö·¹ÀÌ ¹«±â ÇØÁ¦");
+            Debug.Log("[AbilityOverlay] ì˜¤ë²„ë ˆì´ ë¬´ê¸° ì œê±°");
         }
     }
 

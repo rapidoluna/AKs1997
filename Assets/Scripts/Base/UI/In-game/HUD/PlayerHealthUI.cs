@@ -26,7 +26,8 @@ public class PlayerHealthUI : MonoBehaviour
     {
         if (playerHealth == null) return;
 
-        float currentHealthRatio = playerHealth.CurrentHealth / playerHealth.BaseMaxHealth;
+        float baseMaxHealth = Mathf.Max(playerHealth.BaseMaxHealth, 1f);
+        float currentHealthRatio = playerHealth.CurrentHealth / baseMaxHealth;
 
         if (healthBarFill != null)
         {
@@ -37,8 +38,7 @@ public class PlayerHealthUI : MonoBehaviour
         {
             if (playerHealing != null && playerHealing.IsHealing)
             {
-                float healAmount = 30f;
-                float previewTarget = Mathf.Min((playerHealth.CurrentHealth + healAmount) / playerHealth.BaseMaxHealth, 1f);
+                float previewTarget = Mathf.Min((playerHealth.CurrentHealth + playerHealing.HealAmount) / baseMaxHealth, 1f);
 
                 healPreviewBarFill.fillAmount = Mathf.Lerp(healPreviewBarFill.fillAmount, previewTarget, Time.deltaTime * lerpSpeed);
 
@@ -57,13 +57,14 @@ public class PlayerHealthUI : MonoBehaviour
 
         if (bonusHealthBarFill != null)
         {
-            float bonusTarget = (playerHealth.BonusMaxHealth > 0)
-                ? (playerHealth.CurrentBonusHealth / maxBonusDisplay)
+            float displayMaxBonus = Mathf.Max(maxBonusDisplay, playerHealth.BonusMaxHealth, 1f);
+            float bonusTarget = (playerHealth.CurrentBonusHealth > 0)
+                ? Mathf.Clamp01(playerHealth.CurrentBonusHealth / displayMaxBonus)
                 : 0f;
 
             bonusHealthBarFill.fillAmount = Mathf.Lerp(bonusHealthBarFill.fillAmount, bonusTarget, Time.deltaTime * lerpSpeed);
 
-            if (bonusHealthBarFill.fillAmount > 0.001f || playerHealth.BonusMaxHealth > 0)
+            if (bonusHealthBarFill.fillAmount > 0.001f || playerHealth.CurrentBonusHealth > 0)
             {
                 if (!bonusHealthBarFill.gameObject.activeSelf)
                     bonusHealthBarFill.gameObject.SetActive(true);

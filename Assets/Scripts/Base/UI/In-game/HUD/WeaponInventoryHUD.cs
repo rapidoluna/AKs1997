@@ -9,12 +9,12 @@ public class WeaponInventoryHUD : MonoBehaviour
     [Header("Slot 1 (Main)")]
     [SerializeField] private RectTransform slot1Transform;
     [SerializeField] private Image slot1Icon;
-    [SerializeField] private TextMeshProUGUI slot1AmmoText; // TMP 타입 유지
+    [SerializeField] private TextMeshProUGUI slot1AmmoText;
 
     [Header("Slot 2 (Sub)")]
     [SerializeField] private RectTransform slot2Transform;
     [SerializeField] private Image slot2Icon;
-    [SerializeField] private TextMeshProUGUI slot2AmmoText; // TMP 타입 유지
+    [SerializeField] private TextMeshProUGUI slot2AmmoText;
 
     [Header("Common Reload Settings")]
     [SerializeField] private GameObject commonReloadPrompt;
@@ -37,7 +37,6 @@ public class WeaponInventoryHUD : MonoBehaviour
         UpdateCommonReloadPrompt();
     }
 
-    // 매개변수 타입을 TextMeshProUGUI로 수정
     private void UpdateSlot(int index, RectTransform rect, Image icon, TextMeshProUGUI ammoText)
     {
         if (rect == null) return;
@@ -61,10 +60,14 @@ public class WeaponInventoryHUD : MonoBehaviour
 
         rect.sizeDelta = Vector2.Lerp(rect.sizeDelta, isActive ? activeSize : inactiveSize, Time.deltaTime * lerpSpeed);
 
-        if (icon != null && data != null)
+        if (icon != null)
         {
-            icon.sprite = data.weaponIcon;
-            icon.color = Color.Lerp(icon.color, isActive ? activeColor : inactiveColor, Time.deltaTime * lerpSpeed);
+            icon.enabled = data != null && data.weaponIcon != null;
+            if (icon.enabled)
+            {
+                icon.sprite = data.weaponIcon;
+                icon.color = Color.Lerp(icon.color, isActive ? activeColor : inactiveColor, Time.deltaTime * lerpSpeed);
+            }
         }
 
         if (ammoText != null)
@@ -72,8 +75,7 @@ public class WeaponInventoryHUD : MonoBehaviour
             if (isActive)
             {
                 ammoText.overflowMode = TextOverflowModes.Overflow;
-
-                ammoText.text = $"{ammo.CurrentAmmo} / {data.magSize}";
+                ammoText.text = data != null ? $"{ammo.CurrentAmmo} / {data.magSize}" : $"{ammo.CurrentAmmo} / -";
                 rect.SetAsLastSibling();
             }
             else

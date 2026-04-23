@@ -38,7 +38,7 @@ public class GameStateManager : MonoBehaviour
         OnEscapeAvailable?.Invoke();
 
         if (CashRushHUD.Instance != null)
-            CashRushHUD.Instance.ShowNotification("Å»Ãâ °¡´É");
+            CashRushHUD.Instance.ShowNotification("íƒˆì¶œ ê°€ëŠ¥");
     }
 
     public void TriggerCashRushArrival(Vector3 stationPos)
@@ -57,6 +57,8 @@ public class GameStateManager : MonoBehaviour
 
     private void CallRandomDropPod(Vector3 centerPos)
     {
+        if (dropPodPrefab == null) return;
+
         Vector2 randomPoint = UnityEngine.Random.insideUnitCircle.normalized * UnityEngine.Random.Range(8f, spawnRadius);
         Vector3 spawnPos = centerPos + new Vector3(randomPoint.x, 0, randomPoint.y);
 

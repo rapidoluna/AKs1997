@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class MetroEscape : MonoBehaviour
 {
     private bool _isExiting = false;
+    [SerializeField] private string resultSceneName = "ResultScene";
 
     public void OnInteractComplete()
     {
@@ -32,11 +33,17 @@ public class MetroEscape : MonoBehaviour
 
         if (CashRushHUD.Instance != null)
         {
-            CashRushHUD.Instance.ShowNotification("Å»Ãâ Áß...");
+            CashRushHUD.Instance.ShowNotification("íƒˆì¶œ ì¤‘...");
         }
 
         yield return new WaitForSeconds(6.2f);
 
-        SceneManager.LoadScene("ResultScene");
+        if (!Application.CanStreamedLevelBeLoaded(resultSceneName))
+        {
+            Debug.LogError($"Result scene '{resultSceneName}' is not available in Build Settings.");
+            yield break;
+        }
+
+        SceneManager.LoadScene(resultSceneName);
     }
 }

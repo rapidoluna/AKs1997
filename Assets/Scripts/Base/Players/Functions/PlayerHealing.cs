@@ -17,6 +17,7 @@ public class PlayerHealing : MonoBehaviour
 
     public bool IsHealing => _isHealing;
     public float HealDuration => healDuration;
+    public float HealAmount => healAmount;
 
     private void Awake()
     {

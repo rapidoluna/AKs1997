@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public static bool IsDead { get; private set; }
 
     [SerializeField] private CharacterData characterData;
+    [SerializeField] private string resultSceneName = "ResultScene";
     private float currentHealth;
     private float _bonusMaxHealth;
     private float _currentBonusHealth;
@@ -110,7 +111,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (characterController != null) characterController.enabled = false;
         if (PlayerDeathCamera.Instance != null) PlayerDeathCamera.Instance.PlayDeathAnimation();
 
-        Invoke("LoadResultScene", 3f);
+        Invoke(nameof(LoadResultScene), 3f);
     }
 
     public void ApplyHealthBuff(float healthBonus)
@@ -129,6 +130,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        SceneManager.LoadScene("ResultScene");
+
+        if (!Application.CanStreamedLevelBeLoaded(resultSceneName))
+        {
+            Debug.LogError($"Result scene '{resultSceneName}' is not available in Build Settings.");
+            return;
+        }
+
+        SceneManager.LoadScene(resultSceneName);
     }
 }

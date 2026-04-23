@@ -195,7 +195,7 @@ public class WeaponShooting : MonoBehaviour
             {
                 if (isBurstCharge)
                 {
-                    if (Time.time >= _lastFireTime && (_ammo == null || !_ammo.IsEmpty)) StartCoroutine(BurstRoutine());
+                    if (Time.time >= _lastFireTime && _ammo != null && !_ammo.IsEmpty) StartCoroutine(BurstRoutine());
                 }
                 else FireChargeSingle();
 
@@ -220,7 +220,7 @@ public class WeaponShooting : MonoBehaviour
             {
                 if (isBurstCharge)
                 {
-                    if (_currentCharge >= _data.chargeTime * 0.5f && Time.time >= _lastFireTime && (_ammo == null || !_ammo.IsEmpty)) StartCoroutine(BurstRoutine());
+                    if (_currentCharge >= _data.chargeTime * 0.5f && Time.time >= _lastFireTime && _ammo != null && !_ammo.IsEmpty) StartCoroutine(BurstRoutine());
                 }
                 else if (!isFullAutoCharge && !isBurstCharge && _currentCharge >= 0.1f) FireChargeSingle();
             }
@@ -262,7 +262,7 @@ public class WeaponShooting : MonoBehaviour
         _lastFireTime = Time.time + fireInterval;
 
         if (primaryMode == FiringType.Burst) StartCoroutine(BurstRoutine());
-        else if (_ammo == null || _ammo.ConsumeAmmo(_data.usingBullet))
+        else if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
         {
             Fire();
         }
@@ -270,10 +270,7 @@ public class WeaponShooting : MonoBehaviour
 
     private void FireChargeSingle()
     {
-        if (_ammo != null)
-        {
-            if (_ammo.IsEmpty || !_ammo.ConsumeAmmo(_data.usingBullet)) return;
-        }
+        if (_ammo == null || _ammo.IsEmpty || !_ammo.ConsumeAmmo(_data.usingBullet)) return;
 
         float chargeRatio = Mathf.Clamp01(_currentCharge / _data.chargeTime);
         float recoilMult = _aiming != null ? _aiming.RecoilMultiplier : 1f;
@@ -318,7 +315,7 @@ public class WeaponShooting : MonoBehaviour
         for (int i = 0; i < _data.burstBullet; i++)
         {
             if (_ammo != null && _ammo.IsEmpty) break;
-            if (_ammo == null || _ammo.ConsumeAmmo(_data.usingBullet))
+            if (_ammo != null && _ammo.ConsumeAmmo(_data.usingBullet))
             {
                 if (recoilCamera != null) recoilCamera.TriggerRecoil(recoilMult);
                 GenerateProjectile(speed, spread, finalDamage);

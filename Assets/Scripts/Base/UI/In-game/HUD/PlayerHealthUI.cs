@@ -64,7 +64,7 @@ public class PlayerHealthUI : MonoBehaviour
 
             bonusHealthBarFill.fillAmount = Mathf.Lerp(bonusHealthBarFill.fillAmount, bonusTarget, Time.deltaTime * lerpSpeed);
 
-            if (bonusHealthBarFill.fillAmount > 0.001f || playerHealth.CurrentBonusHealth > 0)
+            if (bonusHealthBarFill.fillAmount > 0.001f || playerHealth.BonusMaxHealth > 0)
             {
                 if (!bonusHealthBarFill.gameObject.activeSelf)
                     bonusHealthBarFill.gameObject.SetActive(true);

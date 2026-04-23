@@ -57,7 +57,7 @@ public class PlayerHealthUI : MonoBehaviour
 
         if (bonusHealthBarFill != null)
         {
-            float displayMaxBonus = Mathf.Max(maxBonusDisplay, playerHealth.BonusMaxHealth, 1f);
+            float displayMaxBonus = Mathf.Max(1f, Mathf.Max(maxBonusDisplay, playerHealth.BonusMaxHealth));
             float bonusTarget = (playerHealth.CurrentBonusHealth > 0)
                 ? Mathf.Clamp01(playerHealth.CurrentBonusHealth / displayMaxBonus)
                 : 0f;

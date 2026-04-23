@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerInitializer : MonoBehaviour
 {
+    private const int MaxSelectedWeaponSlots = 2;
+
     [SerializeField] private CharacterData debugCharacterData;
     [SerializeField] private Transform weaponHoldPoint;
 
@@ -66,7 +68,7 @@ public class PlayerInitializer : MonoBehaviour
             return;
         }
 
-        int weaponCount = Mathf.Min(2, selectedWeaponPrefabs.Length, weaponController.Slots.Length);
+        int weaponCount = Mathf.Min(MaxSelectedWeaponSlots, selectedWeaponPrefabs.Length, weaponController.Slots.Length);
         for (int i = 0; i < weaponCount; i++)
         {
             GameObject weaponPrefab = selectedWeaponPrefabs[i];
